@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block content %}
+
+<div class="max-w-3xl mx-auto mt-10 bg-white shadow-lg rounded-lg p-8">
+
+    <h2 class="text-3xl font-bold text-center text-red-600 mb-8">
+        My Profile
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <div>
+            <label class="font-semibold">Full Name</label>
+            <input type="text" value="John Doe" class="w-full border rounded-lg p-3 mt-2" readonly>
+        </div>
+
+        <div>
+            <label class="font-semibold">Username</label>
+            <input type="text" value="johndoe" class="w-full border rounded-lg p-3 mt-2" readonly>
+        </div>
+
+        <div>
+            <label class="font-semibold">Email</label>
+            <input type="email" value="john@gmail.com" class="w-full border rounded-lg p-3 mt-2" readonly>
+        </div>
+
+        <div>
+            <label class="font-semibold">Phone</label>
+            <input type="text" value="9876543210" class="w-full border rounded-lg p-3 mt-2" readonly>
+        </div>
+
+    </div>
+
+    <div class="mt-8 flex gap-4">
+
+        <a href="#" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+            Edit Profile
+        </a>
+
+        <a href="/accounts/change-password/" class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700">
+            Change Password
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

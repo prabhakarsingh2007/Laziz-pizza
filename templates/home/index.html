@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="text-center py-20 bg-red-600 text-white">
+    <h1 class="text-5xl font-bold">🍕 Welcome to Laziz Pizza</h1>
+    <p class="mt-4 text-xl">
+        Fresh Pizza • Fast Delivery • Best Taste
+    </p>
+
+    <a href="/menu/" class="mt-6 inline-block bg-white text-red-600 px-6 py-3 rounded-lg font-bold">
+        Order Now
+    </a>
+</section>
+
+<!-- About Section -->
+<section class="max-w-6xl mx-auto py-16 px-6">
+    <h2 class="text-3xl font-bold text-center mb-6">
+        About Us
+    </h2>
+
+    <p class="text-center text-gray-700">
+        Welcome to Laziz Pizza. We serve fresh and delicious pizzas,
+        burgers, pasta and drinks with the best quality and fast delivery.
+    </p>
+</section>
+
+<!-- Popular Menu -->
+<section class="max-w-6xl mx-auto py-16 px-6">
+
+    <h2 class="text-3xl font-bold text-center mb-10">
+        Popular Menu
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+        <div class="border rounded-lg p-5 shadow">
+            <h3 class="text-xl font-bold">Margherita Pizza</h3>
+            <p class="my-2">Cheese Loaded Pizza</p>
+            <p class="text-red-600 font-bold">₹299</p>
+        </div>
+
+        <div class="border rounded-lg p-5 shadow">
+            <h3 class="text-xl font-bold">Veg Burger</h3>
+            <p class="my-2">Fresh Veg Burger</p>
+            <p class="text-red-600 font-bold">₹149</p>
+        </div>
+
+        <div class="border rounded-lg p-5 shadow">
+            <h3 class="text-xl font-bold">Cold Coffee</h3>
+            <p class="my-2">Chilled Coffee</p>
+            <p class="text-red-600 font-bold">₹99</p>
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Contact -->
+<section class="bg-gray-100 py-16 text-center">
+
+    <h2 class="text-3xl font-bold mb-4">
+        Contact Us
+    </h2>
+
+    <p>📍 Laziz Pizza Restaurant</p>
+    <p>📞 +91 9876543210</p>
+    <p>📧 info@lazizpizza.com</p>
+
+</section>
+
+{% endblock %}
