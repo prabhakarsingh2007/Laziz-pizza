@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Food Details
+{% endblock %}
+
+{% block content %}
+
+<div class="container mx-auto px-6 py-10">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+
+        <!-- Food Image -->
+        <div>
+            {% if food.image %}
+            <img src="{{ food.image.url }}"
+                 alt="{{ food.name }}"
+                 class="w-full rounded-lg shadow-lg">
+            {% else %}
+            <img src="https://via.placeholder.com/600x450"
+                 alt="{{ food.name }}"
+                 class="w-full rounded-lg shadow-lg">
+            {% endif %}
+        </div>
+
+        <!-- Food Details -->
+        <div>
+
+            <h1 class="text-4xl font-bold text-red-600">
+                {{ food.name }}
+            </h1>
+
+            <p class="text-gray-500 mt-2">
+                Category : {{ food.category }}
+            </p>
+
+            <h2 class="text-3xl font-bold text-green-600 mt-4">
+                ₹{{ food.price }}
+            </h2>
+
+            <p class="mt-6 text-gray-700 leading-7">
+                {{ food.description }}
+            </p>
+
+            <!-- Quantity -->
+            <div class="mt-6">
+                <label class="font-semibold">Quantity</label>
+
+                <input type="number"
+                       value="1"
+                       min="1"
+                       class="border rounded-lg p-2 w-24 mt-2">
+            </div>
+
+            <!-- Buttons -->
+            <div class="mt-8 flex gap-4">
+
+                <a href="#"
+                   class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700">
+                    Add to Cart
+                </a>
+
+                <a href="#"
+                   class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700">
+                    Buy Now
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Description -->
+    <div class="mt-16">
+
+        <h2 class="text-3xl font-bold mb-4">
+            Description
+        </h2>
+
+        <p class="text-gray-700 leading-7">
+            {{ food.description }}
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}
