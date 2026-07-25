@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Table Reservation
+{% endblock %}
+
+{% block content %}
+
+<section class="container mx-auto px-4 py-10">
+
+    <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-lg p-8">
+
+        <div class="text-center mb-8">
+
+            <h1 class="text-4xl font-bold text-red-600">
+                🍽️ Reserve Your Table
+            </h1>
+
+            <p class="text-gray-500 mt-2">
+                Book your table online and enjoy delicious food with your family & friends.
+            </p>
+
+        </div>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Name -->
+                <div>
+                    <label class="block mb-2 font-semibold">
+                        Full Name
+                    </label>
+
+                    <input type="text"
+                           name="name"
+                           placeholder="Enter your name"
+                           class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 outline-none">
+                </div>
+
+                <!-- Phone -->
+                <div>
+                    <label class="block mb-2 font-semibold">
+                        Phone Number
+                    </label>
+
+                    <input type="text"
+                           name="phone"
+                           placeholder="Enter phone number"
+                           class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 outline-none">
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label class="block mb-2 font-semibold">
+                        Email Address
+                    </label>
+
+                    <input type="email"
+                           name="email"
+                           placeholder="Enter email"
+                           class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 outline-none">
+                </div>
+
+                <!-- Guests -->
+                <div>
+                    <label class="block mb-2 font-semibold">
+                        Number of Guests
+                    </label>
+
+                    <input type="number"
+                           name="guests"
+                           min="1"
+                           placeholder="Guests"
+                           class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 outline-none">
+                </div>
+
+                <!-- Date -->
+                <div>
+                    <label class="block mb-2 font-semibold">
+                        Booking Date
+                    </label>
+
+                    <input type="date"
+                           name="booking_date"
+                           class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 outline-none">
+                </div>
+
+                <!-- Time -->
+                <div>
+                    <label class="block mb-2 font-semibold">
+                        Booking Time
+                    </label>
+
+                    <input type="time"
+                           name="booking_time"
+                           class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 outline-none">
+                </div>
+
+            </div>
+
+            <!-- Special Request -->
+            <div class="mt-6">
+
+                <label class="block mb-2 font-semibold">
+                    Special Request
+                </label>
+
+                <textarea
+                    name="special_request"
+                    rows="5"
+                    placeholder="Birthday decoration, Window seat, Anniversary, etc."
+                    class="w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 outline-none"></textarea>
+
+            </div>
+
+            <!-- Button -->
+            <div class="mt-8 text-center">
+
+                <button
+                    type="submit"
+                    class="bg-red-600 hover:bg-red-700 text-white px-10 py-3 rounded-lg font-semibold transition">
+
+                    Reserve Table
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}

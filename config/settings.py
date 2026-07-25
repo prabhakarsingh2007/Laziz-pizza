@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'payments',
     'reservation',
     'staff',
+    'dashboard'
     
     
     

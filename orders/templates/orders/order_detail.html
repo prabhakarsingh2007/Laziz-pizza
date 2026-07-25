@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Order Details
+{% endblock %}
+
+{% block content %}
+
+<section class="container mx-auto px-4 py-10">
+
+    <!-- Page Header -->
+    <div class="flex justify-between items-center mb-8">
+
+        <div>
+            <h1 class="text-4xl font-bold text-red-600">
+                Order Details
+            </h1>
+            <p class="text-gray-500 mt-2">
+                View complete information about your order.
+            </p>
+        </div>
+
+        <a href="{% url 'order_list' %}"
+           class="bg-gray-700 hover:bg-gray-800 text-white px-5 py-3 rounded-lg">
+            ← Back to Orders
+        </a>
+
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+        <!-- Customer Information -->
+        <div class="lg:col-span-2 bg-white rounded-xl shadow-lg p-8">
+
+            <h2 class="text-2xl font-bold mb-6">
+                Customer Information
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <div>
+                    <p class="text-gray-500">Order ID</p>
+                    <h3 class="font-semibold">#{{ order.id }}</h3>
+                </div>
+
+                <div>
+                    <p class="text-gray-500">Customer</p>
+                    <h3 class="font-semibold">{{ order.user.username }}</h3>
+                </div>
+
+                <div>
+                    <p class="text-gray-500">Phone</p>
+                    <h3 class="font-semibold">{{ order.phone }}</h3>
+                </div>
+
+                <div>
+                    <p class="text-gray-500">Order Date</p>
+                    <h3 class="font-semibold">{{ order.created_at }}</h3>
+                </div>
+
+                <div class="md:col-span-2">
+                    <p class="text-gray-500">Delivery Address</p>
+                    <h3 class="font-semibold">
+                        {{ order.address }}
+                    </h3>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Order Summary -->
+        <div class="bg-white rounded-xl shadow-lg p-8">
+
+            <h2 class="text-2xl font-bold mb-6">
+                Order Summary
+            </h2>
+
+            <div class="space-y-4">
+
+                <div class="flex justify-between">
+                    <span>Total Amount</span>
+                    <span class="font-bold text-green-600">
+                        ₹{{ order.total_price }}
+                    </span>
+                </div>
+
+                <div class="flex justify-between">
+                    <span>Status</span>
+
+                    {% if order.status == "Pending" %}
+                        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full">
+                            Pending
+                        </span>
+
+                    {% elif order.status == "Preparing" %}
+                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
+                            Preparing
+                        </span>
+
+                    {% elif order.status == "Out for Delivery" %}
+                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full">
+                            Out for Delivery
+                        </span>
+
+                    {% elif order.status == "Delivered" %}
+                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full">
+                            Delivered
+                        </span>
+
+                    {% else %}
+                        <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full">
+                            Cancelled
+                        </span>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Ordered Items -->
+    <div class="bg-white rounded-xl shadow-lg mt-10 p-8">
+
+        <h2 class="text-2xl font-bold mb-6">
+            Ordered Items
+        </h2>
+
+        <table class="min-w-full">
+
+            <thead class="bg-red-600 text-white">
+
+                <tr>
+
+                    <th class="py-3 px-4 text-left">
+                        Food
+                    </th>
+
+                    <th class="py-3 px-4 text-center">
+                        Quantity
+                    </th>
+
+                    <th class="py-3 px-4 text-center">
+                        Price
+                    </th>
+
+                    <th class="py-3 px-4 text-center">
+                        Total
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <!-- Later Order Items Loop -->
+
+                <tr class="border-b">
+
+                    <td class="py-4 px-4">
+                        Margherita Pizza
+                    </td>
+
+                    <td class="text-center">
+                        2
+                    </td>
+
+                    <td class="text-center">
+                        ₹299
+                    </td>
+
+                    <td class="text-center font-bold text-green-600">
+                        ₹598
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+{% endblock %}

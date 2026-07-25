@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block title %}
+My Orders
+{% endblock %}
+
+{% block content %}
+
+<section class="container mx-auto px-4 py-10">
+
+    <!-- Heading -->
+    <div class="flex justify-between items-center mb-8">
+
+        <div>
+            <h1 class="text-4xl font-bold text-red-600">
+                My Orders
+            </h1>
+            <p class="text-gray-500 mt-2">
+                View all your placed orders.
+            </p>
+        </div>
+
+        <a href="{% url 'menu' %}"
+            class="bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-lg">
+            Continue Shopping
+        </a>
+
+    </div>
+
+    <!-- Orders Table -->
+
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+
+        <table class="min-w-full">
+
+            <thead class="bg-red-600 text-white">
+
+                <tr>
+
+                    <th class="py-4 px-6 text-left">
+                        Order ID
+                    </th>
+
+                    <th class="py-4 px-6 text-left">
+                        Date
+                    </th>
+
+                    <th class="py-4 px-6 text-left">
+                        Total
+                    </th>
+
+                    <th class="py-4 px-6 text-left">
+                        Status
+                    </th>
+
+                    <th class="py-4 px-6 text-center">
+                        Action
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for order in orders %}
+
+                <tr class="border-b hover:bg-gray-50">
+
+                    <td class="py-4 px-6 font-semibold">
+                        #{{ order.id }}
+                    </td>
+
+                    <td class="py-4 px-6">
+                        {{ order.created_at }}
+                    </td>
+
+                    <td class="py-4 px-6 font-semibold text-green-600">
+                        ₹{{ order.total_price }}
+                    </td>
+
+                    <td class="py-4 px-6">
+
+                        {% if order.status == "Pending" %}
+                        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
+                            Pending
+                        </span>
+
+                        {% elif order.status == "Preparing" %}
+                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
+                            Preparing
+                        </span>
+
+                        {% elif order.status == "Out for Delivery" %}
+                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm">
+                            Out for Delivery
+                        </span>
+
+                        {% elif order.status == "Delivered" %}
+                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+                            Delivered
+                        </span>
+
+                        {% else %}
+                        <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm">
+                            Cancelled
+                        </span>
+                        {% endif %}
+
+                    </td>
+
+                    <td class="py-4 px-6 text-center">
+
+                        <a href="{% url 'order_detail' order.id %}"
+                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
+                            View Details
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="5" class="text-center py-12">
+
+                        <h2 class="text-2xl font-bold text-gray-500">
+                            No Orders Found
+                        </h2>
+
+                        <p class="text-gray-400 mt-2">
+                            Start ordering your favourite pizza.
+                        </p>
+
+                        <a href="{% url 'menu' %}"
+                            class="inline-block mt-5 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg">
+                            Order Now
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</section>
+
+{% endblock %}
