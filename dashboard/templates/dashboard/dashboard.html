@@ -1,194 +1,142 @@
-{% extends 'base.html' %}
+{% extends 'dashboard/dashboard_base.html' %}
 
 {% block title %}
 Dashboard
 {% endblock %}
 
-{% block content %}
+{% block dashboard_content %}
 
-<section class="container mx-auto px-6 py-10">
+<!-- Heading -->
+<div class="mb-10">
+    <h1 class="text-4xl font-bold text-red-600">
+        Admin Dashboard
+    </h1>
+    <p class="text-gray-500 mt-2">
+        Welcome to Laziz Pizza Restaurant Dashboard
+    </p>
+</div>
 
-    <!-- Heading -->
-    <div class="mb-10">
-
-        <h1 class="text-4xl font-bold text-red-600">
-            Admin Dashboard
+<!-- Statistics Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="bg-white rounded-xl shadow-lg p-6">
+        <h3 class="text-gray-500 font-semibold">Total Users</h3>
+        <h1 class="text-4xl font-bold text-blue-600 mt-3">
+            {{ total_users }}
         </h1>
-
-        <p class="text-gray-500 mt-2">
-            Welcome to Laziz Pizza Restaurant Dashboard
-        </p>
-
     </div>
 
-    <!-- Statistics Cards -->
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-
-        <div class="bg-white rounded-xl shadow-lg p-6">
-            <h3 class="text-gray-500">Total Users</h3>
-
-            <h1 class="text-4xl font-bold text-blue-600 mt-3">
-                {{ total_users }}
-            </h1>
-        </div>
-
-        <div class="bg-white rounded-xl shadow-lg p-6">
-            <h3 class="text-gray-500">Food Items</h3>
-
-            <h1 class="text-4xl font-bold text-green-600 mt-3">
-                {{ total_foods }}
-            </h1>
-        </div>
-
-        <div class="bg-white rounded-xl shadow-lg p-6">
-            <h3 class="text-gray-500">Orders</h3>
-
-            <h1 class="text-4xl font-bold text-red-600 mt-3">
-                {{ total_orders }}
-            </h1>
-        </div>
-
-        <div class="bg-white rounded-xl shadow-lg p-6">
-            <h3 class="text-gray-500">Reservations</h3>
-
-            <h1 class="text-4xl font-bold text-purple-600 mt-3">
-                {{ total_reservations }}
-            </h1>
-        </div>
-
+    <div class="bg-white rounded-xl shadow-lg p-6">
+        <h3 class="text-gray-500 font-semibold">Food Items</h3>
+        <h1 class="text-4xl font-bold text-green-600 mt-3">
+            {{ total_foods }}
+        </h1>
     </div>
 
-    <!-- Recent Orders -->
+    <div class="bg-white rounded-xl shadow-lg p-6">
+        <h3 class="text-gray-500 font-semibold">Orders</h3>
+        <h1 class="text-4xl font-bold text-red-600 mt-3">
+            {{ total_orders }}
+        </h1>
+    </div>
 
-    <div class="mt-12 bg-white rounded-xl shadow-lg p-6">
+    <div class="bg-white rounded-xl shadow-lg p-6">
+        <h3 class="text-gray-500 font-semibold">Reservations</h3>
+        <h1 class="text-4xl font-bold text-purple-600 mt-3">
+            {{ total_reservations }}
+        </h1>
+    </div>
+</div>
 
-        <h2 class="text-2xl font-bold mb-6">
-            Recent Orders
-        </h2>
+<!-- Recent Orders -->
+<div class="mt-12 bg-white rounded-xl shadow-lg p-6">
+    <h2 class="text-2xl font-bold mb-6 text-gray-800 border-b pb-4">
+        Recent Orders
+    </h2>
 
+    <div class="overflow-x-auto">
         <table class="min-w-full">
-
             <thead class="bg-red-600 text-white">
-
                 <tr>
-
-                    <th class="py-3">Order ID</th>
-                    <th class="py-3">Customer</th>
-                    <th class="py-3">Total</th>
-                    <th class="py-3">Status</th>
-
+                    <th class="py-3 px-4 text-left">Order ID</th>
+                    <th class="py-3 px-4 text-left">Customer</th>
+                    <th class="py-3 px-4 text-center">Total</th>
+                    <th class="py-3 px-4 text-center">Status</th>
                 </tr>
-
             </thead>
-
             <tbody>
-
                 {% for order in recent_orders %}
-
-                <tr class="border-b text-center">
-
-                    <td class="py-4">
+                <tr class="border-b text-left">
+                    <td class="py-4 px-4 font-semibold">
                         #{{ order.id }}
                     </td>
-
-                    <td>
+                    <td class="px-4">
                         {{ order.user.username }}
                     </td>
-
-                    <td>
+                    <td class="px-4 text-center font-semibold text-green-600">
                         ₹{{ order.total_price }}
                     </td>
-
-                    <td>
-                        {{ order.status }}
+                    <td class="px-4 text-center">
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold {% if order.status == 'Pending' %}bg-yellow-100 text-yellow-700{% elif order.status == 'Delivered' %}bg-green-100 text-green-700{% else %}bg-blue-100 text-blue-700{% endif %}">
+                            {{ order.status }}
+                        </span>
                     </td>
-
                 </tr>
-
                 {% empty %}
-
                 <tr>
-
                     <td colspan="4" class="py-8 text-center text-gray-500">
                         No Orders Available
                     </td>
-
                 </tr>
-
                 {% endfor %}
-
             </tbody>
-
         </table>
-
     </div>
+</div>
 
-    <!-- Recent Reservations -->
+<!-- Recent Reservations -->
+<div class="mt-12 bg-white rounded-xl shadow-lg p-6">
+    <h2 class="text-2xl font-bold mb-6 text-gray-800 border-b pb-4">
+        Recent Reservations
+    </h2>
 
-    <div class="mt-12 bg-white rounded-xl shadow-lg p-6">
-
-        <h2 class="text-2xl font-bold mb-6">
-            Recent Reservations
-        </h2>
-
+    <div class="overflow-x-auto">
         <table class="min-w-full">
-
             <thead class="bg-green-600 text-white">
-
                 <tr>
-
-                    <th class="py-3">Name</th>
-                    <th class="py-3">Guests</th>
-                    <th class="py-3">Date</th>
-                    <th class="py-3">Status</th>
-
+                    <th class="py-3 px-4 text-left">Name</th>
+                    <th class="py-3 px-4 text-center">Guests</th>
+                    <th class="py-3 px-4 text-center">Date</th>
+                    <th class="py-3 px-4 text-center">Status</th>
                 </tr>
-
             </thead>
-
             <tbody>
-
                 {% for reservation in recent_reservations %}
-
-                <tr class="border-b text-center">
-
-                    <td class="py-4">
+                <tr class="border-b text-left">
+                    <td class="py-4 px-4 font-semibold">
                         {{ reservation.name }}
                     </td>
-
-                    <td>
+                    <td class="px-4 text-center">
                         {{ reservation.guests }}
                     </td>
-
-                    <td>
+                    <td class="px-4 text-center">
                         {{ reservation.booking_date }}
                     </td>
-
-                    <td>
-                        {{ reservation.status }}
+                    <td class="px-4 text-center">
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold {% if reservation.status == 'Pending' %}bg-yellow-100 text-yellow-700{% elif reservation.status == 'Confirmed' %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
+                            {{ reservation.status }}
+                        </span>
                     </td>
-
                 </tr>
-
                 {% empty %}
-
                 <tr>
-
                     <td colspan="4" class="py-8 text-center text-gray-500">
                         No Reservations Available
                     </td>
-
                 </tr>
-
                 {% endfor %}
-
             </tbody>
-
         </table>
-
     </div>
-
-</section>
+</div>
 
 {% endblock %}

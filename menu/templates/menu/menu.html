@@ -12,6 +12,45 @@ Menu
         🍕 Our Menu
     </h1>
 
+    <!-- Search and Filter Bar -->
+    <div class="mb-10 max-w-4xl mx-auto flex flex-col md:flex-row gap-6 items-center justify-between bg-white shadow-md p-4 rounded-xl border border-gray-100">
+        <!-- Search Form -->
+        <form method="GET" action="{% url 'menu' %}" class="w-full md:flex-1 flex gap-2">
+            <input type="text" 
+                   name="q" 
+                   value="{{ search_query }}"
+                   placeholder="Search for pizza, burger, pasta..." 
+                   class="w-full border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-red-500 text-sm">
+            
+            <select name="food_type" onchange="this.form.submit()" class="border rounded-lg px-3 py-3 outline-none focus:ring-2 focus:ring-red-500 text-sm bg-white text-gray-700">
+                <option value="">All Types</option>
+                <option value="Veg" {% if selected_food_type == 'Veg' %}selected{% endif %}>Veg</option>
+                <option value="Non-Veg" {% if selected_food_type == 'Non-Veg' %}selected{% endif %}>Non-Veg</option>
+            </select>
+
+            {% if selected_category %}
+            <input type="hidden" name="category" value="{{ selected_category }}">
+            {% endif %}
+            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold text-sm transition">
+                Search
+            </button>
+        </form>
+
+        <!-- Category Filters -->
+        <div class="flex flex-wrap gap-2 justify-center">
+            <a href="{% url 'menu' %}{% if search_query %}?q={{ search_query }}{% endif %}" 
+               class="px-4 py-2 rounded-full font-semibold border text-xs transition {% if not selected_category %}bg-red-600 text-white border-red-600{% else %}bg-white text-gray-700 hover:bg-gray-100{% endif %}">
+                All
+            </a>
+            {% for cat in categories %}
+            <a href="{% url 'menu' %}?category={{ cat }}{% if search_query %}&q={{ search_query }}{% endif %}" 
+               class="px-4 py-2 rounded-full font-semibold border text-xs transition {% if selected_category == cat %}bg-red-600 text-white border-red-600{% else %}bg-white text-gray-700 hover:bg-gray-100{% endif %}">
+                {{ cat }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
         {% for item in food_items %}
@@ -28,9 +67,23 @@ Menu
             {% endif %}
 
             <div class="p-5">
-                <h2 class="text-2xl font-bold">
-                    {{ item.name }}
-                </h2>
+                <div class="flex items-center justify-between">
+                    <h2 class="text-2xl font-bold">
+                        {{ item.name }}
+                    </h2>
+                    
+                    {% if item.food_type == 'Veg' %}
+                    <!-- Veg Icon -->
+                    <div class="border-2 border-green-600 p-0.5 w-5 h-5 flex items-center justify-center rounded-sm" title="Veg">
+                        <div class="bg-green-600 rounded-full w-2.5 h-2.5"></div>
+                    </div>
+                    {% else %}
+                    <!-- Non-Veg Icon -->
+                    <div class="border-2 border-red-600 p-0.5 w-5 h-5 flex items-center justify-center rounded-sm" title="Non-Veg">
+                        <div class="bg-red-600 rounded-full w-2.5 h-2.5"></div>
+                    </div>
+                    {% endif %}
+                </div>
 
                 <p class="text-gray-600 mt-2">
                     {{ item.description }}

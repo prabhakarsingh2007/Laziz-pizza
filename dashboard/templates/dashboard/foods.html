@@ -1,0 +1,128 @@
+{% extends 'dashboard/dashboard_base.html' %}
+
+{% block title %}
+Food Management
+{% endblock %}
+
+{% block dashboard_content %}
+
+<div class="flex justify-between items-center mb-8">
+    <h1 class="text-3xl font-bold text-red-600">
+        Food Management
+    </h1>
+
+    <a href="{% url 'add_food' %}"
+       class="bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-lg font-semibold transition duration-200">
+        + Add Food
+    </a>
+</div>
+
+<!-- Search & Filter Area -->
+<div class="bg-white shadow-md rounded-xl p-4 mb-6">
+    <form method="GET" class="flex flex-col md:flex-row gap-4 items-center justify-between">
+        <!-- Search -->
+        <div class="flex-1 w-full">
+            <input type="text" 
+                   name="q" 
+                   value="{{ search_query }}"
+                   placeholder="Search food by name..." 
+                   class="w-full border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-red-500 text-sm">
+        </div>
+
+        <!-- Filter -->
+        <div class="w-full md:w-96 flex gap-2">
+            <select name="category" onchange="this.form.submit()" class="w-1/2 border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-red-500 text-sm bg-white">
+                <option value="">All Categories</option>
+                {% for cat in categories %}
+                <option value="{{ cat }}" {% if selected_category == cat %}selected{% endif %}>{{ cat }}</option>
+                {% endfor %}
+            </select>
+
+            <select name="food_type" onchange="this.form.submit()" class="w-1/2 border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-red-500 text-sm bg-white">
+                <option value="">All Types</option>
+                <option value="Veg" {% if selected_food_type == 'Veg' %}selected{% endif %}>Veg</option>
+                <option value="Non-Veg" {% if selected_food_type == 'Non-Veg' %}selected{% endif %}>Non-Veg</option>
+            </select>
+        </div>
+
+        <div class="flex gap-2 w-full md:w-auto">
+            <button type="submit" class="flex-1 md:flex-none bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-lg font-semibold text-sm transition">
+                Search
+            </button>
+            {% if search_query or selected_category or selected_food_type %}
+            <a href="{% url 'food_list' %}" class="flex-1 md:flex-none text-center bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg font-semibold text-sm transition">
+                Clear
+            </a>
+            {% endif %}
+        </div>
+    </form>
+</div>
+
+<div class="bg-white shadow-lg rounded-xl overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead class="bg-red-600 text-white">
+                <tr>
+                    <th class="py-4 px-4">Image</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Type</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for food in foods %}
+                <tr class="border-b text-center hover:bg-gray-50">
+                    <td class="py-4 px-4">
+                        {% if food.image %}
+                        <img src="{{ food.image.url }}"
+                             class="w-16 h-16 rounded-lg mx-auto object-cover">
+                        {% else %}
+                        <span class="text-gray-400">No Image</span>
+                        {% endif %}
+                    </td>
+                    <td class="font-semibold text-gray-800">{{ food.name }}</td>
+                    <td class="text-gray-600">{{ food.category }}</td>
+                    <td>
+                        <span class="px-2.5 py-1 rounded-full text-xs font-semibold {% if food.food_type == 'Veg' %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
+                            {{ food.food_type }}
+                        </span>
+                    </td>
+                    <td class="font-semibold text-red-600">₹{{ food.price }}</td>
+                    <td>
+                        {% if food.available %}
+                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+                            Available
+                        </span>
+                        {% else %}
+                        <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-xs font-semibold">
+                            Out of Stock
+                        </span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'edit_food' food.id %}"
+                           class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm transition duration-200">
+                            Edit
+                        </a>
+                        <a href="{% url 'delete_food' food.id %}"
+                           class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded ml-2 text-sm transition duration-200">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="py-10 text-center text-gray-500">
+                        No Food Items Available
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

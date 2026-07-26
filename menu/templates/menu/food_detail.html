@@ -30,9 +30,14 @@ Food Details
                 {{ food.name }}
             </h1>
 
-            <p class="text-gray-500 mt-2">
-                Category : {{ food.category }}
-            </p>
+            <div class="flex items-center gap-3 mt-2">
+                <p class="text-gray-500">
+                    Category : {{ food.category }}
+                </p>
+                <span class="px-3 py-1 rounded-full text-xs font-semibold {% if food.food_type == 'Veg' %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
+                    {{ food.food_type }}
+                </span>
+            </div>
 
             <h2 class="text-3xl font-bold text-green-600 mt-4">
                 ₹{{ food.price }}
@@ -55,14 +60,9 @@ Food Details
             <!-- Buttons -->
             <div class="mt-8 flex gap-4">
 
-                <a href="#"
-                   class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700">
+                <a href="{% url 'add_to_cart' food.id %}"
+                   class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700 font-semibold transition">
                     Add to Cart
-                </a>
-
-                <a href="#"
-                   class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700">
-                    Buy Now
                 </a>
 
             </div>

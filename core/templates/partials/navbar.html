@@ -1,12 +1,21 @@
 <nav class="bg-red-600 text-white p-4">
-    <div class="container mx-auto flex justify-between">
-        <h1 class="text-2xl font-bold">🍕 Laziz Pizza</h1>
+    <div class="container mx-auto flex justify-between items-center">
+        <a href="/" class="text-2xl font-bold">🍕 Laziz Pizza</a>
 
-        <ul class="flex gap-6">
-            <li><a href="/">Home</a></li>
-            <li><a href="{% url 'menu' %}">Menu</a></li>
-            <li><a href="/reservation/">Reservation</a></li>
-            <li><a href="/accounts/login/">Login</a></li>
+        <ul class="flex gap-6 items-center">
+            <li><a href="/" class="hover:text-red-200">Home</a></li>
+            <li><a href="{% url 'menu' %}" class="hover:text-red-200">Menu</a></li>
+            {% if request.session.user_id %}
+                <li><a href="{% url 'reservation' %}" class="hover:text-red-200">Reservation</a></li>
+                <li><a href="{% url 'cart' %}" class="hover:text-red-200 font-semibold">Cart ({{ cart_count }})</a></li>
+                <li><a href="{% url 'my_orders' %}" class="hover:text-red-200">My Orders</a></li>
+                <li><a href="{% url 'dashboard' %}" class="hover:text-red-200 font-semibold">Dashboard</a></li>
+                <li><span class="text-yellow-300 font-bold ml-2">Hi, {{ request.session.name }}</span></li>
+                <li><a href="{% url 'logout' %}" class="hover:text-red-200 ml-2 bg-red-700 px-3 py-1 rounded">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}" class="hover:text-red-200">Login</a></li>
+                <li><a href="{% url 'register' %}" class="hover:text-red-200 bg-white text-red-600 px-3 py-1 rounded font-semibold">Register</a></li>
+            {% endif %}
         </ul>
     </div>
 </nav>

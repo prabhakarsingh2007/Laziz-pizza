@@ -36,8 +36,13 @@ My Cart
                 <tr class="border-b">
 
                     <td class="p-4">
+                        {% if item.food.image %}
                         <img src="{{ item.food.image.url }}"
                              class="w-20 h-20 rounded object-cover">
+                        {% else %}
+                        <img src="https://via.placeholder.com/400x250"
+                             class="w-20 h-20 rounded object-cover">
+                        {% endif %}
                     </td>
 
                     <td class="p-4 font-semibold">

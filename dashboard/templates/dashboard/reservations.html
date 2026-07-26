@@ -1,0 +1,54 @@
+{% extends 'dashboard/dashboard_base.html' %}
+
+{% block title %}
+Manage Bookings
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="flex justify-between items-center mb-8">
+    <h1 class="text-3xl font-bold text-red-600">
+        Manage Bookings
+    </h1>
+</div>
+
+<div class="bg-white shadow-lg rounded-xl overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead class="bg-red-600 text-white">
+                <tr>
+                    <th class="py-4 px-4 text-left">Customer</th>
+                    <th class="text-left">Phone</th>
+                    <th class="text-left">Email</th>
+                    <th class="text-center">Guests</th>
+                    <th class="text-center">Date & Time</th>
+                    <th class="text-left">Special Request</th>
+                    <th class="text-center">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reservation in reservations %}
+                <tr class="border-b hover:bg-gray-50 text-gray-800">
+                    <td class="py-4 px-4 font-semibold">{{ reservation.name }}</td>
+                    <td>{{ reservation.phone }}</td>
+                    <td>{{ reservation.email }}</td>
+                    <td class="text-center">{{ reservation.guests }}</td>
+                    <td class="text-center">{{ reservation.booking_date }} at {{ reservation.booking_time }}</td>
+                    <td class="max-w-xs truncate" title="{{ reservation.special_request }}">{{ reservation.special_request|default:"-" }}</td>
+                    <td class="text-center">
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold {% if reservation.status == 'Pending' %}bg-yellow-100 text-yellow-700{% elif reservation.status == 'Confirmed' %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
+                            {{ reservation.status }}
+                        </span>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="py-10 text-center text-gray-500">
+                        No Bookings Available
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
