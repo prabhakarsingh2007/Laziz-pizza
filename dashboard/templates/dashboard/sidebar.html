@@ -10,35 +10,40 @@
 
     <!-- Navigation links -->
     <nav class="flex-1 p-4 space-y-2 mt-4">
-        <a href="{% url 'dashboard' %}" 
-           class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 {% if request.resolver_match.url_name == 'dashboard' %}bg-red-600 text-white hover:bg-red-700{% endif %}">
+        <a href="{% url 'dashboard' %}"
+            class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 {% if request.resolver_match.url_name == 'dashboard' %}bg-red-600 text-white hover:bg-red-700{% endif %}">
             <span>📊</span>
             <span class="font-medium">Dashboard Overview</span>
         </a>
-        <a href="{% url 'food_list' %}" 
-           class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 {% if request.resolver_match.url_name == 'food_list' or request.resolver_match.url_name == 'add_food' or request.resolver_match.url_name == 'edit_food' or request.resolver_match.url_name == 'delete_food' %}bg-red-600 text-white hover:bg-red-700{% endif %}">
+        <a href="{% url 'food_list' %}"
+            class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 {% if request.resolver_match.url_name == 'food_list' or request.resolver_match.url_name == 'add_food' or request.resolver_match.url_name == 'edit_food' or request.resolver_match.url_name == 'delete_food' %}bg-red-600 text-white hover:bg-red-700{% endif %}">
             <span>🍕</span>
             <span class="font-medium">Manage Menu</span>
         </a>
-        <a href="{% url 'admin_orders' %}" 
-           class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 {% if request.resolver_match.url_name == 'admin_orders' %}bg-red-600 text-white hover:bg-red-700{% endif %}">
+        <a href="{% url 'admin_orders' %}"
+            class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 {% if request.resolver_match.url_name == 'admin_orders' %}bg-red-600 text-white hover:bg-red-700{% endif %}">
             <span>🛍️</span>
             <span class="font-medium">Manage Orders</span>
         </a>
-        <a href="{% url 'admin_reservations' %}" 
-           class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 {% if request.resolver_match.url_name == 'admin_reservations' %}bg-red-600 text-white hover:bg-red-700{% endif %}">
+        <a href="{% url 'admin_reservations' %}"
+            class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 {% if request.resolver_match.url_name == 'admin_reservations' %}bg-red-600 text-white hover:bg-red-700{% endif %}">
             <span>📅</span>
             <span class="font-medium">Manage Bookings</span>
         </a>
-        <a href="{% url 'admin_users' %}" 
-           class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 {% if request.resolver_match.url_name == 'admin_users' %}bg-red-600 text-white hover:bg-red-700{% endif %}">
+        <a href="{% url 'admin_users' %}"
+            class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 {% if request.resolver_match.url_name == 'admin_users' %}bg-red-600 text-white hover:bg-red-700{% endif %}">
             <span>👥</span>
             <span class="font-medium">Manage Users</span>
         </a>
-        <a href="/" 
-           class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 mt-10">
+        <a href="/"
+            class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 mt-10">
             <span>🌐</span>
             <span class="font-medium">View Website</span>
+        </a>
+        <a href="{% url 'sales' %}"
+            class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 {% if request.resolver_match.url_name == 'sales' %}bg-red-600 text-white hover:bg-red-700{% endif %}">
+            <span>💰</span>
+            <span class="font-medium">Sales Report</span>
         </a>
     </nav>
 

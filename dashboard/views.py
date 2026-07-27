@@ -128,3 +128,48 @@ def admin_reservations(request):
 def admin_users(request):
     users = User.objects.all().order_by("-id")
     return render(request, "dashboard/users.html", {"users": users})
+
+
+
+
+
+
+# ================= Order Detail =================
+
+def order_detail(request, id):
+
+    order = get_object_or_404(Order, id=id)
+
+    return render(request, "dashboard/order_detail.html", {
+        "order": order
+    })
+
+
+# ================= Update Order Status =================
+
+def update_order_status(request, id):
+
+    order = get_object_or_404(Order, id=id)
+
+    if request.method == "POST":
+
+        order.status = request.POST.get("status")
+        order.save()
+
+        return redirect("admin_orders")
+
+    return redirect("order_detail", id=id)
+
+
+def sales(request):
+
+    total_orders = Order.objects.count()
+    total_sales = sum(order.total_price for order in Order.objects.all())
+
+    context = {
+        "total_orders": total_orders,
+        "total_sales": total_sales,
+        "orders": Order.objects.all().order_by("-id"),
+    }
+
+    return render(request, "dashboard/sales.html", context)
