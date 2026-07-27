@@ -1,66 +1,70 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Register
+Create Account
 {% endblock %}
 
 {% block content %}
 
-<div class="max-w-lg mx-auto mt-10 bg-white shadow-lg rounded-lg p-8">
+<div class="container mx-auto px-6 py-12 max-w-lg">
 
-    <h2 class="text-3xl font-bold text-center text-red-600 mb-6">
-        Create Account
-    </h2>
-
-    <form method="POST">
-        {% csrf_token %}
-
-        <div class="mb-4">
-            <label class="block font-semibold mb-2">Full Name</label>
-            <input type="text" name="name" placeholder="Enter Full Name" class="w-full border rounded-lg p-3" required>
+    <div class="bg-white border border-slate-100 shadow-xl rounded-2xl p-8">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-black tracking-tight text-slate-800">Create Account</h2>
+            <div class="h-1.5 w-12 bg-red-600 mx-auto mt-3 rounded-full"></div>
+            <p class="text-gray-400 text-xs mt-3">Join Laziz Pizza to order food online & track active deliveries.</p>
         </div>
 
-        <div class="mb-4">
-            <label class="block font-semibold mb-2">Username</label>
-            <input type="text" name="username" placeholder="Enter Username" class="w-full border rounded-lg p-3"
-                required>
+        <form method="POST" class="space-y-5">
+            {% csrf_token %}
+
+            <div>
+                <label class="block text-slate-700 font-bold mb-2 text-sm">Full Name</label>
+                <input type="text" name="name" placeholder="Enter Full Name" required
+                       class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-red-500 text-slate-800 text-sm">
+            </div>
+
+            <div>
+                <label class="block text-slate-700 font-bold mb-2 text-sm">Username</label>
+                <input type="text" name="username" placeholder="Choose Username" required
+                       class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-red-500 text-slate-800 text-sm">
+            </div>
+
+            <div>
+                <label class="block text-slate-700 font-bold mb-2 text-sm">Email Address</label>
+                <input type="email" name="email" placeholder="name@example.com" required
+                       class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-red-500 text-slate-800 text-sm">
+            </div>
+
+            <div>
+                <label class="block text-slate-700 font-bold mb-2 text-sm">Phone Number</label>
+                <input type="text" name="phone" placeholder="Enter phone number" required
+                       class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-red-500 text-slate-800 text-sm">
+            </div>
+
+            <div>
+                <label class="block text-slate-700 font-bold mb-2 text-sm">Password</label>
+                <input type="password" name="password" placeholder="Create Password" required
+                       class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-red-500 text-slate-800 text-sm">
+            </div>
+
+            <div>
+                <label class="block text-slate-700 font-bold mb-2 text-sm">Confirm Password</label>
+                <input type="password" name="confirm_password" placeholder="Confirm Password" required
+                       class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-red-500 text-slate-800 text-sm">
+            </div>
+
+            <button type="submit" 
+                    class="w-full bg-gradient-to-r from-red-600 to-amber-500 hover:brightness-110 text-white font-bold py-3.5 rounded-xl transition duration-150 shadow-lg shadow-red-900/20 text-center">
+                Register
+            </button>
+        </form>
+
+        <div class="mt-8 text-center text-sm text-slate-500">
+            Already have an account? 
+            <a href="{% url 'login' %}" class="text-red-600 font-bold hover:underline ml-1">Login here</a>
         </div>
-
-        <div class="mb-4">
-            <label class="block font-semibold mb-2">Email</label>
-            <input type="email" name="email" placeholder="Enter Email" class="w-full border rounded-lg p-3" required>
-        </div>
-
-        <div class="mb-4">
-            <label class="block font-semibold mb-2">Phone Number</label>
-            <input type="text" name="phone" placeholder="Enter Phone Number" class="w-full border rounded-lg p-3"
-                required>
-        </div>
-
-        <div class="mb-4">
-            <label class="block font-semibold mb-2">Password</label>
-            <input type="password" name="password" placeholder="Enter Password" class="w-full border rounded-lg p-3"
-                required>
-        </div>
-
-        <div class="mb-4">
-            <label class="block font-semibold mb-2">Confirm Password</label>
-            <input type="password" name="confirm_password" placeholder="Confirm Password"
-                class="w-full border rounded-lg p-3" required>
-        </div>
-
-        <button type="submit" class="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700">
-            Register
-        </button>
-
-    </form>
-
-    <p class="text-center mt-6">
-        Already have an account?
-        <a href="/accounts/login/" class="text-red-600 font-bold">
-            Login
-        </a>
-    </p>
+    </div>
 
 </div>
 

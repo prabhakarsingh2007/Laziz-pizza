@@ -5,50 +5,60 @@ Checkout
 {% endblock %}
 
 {% block content %}
-<div class="container mx-auto px-6 py-10 max-w-4xl">
-    <h1 class="text-4xl font-bold text-center text-red-600 mb-10">
-        📝 Checkout
-    </h1>
+
+<div class="container mx-auto px-6 py-12 max-w-4xl">
+
+    <div class="text-center max-w-2xl mx-auto mb-10">
+        <h1 class="text-4xl font-black tracking-tight text-slate-900">📝 Checkout</h1>
+        <div class="h-1.5 w-16 bg-red-600 mx-auto mt-4 rounded-full"></div>
+    </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <!-- Order Summary -->
-        <div class="bg-white shadow-lg rounded-xl p-6">
-            <h2 class="text-2xl font-bold mb-6 text-gray-800 border-b pb-4">Order Summary</h2>
-            <div class="space-y-4">
+        <!-- Order Summary (Left) -->
+        <div class="bg-white border border-slate-100 shadow-xl rounded-2xl p-6 h-fit">
+            <h2 class="text-xl font-bold text-slate-800 mb-6 border-b pb-4">Order Summary</h2>
+            <div class="space-y-4 max-h-[300px] overflow-y-auto pr-2">
                 {% for item in carts %}
-                <div class="flex justify-between items-center border-b pb-2">
+                <div class="flex justify-between items-center border-b border-slate-50 pb-3">
                     <div>
-                        <p class="font-semibold text-gray-800">{{ item.food.name }}</p>
-                        <p class="text-gray-500 text-sm">Qty: {{ item.quantity }}</p>
+                        <p class="font-bold text-slate-800 text-sm">{{ item.food.name }}</p>
+                        <p class="text-slate-400 text-xs mt-0.5">Quantity: {{ item.quantity }}</p>
                     </div>
-                    <p class="font-semibold text-red-600">₹{{ item.total_price }}</p>
+                    <p class="font-extrabold text-slate-800 text-sm">₹{{ item.total_price }}</p>
                 </div>
                 {% endfor %}
             </div>
-            <div class="mt-6 flex justify-between font-bold text-xl border-t pt-4">
-                <span class="text-gray-800">Total Amount:</span>
-                <span class="text-green-600">₹{{ total }}</span>
+            <div class="mt-6 flex justify-between items-center font-black text-lg border-t border-slate-100 pt-4">
+                <span class="text-slate-700">Total Amount:</span>
+                <span class="text-red-600 text-2xl">₹{{ total }}</span>
             </div>
         </div>
 
-        <!-- Shipping / Delivery Details -->
-        <div class="bg-white shadow-lg rounded-xl p-6">
-            <h2 class="text-2xl font-bold mb-6 text-gray-800 border-b pb-4">Delivery Details</h2>
-            <form action="{% url 'order_success' %}" method="POST">
+        <!-- Shipping Details (Right) -->
+        <div class="bg-white border border-slate-100 shadow-xl rounded-2xl p-6">
+            <h2 class="text-xl font-bold text-slate-800 mb-6 border-b pb-4">Delivery Details</h2>
+            <form action="{% url 'order_success' %}" method="POST" class="space-y-5">
                 {% csrf_token %}
-                <div class="mb-4">
-                    <label class="block font-semibold mb-2 text-gray-700">Delivery Address</label>
-                    <textarea name="address" required rows="4" class="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-red-500" placeholder="Enter full delivery address"></textarea>
+                <div>
+                    <label class="block text-slate-700 font-bold mb-2 text-sm">Delivery Address</label>
+                    <textarea name="address" required rows="4" 
+                              class="w-full border border-slate-200 rounded-xl p-3.5 outline-none focus:ring-2 focus:ring-red-500 text-slate-800 text-sm" 
+                              placeholder="Enter your complete delivery address"></textarea>
                 </div>
-                <div class="mb-6">
-                    <label class="block font-semibold mb-2 text-gray-700">Phone Number</label>
-                    <input type="text" name="phone" required class="w-full border rounded-lg p-3 outline-none focus:ring-2 focus:ring-red-500" placeholder="Enter contact phone number">
+                <div>
+                    <label class="block text-slate-700 font-bold mb-2 text-sm">Phone Number</label>
+                    <input type="text" name="phone" required 
+                           class="w-full border border-slate-200 rounded-xl p-3.5 outline-none focus:ring-2 focus:ring-red-500 text-slate-800 text-sm" 
+                           placeholder="Enter active phone number">
                 </div>
-                <button type="submit" class="w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-bold transition duration-200">
+                <button type="submit" 
+                        class="w-full bg-gradient-to-r from-red-600 to-amber-500 hover:brightness-110 text-white font-bold py-3.5 rounded-xl transition duration-150 shadow-lg shadow-red-900/20 text-center">
                     Place Order (Cash on Delivery)
                 </button>
             </form>
         </div>
     </div>
+
 </div>
+
 {% endblock %}

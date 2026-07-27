@@ -6,118 +6,86 @@ My Cart
 
 {% block content %}
 
-<div class="container mx-auto px-6 py-10">
+<div class="container mx-auto px-6 py-12 max-w-5xl">
 
-    <h1 class="text-4xl font-bold text-center text-red-600 mb-10">
-        🛒 My Cart
-    </h1>
-
-    <div class="overflow-x-auto bg-white shadow-lg rounded-lg">
-
-        <table class="min-w-full">
-
-            <thead class="bg-red-600 text-white">
-
-                <tr>
-                    <th class="py-3 px-4 text-left">Image</th>
-                    <th class="py-3 px-4 text-left">Food</th>
-                    <th class="py-3 px-4 text-center">Price</th>
-                    <th class="py-3 px-4 text-center">Quantity</th>
-                    <th class="py-3 px-4 text-center">Total</th>
-                    <th class="py-3 px-4 text-center">Action</th>
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                {% for item in carts %}
-
-                <tr class="border-b">
-
-                    <td class="p-4">
-                        {% if item.food.image %}
-                        <img src="{{ item.food.image.url }}"
-                             class="w-20 h-20 rounded object-cover">
-                        {% else %}
-                        <img src="https://via.placeholder.com/400x250"
-                             class="w-20 h-20 rounded object-cover">
-                        {% endif %}
-                    </td>
-
-                    <td class="p-4 font-semibold">
-                        {{ item.food.name }}
-                    </td>
-
-                    <td class="p-4 text-center">
-                        ₹{{ item.food.price }}
-                    </td>
-
-                    <td class="p-4 text-center">
-
-                        <form action="{% url 'update_quantity' item.id %}" method="POST">
-
-                            {% csrf_token %}
-
-                            <input type="number"
-                                   name="quantity"
-                                   value="{{ item.quantity }}"
-                                   min="1"
-                                   class="w-20 border rounded text-center">
-
-                            <button class="bg-blue-600 text-white px-3 py-1 rounded mt-2">
-                                Update
-                            </button>
-
-                        </form>
-
-                    </td>
-
-                    <td class="p-4 text-center">
-                        ₹{{ item.total_price }}
-                    </td>
-
-                    <td class="p-4 text-center">
-
-                        <a href="{% url 'remove_from_cart' item.id %}"
-                           class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">
-                            Remove
-                        </a>
-
-                    </td>
-
-                </tr>
-
-                {% empty %}
-
-                <tr>
-                    <td colspan="6" class="text-center py-10 text-gray-500">
-                        Your cart is empty.
-                    </td>
-                </tr>
-
-                {% endfor %}
-
-            </tbody>
-
-        </table>
-
+    <div class="text-center max-w-2xl mx-auto mb-10">
+        <h1 class="text-4xl font-black tracking-tight text-slate-900">🛒 Shopping Cart</h1>
+        <div class="h-1.5 w-16 bg-red-600 mx-auto mt-4 rounded-full"></div>
     </div>
 
-    <!-- Grand Total -->
+    {% if carts %}
+    <div class="bg-white border border-slate-100 shadow-xl rounded-2xl overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-slate-800">
+                <thead class="bg-red-600 text-white">
+                    <tr>
+                        <th class="py-4 px-6 text-left text-sm font-bold uppercase tracking-wider">Image</th>
+                        <th class="py-4 px-6 text-left text-sm font-bold uppercase tracking-wider">Food Item</th>
+                        <th class="py-4 px-6 text-center text-sm font-bold uppercase tracking-wider">Price</th>
+                        <th class="py-4 px-6 text-center text-sm font-bold uppercase tracking-wider">Quantity</th>
+                        <th class="py-4 px-6 text-center text-sm font-bold uppercase tracking-wider">Total</th>
+                        <th class="py-4 px-6 text-center text-sm font-bold uppercase tracking-wider">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    {% for item in carts %}
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="py-4 px-6">
+                            {% if item.food.image %}
+                            <img src="{{ item.food.image.url }}" class="w-16 h-16 rounded-xl object-cover border border-slate-100">
+                            {% else %}
+                            <img src="https://via.placeholder.com/400x250" class="w-16 h-16 rounded-xl object-cover border border-slate-100">
+                            {% endif %}
+                        </td>
+                        <td class="py-4 px-6 font-extrabold text-slate-800">{{ item.food.name }}</td>
+                        <td class="py-4 px-6 text-center font-semibold text-slate-500">₹{{ item.food.price }}</td>
+                        <td class="py-4 px-6 text-center">
+                            <form action="{% url 'update_quantity' item.id %}" method="POST" class="flex items-center justify-center gap-2">
+                                {% csrf_token %}
+                                <input type="number" name="quantity" value="{{ item.quantity }}" min="1" 
+                                       class="w-16 border border-slate-200 rounded-xl px-2 py-1.5 text-center font-bold outline-none focus:ring-2 focus:ring-red-500 text-sm">
+                                <button type="submit" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-3 py-1.5 rounded-xl text-xs transition">
+                                    Update
+                                </button>
+                            </form>
+                        </td>
+                        <td class="py-4 px-6 text-center font-extrabold text-slate-800">₹{{ item.total_price }}</td>
+                        <td class="py-4 px-6 text-center">
+                            <a href="{% url 'remove_from_cart' item.id %}" class="bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-xl text-xs font-bold transition">
+                                🗑️ Remove
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
-    <div class="mt-8 flex justify-between items-center">
-
-        <h2 class="text-3xl font-bold">
-            Grand Total : ₹{{ total }}
-        </h2>
-
-        <a href="{% url 'checkout' %}"
-           class="bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700">
-            Proceed to Checkout
+        <!-- Grand Total & Proceed Actions -->
+        <div class="bg-slate-50 p-8 flex flex-col sm:flex-row justify-between items-center gap-6 border-t border-slate-100">
+            <h2 class="text-2xl font-black text-slate-800">
+                Grand Total: <span class="text-red-600">₹{{ total }}</span>
+            </h2>
+            <div class="flex gap-4 w-full sm:w-auto">
+                <a href="{% url 'menu' %}" class="w-full sm:w-auto text-center bg-white border border-slate-250 text-slate-700 font-bold px-6 py-3 rounded-xl hover:bg-slate-100 transition">
+                    Back to Menu
+                </a>
+                <a href="{% url 'checkout' %}" class="w-full sm:w-auto text-center bg-gradient-to-r from-red-600 to-amber-500 text-white font-bold px-8 py-3 rounded-xl shadow-lg shadow-red-900/10 hover:brightness-110 transition duration-150">
+                    Proceed to Checkout
+                </a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="max-w-md mx-auto bg-white border border-slate-100 shadow-xl rounded-2xl p-8 text-center">
+        <div class="text-6xl mb-4">🛒</div>
+        <h2 class="text-2xl font-bold text-slate-800 mb-2">Your Cart is Empty</h2>
+        <p class="text-slate-500 text-sm mb-6">Looks like you haven't added anything to your cart yet.</p>
+        <a href="{% url 'menu' %}" class="inline-block bg-gradient-to-r from-red-600 to-amber-500 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg shadow-red-900/20 hover:brightness-110 transition">
+            Browse Menu
         </a>
-
     </div>
+    {% endif %}
 
 </div>
 

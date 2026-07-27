@@ -31,14 +31,22 @@ def add_to_cart(request, id):
     user = get_object_or_404(User, id=user_id)
     food = get_object_or_404(FoodItem, id=id)
 
+    # Get optional quantity from query parameter, default to 1
+    try:
+        quantity = int(request.GET.get('quantity', 1))
+    except ValueError:
+        quantity = 1
+
     cart_item, created = Cart.objects.get_or_create(
         user=user,
         food=food
     )
 
-    if not created:
-        cart_item.quantity += 1
-        cart_item.save()
+    if created:
+        cart_item.quantity = quantity
+    else:
+        cart_item.quantity += quantity
+    cart_item.save()
 
     return redirect("cart")
 
