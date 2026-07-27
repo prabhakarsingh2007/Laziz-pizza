@@ -45,8 +45,8 @@ Home
 }
 
 .uiverse-img {
-  width: 110px;
-  height: 110px;
+  width: 145px;
+  height: 145px;
   object-fit: cover;
   border-radius: 50%;
   border: 4px solid rgba(255, 255, 255, 0.4);
@@ -78,7 +78,7 @@ Home
   color: white;
   text-align: center;
   position: absolute;
-  top: 55%;
+  top: 52%;
 }
 
 .tracker:hover ~ .uiverse-card .uiverse-title {
@@ -285,9 +285,9 @@ Home
 
         <div class="flex flex-wrap justify-center gap-10">
 
-            {% for item in popular_items %}
+            {% for item in food_items %}
             <!-- Popular Item Card -->
-            <a href="{% if item.category %}{% url 'menu' %}?category={{ item.category.name }}{% else %}{% url 'menu' %}{% endif %}" class="uiverse-container noselect block text-inherit no-underline">
+            <a href="{% url 'add_to_cart' item.id %}" class="uiverse-container noselect block text-inherit no-underline">
               <div class="canvas">
                 <div class="tracker tr-1"></div>
                 <div class="tracker tr-2"></div>
@@ -321,8 +321,20 @@ Home
                   <img src="https://via.placeholder.com/400x250" alt="{{ item.name }}" class="uiverse-img">
                   {% endif %}
                   <p class="uiverse-prompt">{{ item.name }}</p>
-                  <div class="uiverse-title">₹{{ item.price|floatformat:0 }}</div>
-                  <div class="uiverse-subtitle">{{ item.subtitle }}</div>
+                  
+                  <div class="uiverse-title flex flex-col items-center justify-center space-y-1">
+                    <span class="text-xs uppercase bg-white/20 px-2 py-0.5 rounded-md font-extrabold tracking-wider">
+                      {% if item.food_type == 'Veg' %}🟢 Veg{% else %}🔴 Non-Veg{% endif %}
+                    </span>
+                    <div class="text-2xl font-black">₹{{ item.price|floatformat:0 }}</div>
+                    <div class="bg-white text-red-600 px-4 py-2 rounded-xl font-bold text-xs tracking-wider transition-all duration-200 mt-2 flex items-center gap-1.5 shadow-md">
+                      🛒 Order Now
+                    </div>
+                  </div>
+                  
+                  <div class="uiverse-subtitle flex flex-col items-center">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-yellow-200/90">{{ item.category.name }}</span>
+                  </div>
                 </div>
               </div>
             </a>
@@ -331,6 +343,14 @@ Home
             {% endfor %}
 
         </div>
+
+        {% if has_more_foods %}
+        <div class="text-center mt-16">
+            <a href="{% url 'menu' %}" class="inline-block bg-gradient-to-r from-red-600 to-amber-500 text-white font-bold px-8 py-4 rounded-xl shadow-lg shadow-red-900/20 hover:brightness-110 transition duration-150">
+                View Full Menu →
+            </a>
+        </div>
+        {% endif %}
     </div>
 </section>
 

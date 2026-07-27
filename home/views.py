@@ -1,12 +1,20 @@
 from django.shortcuts import render
-from .models import PopularItem
+from home.models import PopularItem
+from menu.models import FoodItem
 
 # Create your views here.
 
 
 def index(request):
     popular_items = PopularItem.objects.filter(is_active=True).order_by('order')
-    return render(request, "home/index.html", {'popular_items': popular_items})
+    food_items = FoodItem.objects.filter(available=True).order_by('-id')[:6]
+    has_more_foods = FoodItem.objects.filter(available=True).count() > 6
+    
+    return render(request, "home/index.html", {
+        'popular_items': popular_items,
+        'food_items': food_items,
+        'has_more_foods': has_more_foods,
+    })
 
 def about(request):
     return render(request, "home/about.html")
