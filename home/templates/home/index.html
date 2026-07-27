@@ -7,6 +7,16 @@ Home
 {% block content %}
 
 <style>
+/* Floating Animation for Pizza Image */
+@keyframes float {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(3deg); }
+}
+
+.float-anim {
+  animation: float 6s ease-in-out infinite;
+}
+
 /* From Uiverse.io by kennyotsu */
 .uiverse-container {
   position: relative;
@@ -201,164 +211,248 @@ Home
 </style>
 
 <!-- Hero Section -->
-<section class="text-center py-20 bg-red-600 text-white">
-    <h1 class="text-5xl font-bold">🍕 Welcome to Laziz Pizza</h1>
-    <p class="mt-4 text-xl">
-        Fresh Pizza • Fast Delivery • Best Taste
-    </p>
-
-    <a href="/menu/" class="mt-6 inline-block bg-white text-red-600 px-6 py-3 rounded-lg font-bold">
-        Order Now
-    </a>
+<section class="relative bg-gradient-to-br from-slate-900 via-slate-800 to-red-950 text-white overflow-hidden py-24 px-6">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(220,38,38,0.15),transparent_45%)]"></div>
+    <div class="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+        <!-- Hero Text -->
+        <div class="space-y-6 text-left">
+            <h1 class="text-5xl lg:text-6xl font-black tracking-tight leading-tight">
+                Crafted to Perfection,<br>
+                <span class="text-red-500">Baked with Passion</span>
+            </h1>
+            <p class="text-lg text-slate-300 max-w-lg leading-relaxed">
+                Experience the authentic taste of freshly baked pizzas loaded with rich mozzarella cheese, organic fresh toppings, and hand-stretched dough.
+            </p>
+            <div class="flex flex-wrap gap-4 pt-4">
+                <a href="{% url 'menu' %}" class="bg-gradient-to-r from-red-600 to-amber-500 text-white font-bold px-8 py-4 rounded-xl shadow-lg shadow-red-900/40 hover:brightness-110 transition duration-200">
+                    🍕 Order Online
+                </a>
+                <a href="{% url 'reservation' %}" class="bg-slate-800 hover:bg-slate-700 text-white font-bold px-8 py-4 rounded-xl border border-slate-700 transition duration-200">
+                    📅 Book a Table
+                </a>
+            </div>
+        </div>
+        <!-- Floating Pizza Image -->
+        <div class="flex justify-center relative">
+            <div class="absolute w-72 h-72 bg-red-600/10 blur-3xl rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&auto=format&fit=crop&q=80" 
+                 alt="Delicious Floating Pizza" 
+                 class="w-[450px] max-w-full rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.5)] float-anim relative z-10">
+        </div>
+    </div>
 </section>
 
-<!-- About Section -->
-<section class="max-w-6xl mx-auto py-16 px-6">
-    <h2 class="text-3xl font-bold text-center mb-6">
-        About Us
-    </h2>
+<!-- Features Section -->
+<section class="max-w-6xl mx-auto py-20 px-6">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+        <h2 class="text-4xl font-extrabold text-slate-900">Why Foodies Love Us</h2>
+        <div class="h-1.5 w-20 bg-red-600 mx-auto mt-4 rounded-full"></div>
+        <p class="text-gray-500 mt-4">We are dedicated to providing the ultimate Italian pizza experience at your home.</p>
+    </div>
 
-    <p class="text-center text-gray-700">
-        Welcome to Laziz Pizza. We serve fresh and delicious pizzas,
-        burgers, pasta and drinks with the best quality and fast delivery.
-    </p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <!-- Feature 1 -->
+        <div class="bg-white border border-slate-100 shadow-md rounded-2xl p-8 text-center hover:-translate-y-2 transition duration-300">
+            <div class="text-4xl mb-4 bg-green-50 w-16 h-16 flex items-center justify-center rounded-2xl mx-auto text-green-600">🌿</div>
+            <h3 class="text-xl font-bold text-slate-800">Fresh Ingredients</h3>
+            <p class="text-gray-600 mt-3 leading-relaxed">We source organic vegetables, fresh mozzarella, and premium olive oil daily for our dishes.</p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="bg-white border border-slate-100 shadow-md rounded-2xl p-8 text-center hover:-translate-y-2 transition duration-300">
+            <div class="text-4xl mb-4 bg-amber-50 w-16 h-16 flex items-center justify-center rounded-2xl mx-auto text-amber-600">⚡</div>
+            <h3 class="text-xl font-bold text-slate-800">Express Delivery</h3>
+            <p class="text-gray-600 mt-3 leading-relaxed">Our logistics ensures hot, oven-fresh pizzas are delivered to your doorstep within 30 mins.</p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="bg-white border border-slate-100 shadow-md rounded-2xl p-8 text-center hover:-translate-y-2 transition duration-300">
+            <div class="text-4xl mb-4 bg-red-50 w-16 h-16 flex items-center justify-center rounded-2xl mx-auto text-red-600">🧑‍🍳</div>
+            <h3 class="text-xl font-bold text-slate-800">Master Italian Chefs</h3>
+            <p class="text-gray-600 mt-3 leading-relaxed">Our hand-stretched dough and marinara sauces are prepared by master chefs with years of practice.</p>
+        </div>
+    </div>
 </section>
 
 <!-- Popular Menu -->
-<section class="max-w-6xl mx-auto py-16 px-6">
-
-    <h2 class="text-3xl font-bold text-center mb-10">
-        Popular Menu
-    </h2>
-
-    <div class="flex flex-wrap justify-center gap-10">
-
-        <!-- Margherita Pizza Card -->
-        <div class="uiverse-container noselect">
-          <div class="canvas">
-            <div class="tracker tr-1"></div>
-            <div class="tracker tr-2"></div>
-            <div class="tracker tr-3"></div>
-            <div class="tracker tr-4"></div>
-            <div class="tracker tr-5"></div>
-            <div class="tracker tr-6"></div>
-            <div class="tracker tr-7"></div>
-            <div class="tracker tr-8"></div>
-            <div class="tracker tr-9"></div>
-            <div class="tracker tr-10"></div>
-            <div class="tracker tr-11"></div>
-            <div class="tracker tr-12"></div>
-            <div class="tracker tr-13"></div>
-            <div class="tracker tr-14"></div>
-            <div class="tracker tr-15"></div>
-            <div class="tracker tr-16"></div>
-            <div class="tracker tr-17"></div>
-            <div class="tracker tr-18"></div>
-            <div class="tracker tr-19"></div>
-            <div class="tracker tr-20"></div>
-            <div class="tracker tr-21"></div>
-            <div class="tracker tr-22"></div>
-            <div class="tracker tr-23"></div>
-            <div class="tracker tr-24"></div>
-            <div class="tracker tr-25"></div>
-            <div class="uiverse-card">
-              <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=400&auto=format&fit=crop&q=80" alt="Margherita Pizza" class="uiverse-img">
-              <p class="uiverse-prompt">Margherita Pizza</p>
-              <div class="uiverse-title">₹299</div>
-              <div class="uiverse-subtitle">Cheese Loaded Pizza</div>
-            </div>
-          </div>
+<section class="bg-slate-50 py-20 px-6">
+    <div class="max-w-6xl mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-16">
+            <h2 class="text-4xl font-extrabold text-slate-900">Popular Dishes</h2>
+            <div class="h-1.5 w-20 bg-red-600 mx-auto mt-4 rounded-full"></div>
+            <p class="text-gray-500 mt-4">Order our most loved signatures pizzas and coffee combos.</p>
         </div>
 
-        <!-- Veg Burger Card -->
-        <div class="uiverse-container noselect">
-          <div class="canvas">
-            <div class="tracker tr-1"></div>
-            <div class="tracker tr-2"></div>
-            <div class="tracker tr-3"></div>
-            <div class="tracker tr-4"></div>
-            <div class="tracker tr-5"></div>
-            <div class="tracker tr-6"></div>
-            <div class="tracker tr-7"></div>
-            <div class="tracker tr-8"></div>
-            <div class="tracker tr-9"></div>
-            <div class="tracker tr-10"></div>
-            <div class="tracker tr-11"></div>
-            <div class="tracker tr-12"></div>
-            <div class="tracker tr-13"></div>
-            <div class="tracker tr-14"></div>
-            <div class="tracker tr-15"></div>
-            <div class="tracker tr-16"></div>
-            <div class="tracker tr-17"></div>
-            <div class="tracker tr-18"></div>
-            <div class="tracker tr-19"></div>
-            <div class="tracker tr-20"></div>
-            <div class="tracker tr-21"></div>
-            <div class="tracker tr-22"></div>
-            <div class="tracker tr-23"></div>
-            <div class="tracker tr-24"></div>
-            <div class="tracker tr-25"></div>
-            <div class="uiverse-card">
-              <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&auto=format&fit=crop&q=80" alt="Veg Burger" class="uiverse-img">
-              <p class="uiverse-prompt">Veg Burger</p>
-              <div class="uiverse-title">₹149</div>
-              <div class="uiverse-subtitle">Fresh Veg Burger</div>
-            </div>
-          </div>
-        </div>
+        <div class="flex flex-wrap justify-center gap-10">
 
-        <!-- Cold Coffee Card -->
-        <div class="uiverse-container noselect">
-          <div class="canvas">
-            <div class="tracker tr-1"></div>
-            <div class="tracker tr-2"></div>
-            <div class="tracker tr-3"></div>
-            <div class="tracker tr-4"></div>
-            <div class="tracker tr-5"></div>
-            <div class="tracker tr-6"></div>
-            <div class="tracker tr-7"></div>
-            <div class="tracker tr-8"></div>
-            <div class="tracker tr-9"></div>
-            <div class="tracker tr-10"></div>
-            <div class="tracker tr-11"></div>
-            <div class="tracker tr-12"></div>
-            <div class="tracker tr-13"></div>
-            <div class="tracker tr-14"></div>
-            <div class="tracker tr-15"></div>
-            <div class="tracker tr-16"></div>
-            <div class="tracker tr-17"></div>
-            <div class="tracker tr-18"></div>
-            <div class="tracker tr-19"></div>
-            <div class="tracker tr-20"></div>
-            <div class="tracker tr-21"></div>
-            <div class="tracker tr-22"></div>
-            <div class="tracker tr-23"></div>
-            <div class="tracker tr-24"></div>
-            <div class="tracker tr-25"></div>
-            <div class="uiverse-card">
-              <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=400&auto=format&fit=crop&q=80" alt="Cold Coffee" class="uiverse-img">
-              <p class="uiverse-prompt">Cold Coffee</p>
-              <div class="uiverse-title">₹99</div>
-              <div class="uiverse-subtitle">Chilled Coffee</div>
+            <!-- Margherita Pizza Card -->
+            <div class="uiverse-container noselect">
+              <div class="canvas">
+                <div class="tracker tr-1"></div>
+                <div class="tracker tr-2"></div>
+                <div class="tracker tr-3"></div>
+                <div class="tracker tr-4"></div>
+                <div class="tracker tr-5"></div>
+                <div class="tracker tr-6"></div>
+                <div class="tracker tr-7"></div>
+                <div class="tracker tr-8"></div>
+                <div class="tracker tr-9"></div>
+                <div class="tracker tr-10"></div>
+                <div class="tracker tr-11"></div>
+                <div class="tracker tr-12"></div>
+                <div class="tracker tr-13"></div>
+                <div class="tracker tr-14"></div>
+                <div class="tracker tr-15"></div>
+                <div class="tracker tr-16"></div>
+                <div class="tracker tr-17"></div>
+                <div class="tracker tr-18"></div>
+                <div class="tracker tr-19"></div>
+                <div class="tracker tr-20"></div>
+                <div class="tracker tr-21"></div>
+                <div class="tracker tr-22"></div>
+                <div class="tracker tr-23"></div>
+                <div class="tracker tr-24"></div>
+                <div class="tracker tr-25"></div>
+                <div class="uiverse-card">
+                  <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=400&auto=format&fit=crop&q=80" alt="Margherita Pizza" class="uiverse-img">
+                  <p class="uiverse-prompt">Margherita Pizza</p>
+                  <div class="uiverse-title">₹299</div>
+                  <div class="uiverse-subtitle">Cheese Loaded Pizza</div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
 
+            <!-- Veg Burger Card -->
+            <div class="uiverse-container noselect">
+              <div class="canvas">
+                <div class="tracker tr-1"></div>
+                <div class="tracker tr-2"></div>
+                <div class="tracker tr-3"></div>
+                <div class="tracker tr-4"></div>
+                <div class="tracker tr-5"></div>
+                <div class="tracker tr-6"></div>
+                <div class="tracker tr-7"></div>
+                <div class="tracker tr-8"></div>
+                <div class="tracker tr-9"></div>
+                <div class="tracker tr-10"></div>
+                <div class="tracker tr-11"></div>
+                <div class="tracker tr-12"></div>
+                <div class="tracker tr-13"></div>
+                <div class="tracker tr-14"></div>
+                <div class="tracker tr-15"></div>
+                <div class="tracker tr-16"></div>
+                <div class="tracker tr-17"></div>
+                <div class="tracker tr-18"></div>
+                <div class="tracker tr-19"></div>
+                <div class="tracker tr-20"></div>
+                <div class="tracker tr-21"></div>
+                <div class="tracker tr-22"></div>
+                <div class="tracker tr-23"></div>
+                <div class="tracker tr-24"></div>
+                <div class="tracker tr-25"></div>
+                <div class="uiverse-card">
+                  <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&auto=format&fit=crop&q=80" alt="Veg Burger" class="uiverse-img">
+                  <p class="uiverse-prompt">Veg Burger</p>
+                  <div class="uiverse-title">₹149</div>
+                  <div class="uiverse-subtitle">Fresh Veg Burger</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cold Coffee Card -->
+            <div class="uiverse-container noselect">
+              <div class="canvas">
+                <div class="tracker tr-1"></div>
+                <div class="tracker tr-2"></div>
+                <div class="tracker tr-3"></div>
+                <div class="tracker tr-4"></div>
+                <div class="tracker tr-5"></div>
+                <div class="tracker tr-6"></div>
+                <div class="tracker tr-7"></div>
+                <div class="tracker tr-8"></div>
+                <div class="tracker tr-9"></div>
+                <div class="tracker tr-10"></div>
+                <div class="tracker tr-11"></div>
+                <div class="tracker tr-12"></div>
+                <div class="tracker tr-13"></div>
+                <div class="tracker tr-14"></div>
+                <div class="tracker tr-15"></div>
+                <div class="tracker tr-16"></div>
+                <div class="tracker tr-17"></div>
+                <div class="tracker tr-18"></div>
+                <div class="tracker tr-19"></div>
+                <div class="tracker tr-20"></div>
+                <div class="tracker tr-21"></div>
+                <div class="tracker tr-22"></div>
+                <div class="tracker tr-23"></div>
+                <div class="tracker tr-24"></div>
+                <div class="tracker tr-25"></div>
+                <div class="uiverse-card">
+                  <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=400&auto=format&fit=crop&q=80" alt="Cold Coffee" class="uiverse-img">
+                  <p class="uiverse-prompt">Cold Coffee</p>
+                  <div class="uiverse-title">₹99</div>
+                  <div class="uiverse-subtitle">Chilled Coffee</div>
+                </div>
+              </div>
+            </div>
+
+        </div>
     </div>
-
 </section>
 
-<!-- Contact -->
-<section class="bg-gray-100 py-16 text-center">
+<!-- Testimonials Section -->
+<section class="max-w-6xl mx-auto py-20 px-6">
+    <div class="text-center max-w-2xl mx-auto mb-16">
+        <h2 class="text-4xl font-extrabold text-slate-900">What Foodies Say</h2>
+        <div class="h-1.5 w-20 bg-red-600 mx-auto mt-4 rounded-full"></div>
+    </div>
 
-    <h2 class="text-3xl font-bold mb-4">
-        Contact Us
-    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Review 1 -->
+        <div class="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm space-y-4">
+            <div class="flex items-center gap-1 text-amber-500">⭐️⭐️⭐️⭐️⭐️</div>
+            <p class="text-gray-600 italic">"Laziz Pizza is hands down the best pizza joint in town. The cheese pull is absolute perfection, and the service is top-notch!"</p>
+            <p class="font-bold text-slate-800">- Rahul S.</p>
+        </div>
 
-    <p>📍 Laziz Pizza Restaurant</p>
-    <p>📞 +91 9876543210</p>
-    <p>📧 info@lazizpizza.com</p>
+        <!-- Review 2 -->
+        <div class="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm space-y-4">
+            <div class="flex items-center gap-1 text-amber-500">⭐️⭐️⭐️⭐️⭐️</div>
+            <p class="text-gray-600 italic">"Delivered hot in 20 minutes! The garlic bread and veggie supreme pizza are highly recommended."</p>
+            <p class="font-bold text-slate-800">- Priya M.</p>
+        </div>
+    </div>
+</section>
 
+<!-- Contact & Info Footer Section -->
+<section class="bg-gradient-to-br from-red-950 via-red-900 to-red-950 text-red-100 py-16 border-t border-red-800">
+    <div class="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-10">
+        <!-- Hours -->
+        <div class="space-y-4 text-center md:text-left">
+            <h3 class="text-xl font-bold text-white flex items-center justify-center md:justify-start gap-2">
+                <span>🕒</span> Opening Hours
+            </h3>
+            <p class="text-red-200">Monday - Sunday: 11:00 AM - 11:00 PM</p>
+            <p class="text-red-300">Delivery Status: Hot & Fast</p>
+        </div>
+
+        <!-- Address -->
+        <div class="space-y-4 text-center md:text-left">
+            <h3 class="text-xl font-bold text-white flex items-center justify-center md:justify-start gap-2">
+                <span>📍</span> Our Location
+            </h3>
+            <p class="text-red-200">Laziz Pizza Restaurant, Green House Purnea, India</p>
+        </div>
+
+        <!-- Call -->
+        <div class="space-y-4 text-center md:text-left">
+            <h3 class="text-xl font-bold text-white flex items-center justify-center md:justify-start gap-2">
+                <span>📞</span> Contact Us
+            </h3>
+            <p class="text-red-200">Direct Dial: +91 91426560092</p>
+            <p class="text-red-200">Email: info@lazizpizza.com</p>
+        </div>
+    </div>
 </section>
 
 {% endblock %}
