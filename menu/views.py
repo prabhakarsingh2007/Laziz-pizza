@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import FoodItem
+from .models import FoodItem, Category
 
 # Create your views here.
 
@@ -13,11 +13,11 @@ def menu(request):
     if query:
         food_items = food_items.filter(name__icontains=query)
     if category:
-        food_items = food_items.filter(category=category)
+        food_items = food_items.filter(category__name=category)
     if food_type:
         food_items = food_items.filter(food_type=food_type)
         
-    categories = [choice[0] for choice in FoodItem.CATEGORY]
+    categories = Category.objects.all().order_by('name')
     
     context = {
         'food_items': food_items,

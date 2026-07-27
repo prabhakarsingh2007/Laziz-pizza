@@ -15,19 +15,24 @@ def register(request):
     return render(request, 'accounts/register.html', {'form': form})
 
 def login(request):
+    error = None
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         try:
-            user = User.objects.get(username=username, password=password)
-            request.session['user_id'] = user.id
-            request.session['username'] = user.username
-            return redirect('home')
+            user = User.objects.get(username=username)
+            from django.contrib.auth.hashers import check_password
+            if check_password(password, user.password):
+                request.session['user_id'] = user.id
+                request.session['username'] = user.username
+                request.session['name'] = user.name
+                return redirect('home')
+            else:
+                error = "Invalid username or password"
         except User.DoesNotExist:
-            pass
+            error = "Invalid username or password"
     
-    form = UserForm()
-    return render(request, 'accounts/login.html', {'form': form})
+    return render(request, 'accounts/login.html', {'error': error})
 
 def logout(request):
     request.session.flush()

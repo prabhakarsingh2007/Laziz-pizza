@@ -20,6 +20,10 @@ urlpatterns = [
     # Reservation Management
     path("reservations/", views.admin_reservations, name="admin_reservations"),
 
+    # Category Management
+    path("categories/", views.category_list, name="category_list"),
+    path("categories/delete/<int:id>/", views.delete_category, name="delete_category"),
+
     # User Management
     path("users/", views.admin_users, name="admin_users"),
 ]

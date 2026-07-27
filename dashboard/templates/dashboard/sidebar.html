@@ -20,6 +20,11 @@
             <span>🍕</span>
             <span class="font-medium">Manage Menu</span>
         </a>
+        <a href="{% url 'category_list' %}"
+            class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 {% if request.resolver_match.url_name == 'category_list' or request.resolver_match.url_name == 'delete_category' %}bg-red-600 text-white hover:bg-red-700{% endif %}">
+            <span>📂</span>
+            <span class="font-medium">Manage Categories</span>
+        </a>
         <a href="{% url 'admin_orders' %}"
             class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 {% if request.resolver_match.url_name == 'admin_orders' %}bg-red-600 text-white hover:bg-red-700{% endif %}">
             <span>🛍️</span>

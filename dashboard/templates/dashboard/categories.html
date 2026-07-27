@@ -1,0 +1,69 @@
+{% extends 'dashboard/dashboard_base.html' %}
+
+{% block title %}
+Manage Categories
+{% endblock %}
+
+{% block dashboard_content %}
+
+<div class="flex justify-between items-center mb-8">
+    <h1 class="text-3xl font-bold text-red-600">
+        📂 Category Management
+    </h1>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Categories List (Left) -->
+    <div class="lg:col-span-2 bg-white shadow-lg rounded-xl overflow-hidden border border-slate-100">
+        <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+            <h2 class="text-lg font-bold text-slate-800">Active Categories</h2>
+            <span class="bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full">{{ categories|length }} Total</span>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-red-600 text-white">
+                    <tr>
+                        <th class="py-4 px-6 text-left">Category Name</th>
+                        <th class="py-4 px-6 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-slate-800">
+                    {% for cat in categories %}
+                    <tr class="hover:bg-slate-55 transition">
+                        <td class="py-4 px-6 font-semibold">{{ cat.name }}</td>
+                        <td class="py-4 px-6 text-center">
+                            <a href="{% url 'delete_category' cat.id %}" class="bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-xl text-xs font-bold transition">
+                                🗑️ Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="2" class="py-12 text-center text-gray-500 font-medium">
+                            No Categories Available
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Add Category Form (Right) -->
+    <div class="bg-white border border-slate-100 shadow-lg rounded-xl p-6 h-fit">
+        <h2 class="text-xl font-bold text-slate-800 mb-6 pb-2 border-b">Add Category</h2>
+        <form method="POST" action="{% url 'category_list' %}" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label class="block text-slate-700 font-bold mb-2 text-sm">Category Name</label>
+                <input type="text" name="name" placeholder="e.g. Pasta, Dessert" required
+                       class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-red-500 text-sm">
+            </div>
+            <button type="submit" class="w-full bg-gradient-to-r from-red-600 to-red-700 hover:brightness-110 text-white font-bold py-3 px-6 rounded-xl transition duration-150 shadow-md shadow-red-900/10">
+                Create Category
+            </button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

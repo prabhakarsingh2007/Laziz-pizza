@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from accounts.models import User
-from menu.models import FoodItem
+from menu.models import FoodItem, Category
 from orders.models import Order
 from reservation.models import Reservation
 from .forms import FoodForm
@@ -34,11 +34,11 @@ def food_list(request):
     if query:
         foods = foods.filter(name__icontains=query)
     if category:
-        foods = foods.filter(category=category)
+        foods = foods.filter(category__name=category)
     if food_type:
         foods = foods.filter(food_type=food_type)
         
-    categories = [choice[0] for choice in FoodItem.CATEGORY]
+    categories = Category.objects.all().order_by('name')
 
     context = {
         "foods": foods,
@@ -173,3 +173,24 @@ def sales(request):
     }
 
     return render(request, "dashboard/sales.html", context)
+
+
+# ================= Manage Categories =================
+
+def category_list(request):
+    if request.method == "POST":
+        name = request.POST.get("name")
+        if name:
+            Category.objects.get_or_create(name=name)
+            return redirect("category_list")
+
+    categories = Category.objects.all().order_by("name")
+    return render(request, "dashboard/categories.html", {"categories": categories})
+
+
+def delete_category(request, id):
+    category = get_object_or_404(Category, id=id)
+    if request.method == "POST":
+        category.delete()
+        return redirect("category_list")
+    return render(request, "dashboard/delete_category.html", {"category": category})
