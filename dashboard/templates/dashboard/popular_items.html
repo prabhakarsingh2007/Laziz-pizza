@@ -1,0 +1,106 @@
+{% extends 'dashboard/dashboard_base.html' %}
+
+{% block title %}
+Manage Popular Cards
+{% endblock %}
+
+{% block dashboard_content %}
+
+<div class="flex justify-between items-center mb-8">
+    <h1 class="text-3xl font-bold text-red-600">
+        ✨ Popular Cards Management
+    </h1>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Popular Items List (Left) -->
+    <div class="lg:col-span-2 bg-white shadow-lg rounded-xl overflow-hidden border border-slate-100">
+        <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+            <h2 class="text-lg font-bold text-slate-800">Active Popular Items</h2>
+            <span class="bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full">{{ popular_items|length }} Total</span>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-red-600 text-white">
+                    <tr>
+                        <th class="py-4 px-6 text-left">Image</th>
+                        <th class="py-4 px-6 text-left">Item Name</th>
+                        <th class="py-4 px-6 text-left">Subtitle</th>
+                        <th class="py-4 px-6 text-center">Price</th>
+                        <th class="py-4 px-6 text-center">Order</th>
+                        <th class="py-4 px-6 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-slate-800">
+                    {% for item in popular_items %}
+                    <tr class="hover:bg-slate-50 transition">
+                        <td class="py-4 px-6">
+                            {% if item.image %}
+                            <img src="{{ item.image.url }}" class="w-12 h-12 rounded-full object-cover border-2 border-red-500/20">
+                            {% else %}
+                            <img src="https://via.placeholder.com/150" class="w-12 h-12 rounded-full object-cover">
+                            {% endif %}
+                        </td>
+                        <td class="py-4 px-6 font-bold">{{ item.name }}</td>
+                        <td class="py-4 px-6 text-slate-500 text-sm">{{ item.subtitle }}</td>
+                        <td class="py-4 px-6 text-center font-semibold">₹{{ item.price|floatformat:0 }}</td>
+                        <td class="py-4 px-6 text-center font-semibold text-slate-500">{{ item.order }}</td>
+                        <td class="py-4 px-6 text-center">
+                            <a href="{% url 'delete_popular' item.id %}" class="bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-xl text-xs font-bold transition">
+                                🗑️ Delete
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="py-12 text-center text-gray-500 font-medium">
+                            No Popular Items Added Yet
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Add Popular Item Form (Right) -->
+    <div class="bg-white border border-slate-100 shadow-lg rounded-xl p-6 h-fit">
+        <h2 class="text-xl font-bold text-slate-800 mb-6 pb-2 border-b">Add New Card</h2>
+        <form method="POST" enctype="multipart/form-data" action="{% url 'popular_list' %}" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label class="block text-slate-700 font-bold mb-2 text-sm">Item Name</label>
+                {{ form.name }}
+            </div>
+            <div>
+                <label class="block text-slate-700 font-bold mb-2 text-sm">Subtitle description</label>
+                {{ form.subtitle }}
+            </div>
+            <div>
+                <label class="block text-slate-700 font-bold mb-2 text-sm">Price (₹)</label>
+                {{ form.price }}
+            </div>
+            <div>
+                <label class="block text-slate-700 font-bold mb-2 text-sm">Category Link</label>
+                {{ form.category }}
+            </div>
+            <div>
+                <label class="block text-slate-700 font-bold mb-2 text-sm">Upload Image</label>
+                {{ form.image }}
+            </div>
+            <div>
+                <label class="block text-slate-700 font-bold mb-2 text-sm">Sort Order</label>
+                {{ form.order }}
+            </div>
+            <div class="flex items-center gap-2 pt-2">
+                {{ form.is_active }}
+                <label class="text-slate-700 font-bold text-sm">Is Active / Displayed</label>
+            </div>
+            <button type="submit" class="w-full bg-gradient-to-r from-red-600 to-amber-500 hover:brightness-110 text-white font-bold py-3 px-6 rounded-xl transition duration-150 shadow-md shadow-red-900/10">
+                Create Popular Card
+            </button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

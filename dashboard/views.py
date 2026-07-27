@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from accounts.models import User
 from menu.models import FoodItem, Category
+from home.models import PopularItem
 from orders.models import Order
 from reservation.models import Reservation
-from .forms import FoodForm
+from .forms import FoodForm, PopularItemForm
 
 
 # ================= Dashboard =================
@@ -194,3 +195,29 @@ def delete_category(request, id):
         category.delete()
         return redirect("category_list")
     return render(request, "dashboard/delete_category.html", {"category": category})
+
+
+# ================= Popular Cards Management =================
+
+def popular_list(request):
+    if request.method == "POST":
+        form = PopularItemForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect("popular_list")
+    else:
+        form = PopularItemForm()
+
+    popular_items = PopularItem.objects.all().order_by("order")
+    return render(request, "dashboard/popular_items.html", {
+        "popular_items": popular_items,
+        "form": form
+    })
+
+
+def delete_popular(request, id):
+    item = get_object_or_404(PopularItem, id=id)
+    if request.method == "POST":
+        item.delete()
+        return redirect("popular_list")
+    return render(request, "dashboard/delete_popular.html", {"item": item})

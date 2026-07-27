@@ -35,6 +35,13 @@
             <span>Manage Categories</span>
         </a>
 
+        <!-- Popular Cards -->
+        <a href="{% url 'popular_list' %}"
+           class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 {% if request.resolver_match.url_name == 'popular_list' or request.resolver_match.url_name == 'delete_popular' %}bg-gradient-to-r from-red-600 to-amber-500 text-white shadow-lg shadow-red-500/20{% else %}hover:bg-slate-50 hover:text-slate-900 text-slate-600{% endif %}">
+            <span class="text-base">✨</span>
+            <span>Manage Popular Cards</span>
+        </a>
+
         <!-- Orders -->
         <a href="{% url 'admin_orders' %}"
            class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 {% if request.resolver_match.url_name == 'admin_orders' %}bg-gradient-to-r from-red-600 to-amber-500 text-white shadow-lg shadow-red-500/20{% else %}hover:bg-slate-50 hover:text-slate-900 text-slate-600{% endif %}">

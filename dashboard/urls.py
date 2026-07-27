@@ -24,6 +24,10 @@ urlpatterns = [
     path("categories/", views.category_list, name="category_list"),
     path("categories/delete/<int:id>/", views.delete_category, name="delete_category"),
 
+    # Popular Cards Management
+    path("popular/", views.popular_list, name="popular_list"),
+    path("popular/delete/<int:id>/", views.delete_popular, name="delete_popular"),
+
     # User Management
     path("users/", views.admin_users, name="admin_users"),
 ]

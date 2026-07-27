@@ -285,8 +285,9 @@ Home
 
         <div class="flex flex-wrap justify-center gap-10">
 
-            <!-- Margherita Pizza Card -->
-            <div class="uiverse-container noselect">
+            {% for item in popular_items %}
+            <!-- Popular Item Card -->
+            <a href="{% if item.category %}{% url 'menu' %}?category={{ item.category.name }}{% else %}{% url 'menu' %}{% endif %}" class="uiverse-container noselect block text-inherit no-underline">
               <div class="canvas">
                 <div class="tracker tr-1"></div>
                 <div class="tracker tr-2"></div>
@@ -314,87 +315,20 @@ Home
                 <div class="tracker tr-24"></div>
                 <div class="tracker tr-25"></div>
                 <div class="uiverse-card">
-                  <img src="https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=400&auto=format&fit=crop&q=80" alt="Margherita Pizza" class="uiverse-img">
-                  <p class="uiverse-prompt">Margherita Pizza</p>
-                  <div class="uiverse-title">₹299</div>
-                  <div class="uiverse-subtitle">Cheese Loaded Pizza</div>
+                  {% if item.image %}
+                  <img src="{{ item.image.url }}" alt="{{ item.name }}" class="uiverse-img">
+                  {% else %}
+                  <img src="https://via.placeholder.com/400x250" alt="{{ item.name }}" class="uiverse-img">
+                  {% endif %}
+                  <p class="uiverse-prompt">{{ item.name }}</p>
+                  <div class="uiverse-title">₹{{ item.price|floatformat:0 }}</div>
+                  <div class="uiverse-subtitle">{{ item.subtitle }}</div>
                 </div>
               </div>
-            </div>
-
-            <!-- Veg Burger Card -->
-            <div class="uiverse-container noselect">
-              <div class="canvas">
-                <div class="tracker tr-1"></div>
-                <div class="tracker tr-2"></div>
-                <div class="tracker tr-3"></div>
-                <div class="tracker tr-4"></div>
-                <div class="tracker tr-5"></div>
-                <div class="tracker tr-6"></div>
-                <div class="tracker tr-7"></div>
-                <div class="tracker tr-8"></div>
-                <div class="tracker tr-9"></div>
-                <div class="tracker tr-10"></div>
-                <div class="tracker tr-11"></div>
-                <div class="tracker tr-12"></div>
-                <div class="tracker tr-13"></div>
-                <div class="tracker tr-14"></div>
-                <div class="tracker tr-15"></div>
-                <div class="tracker tr-16"></div>
-                <div class="tracker tr-17"></div>
-                <div class="tracker tr-18"></div>
-                <div class="tracker tr-19"></div>
-                <div class="tracker tr-20"></div>
-                <div class="tracker tr-21"></div>
-                <div class="tracker tr-22"></div>
-                <div class="tracker tr-23"></div>
-                <div class="tracker tr-24"></div>
-                <div class="tracker tr-25"></div>
-                <div class="uiverse-card">
-                  <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&auto=format&fit=crop&q=80" alt="Veg Burger" class="uiverse-img">
-                  <p class="uiverse-prompt">Veg Burger</p>
-                  <div class="uiverse-title">₹149</div>
-                  <div class="uiverse-subtitle">Fresh Veg Burger</div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Cold Coffee Card -->
-            <div class="uiverse-container noselect">
-              <div class="canvas">
-                <div class="tracker tr-1"></div>
-                <div class="tracker tr-2"></div>
-                <div class="tracker tr-3"></div>
-                <div class="tracker tr-4"></div>
-                <div class="tracker tr-5"></div>
-                <div class="tracker tr-6"></div>
-                <div class="tracker tr-7"></div>
-                <div class="tracker tr-8"></div>
-                <div class="tracker tr-9"></div>
-                <div class="tracker tr-10"></div>
-                <div class="tracker tr-11"></div>
-                <div class="tracker tr-12"></div>
-                <div class="tracker tr-13"></div>
-                <div class="tracker tr-14"></div>
-                <div class="tracker tr-15"></div>
-                <div class="tracker tr-16"></div>
-                <div class="tracker tr-17"></div>
-                <div class="tracker tr-18"></div>
-                <div class="tracker tr-19"></div>
-                <div class="tracker tr-20"></div>
-                <div class="tracker tr-21"></div>
-                <div class="tracker tr-22"></div>
-                <div class="tracker tr-23"></div>
-                <div class="tracker tr-24"></div>
-                <div class="tracker tr-25"></div>
-                <div class="uiverse-card">
-                  <img src="https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=400&auto=format&fit=crop&q=80" alt="Cold Coffee" class="uiverse-img">
-                  <p class="uiverse-prompt">Cold Coffee</p>
-                  <div class="uiverse-title">₹99</div>
-                  <div class="uiverse-subtitle">Chilled Coffee</div>
-                </div>
-              </div>
-            </div>
+            </a>
+            {% empty %}
+            <p class="text-slate-500 font-medium">No popular items available.</p>
+            {% endfor %}
 
         </div>
     </div>
