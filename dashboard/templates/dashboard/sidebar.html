@@ -1,67 +1,90 @@
-<aside class="w-full md:w-64 bg-slate-900 text-slate-300 flex flex-col border-r border-slate-800">
+<aside class="w-full md:w-64 bg-white text-slate-600 flex flex-col border-r border-slate-100 min-h-screen shadow-sm">
+    
     <!-- Brand / Title -->
-    <div class="p-6 border-b border-slate-800 flex items-center gap-3">
-        <span class="text-2xl">🍕</span>
+    <div class="p-6 border-b border-slate-100 flex items-center gap-3.5">
+        <div class="h-10 w-10 bg-gradient-to-tr from-red-600 to-amber-500 rounded-2xl flex items-center justify-center text-xl shadow-lg shadow-red-500/20">
+            🍕
+        </div>
         <div>
-            <h2 class="font-bold text-white text-lg">Admin Panel</h2>
-            <p class="text-xs text-slate-500">Laziz Pizza Management</p>
+            <h2 class="font-extrabold text-slate-900 text-lg tracking-tight">Admin Panel</h2>
+            <p class="text-xs font-semibold text-slate-400">Laziz Pizza Management</p>
         </div>
     </div>
 
     <!-- Navigation links -->
-    <nav class="flex-1 p-4 space-y-2 mt-4">
+    <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto">
+        
+        <!-- Dashboard -->
         <a href="{% url 'dashboard' %}"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 {% if request.resolver_match.url_name == 'dashboard' %}bg-red-600 text-white hover:bg-red-700{% endif %}">
-            <span>📊</span>
-            <span class="font-medium">Dashboard Overview</span>
+           class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 {% if request.resolver_match.url_name == 'dashboard' %}bg-gradient-to-r from-red-600 to-amber-500 text-white shadow-lg shadow-red-500/20{% else %}hover:bg-slate-50 hover:text-slate-900 text-slate-600{% endif %}">
+            <span class="text-base">📊</span>
+            <span>Dashboard Overview</span>
         </a>
+
+        <!-- Manage Menu -->
         <a href="{% url 'food_list' %}"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 {% if request.resolver_match.url_name == 'food_list' or request.resolver_match.url_name == 'add_food' or request.resolver_match.url_name == 'edit_food' or request.resolver_match.url_name == 'delete_food' %}bg-red-600 text-white hover:bg-red-700{% endif %}">
-            <span>🍕</span>
-            <span class="font-medium">Manage Menu</span>
+           class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 {% if request.resolver_match.url_name == 'food_list' or request.resolver_match.url_name == 'add_food' or request.resolver_match.url_name == 'edit_food' or request.resolver_match.url_name == 'delete_food' %}bg-gradient-to-r from-red-600 to-amber-500 text-white shadow-lg shadow-red-500/20{% else %}hover:bg-slate-50 hover:text-slate-900 text-slate-600{% endif %}">
+            <span class="text-base">🍕</span>
+            <span>Manage Menu</span>
         </a>
+
+        <!-- Categories -->
         <a href="{% url 'category_list' %}"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 {% if request.resolver_match.url_name == 'category_list' or request.resolver_match.url_name == 'delete_category' %}bg-red-600 text-white hover:bg-red-700{% endif %}">
-            <span>📂</span>
-            <span class="font-medium">Manage Categories</span>
+           class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 {% if request.resolver_match.url_name == 'category_list' or request.resolver_match.url_name == 'delete_category' %}bg-gradient-to-r from-red-600 to-amber-500 text-white shadow-lg shadow-red-500/20{% else %}hover:bg-slate-50 hover:text-slate-900 text-slate-600{% endif %}">
+            <span class="text-base">📂</span>
+            <span>Manage Categories</span>
         </a>
+
+        <!-- Orders -->
         <a href="{% url 'admin_orders' %}"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 {% if request.resolver_match.url_name == 'admin_orders' %}bg-red-600 text-white hover:bg-red-700{% endif %}">
-            <span>🛍️</span>
-            <span class="font-medium">Manage Orders</span>
+           class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 {% if request.resolver_match.url_name == 'admin_orders' %}bg-gradient-to-r from-red-600 to-amber-500 text-white shadow-lg shadow-red-500/20{% else %}hover:bg-slate-50 hover:text-slate-900 text-slate-600{% endif %}">
+            <span class="text-base">🛍️</span>
+            <span>Manage Orders</span>
         </a>
+
+        <!-- Bookings -->
         <a href="{% url 'admin_reservations' %}"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 {% if request.resolver_match.url_name == 'admin_reservations' %}bg-red-600 text-white hover:bg-red-700{% endif %}">
-            <span>📅</span>
-            <span class="font-medium">Manage Bookings</span>
+           class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 {% if request.resolver_match.url_name == 'admin_reservations' %}bg-gradient-to-r from-red-600 to-amber-500 text-white shadow-lg shadow-red-500/20{% else %}hover:bg-slate-50 hover:text-slate-900 text-slate-600{% endif %}">
+            <span class="text-base">📅</span>
+            <span>Manage Bookings</span>
         </a>
+
+        <!-- Users -->
         <a href="{% url 'admin_users' %}"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 {% if request.resolver_match.url_name == 'admin_users' %}bg-red-600 text-white hover:bg-red-700{% endif %}">
-            <span>👥</span>
-            <span class="font-medium">Manage Users</span>
+           class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 {% if request.resolver_match.url_name == 'admin_users' %}bg-gradient-to-r from-red-600 to-amber-500 text-white shadow-lg shadow-red-500/20{% else %}hover:bg-slate-50 hover:text-slate-900 text-slate-600{% endif %}">
+            <span class="text-base">👥</span>
+            <span>Manage Users</span>
         </a>
-        <a href="/"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 mt-10">
-            <span>🌐</span>
-            <span class="font-medium">View Website</span>
-        </a>
+
+        <!-- Sales Report -->
         <a href="{% url 'sales' %}"
-            class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 hover:text-white transition duration-150 {% if request.resolver_match.url_name == 'sales' %}bg-red-600 text-white hover:bg-red-700{% endif %}">
-            <span>💰</span>
-            <span class="font-medium">Sales Report</span>
+           class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 {% if request.resolver_match.url_name == 'sales' %}bg-gradient-to-r from-red-600 to-amber-500 text-white shadow-lg shadow-red-500/20{% else %}hover:bg-slate-50 hover:text-slate-900 text-slate-600{% endif %}">
+            <span class="text-base">💰</span>
+            <span>Sales Report</span>
         </a>
+
+        <!-- Divider & External Link -->
+        <div class="pt-4 mt-4 border-t border-slate-100">
+            <a href="/"
+               class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition-all duration-200 hover:bg-slate-50 hover:text-slate-900 text-slate-500">
+                <span class="text-base">🌐</span>
+                <span>View Website</span>
+            </a>
+        </div>
+
     </nav>
 
-    <!-- Footer info / User info -->
-    <div class="p-4 border-t border-slate-800 bg-slate-950/50">
+    <!-- Admin User Info Footer -->
+    <div class="p-4 border-t border-slate-100 bg-slate-50/50">
         <div class="flex items-center gap-3">
-            <div class="bg-red-600 h-10 w-10 rounded-full flex items-center justify-center text-white font-bold">
-                {{ request.session.name|slice:":1"|upper }}
+            <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-red-600 to-amber-500 flex items-center justify-center text-white font-black shadow-sm">
+                {{ request.session.name|default:"A"|slice:":1"|upper }}
             </div>
-            <div>
-                <p class="text-sm font-semibold text-white">{{ request.session.name }}</p>
-                <p class="text-xs text-slate-500">@{{ request.session.username }}</p>
+            <div class="overflow-hidden">
+                <p class="text-sm font-bold text-slate-800 truncate">{{ request.session.name|default:"Admin" }}</p>
+                <p class="text-xs text-slate-400 font-semibold truncate">@{{ request.session.username|default:"admin" }}</p>
             </div>
         </div>
     </div>
+
 </aside>
