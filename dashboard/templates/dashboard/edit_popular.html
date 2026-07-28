@@ -1,0 +1,73 @@
+{% extends 'dashboard/dashboard_base.html' %}
+
+{% block title %}
+Edit Popular Card
+{% endblock %}
+
+{% block dashboard_content %}
+
+<div class="max-w-2xl mx-auto bg-white border border-slate-100 shadow-lg rounded-xl p-8 my-8">
+    <div class="flex items-center justify-between mb-8 pb-4 border-b">
+        <h1 class="text-2xl font-bold text-red-650 flex items-center gap-2">
+            ✏️ Edit Popular Card: <span class="text-slate-800">{{ item.name }}</span>
+        </h1>
+        <a href="{% url 'popular_list' %}" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2 rounded-xl text-sm transition">
+            Cancel
+        </a>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="space-y-6">
+        {% csrf_token %}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-slate-700 font-bold mb-2 text-sm">Item Name</label>
+                {{ form.name }}
+            </div>
+            <div>
+                <label class="block text-slate-700 font-bold mb-2 text-sm">Subtitle Description</label>
+                {{ form.subtitle }}
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-slate-700 font-bold mb-2 text-sm">Price (₹)</label>
+                {{ form.price }}
+            </div>
+            <div>
+                <label class="block text-slate-700 font-bold mb-2 text-sm">Category Link</label>
+                {{ form.category }}
+            </div>
+        </div>
+
+        <div>
+            <label class="block text-slate-700 font-bold mb-2 text-sm">Upload Image</label>
+            <div class="flex items-center gap-4 border border-dashed border-slate-200 p-4 rounded-xl">
+                {% if item.image %}
+                <img src="{{ item.image.url }}" class="w-16 h-16 rounded-lg object-cover border border-slate-200">
+                {% endif %}
+                <div class="flex-1">
+                    {{ form.image }}
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center pt-2">
+            <div>
+                <label class="block text-slate-700 font-bold mb-2 text-sm">Sort Order</label>
+                {{ form.order }}
+            </div>
+            <div class="flex items-center gap-2 mt-6">
+                {{ form.is_active }}
+                <label class="text-slate-700 font-bold text-sm">Is Active / Displayed</label>
+            </div>
+        </div>
+
+        <button type="submit" class="w-full bg-gradient-to-r from-red-600 to-amber-500 hover:brightness-110 text-white font-bold py-3 px-6 rounded-xl transition duration-150 shadow-md shadow-red-900/10">
+            Save Changes
+        </button>
+    </form>
+</div>
+
+{% endblock %}

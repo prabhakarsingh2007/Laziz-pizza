@@ -46,9 +46,14 @@ Manage Popular Cards
                         <td class="py-4 px-6 text-center font-semibold">₹{{ item.price|floatformat:0 }}</td>
                         <td class="py-4 px-6 text-center font-semibold text-slate-500">{{ item.order }}</td>
                         <td class="py-4 px-6 text-center">
-                            <a href="{% url 'delete_popular' item.id %}" class="bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-xl text-xs font-bold transition">
-                                🗑️ Delete
-                            </a>
+                            <div class="flex items-center justify-center gap-2">
+                                <a href="{% url 'edit_popular' item.id %}" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition">
+                                    ✏️ Edit
+                                </a>
+                                <a href="{% url 'delete_popular' item.id %}" class="bg-red-50 hover:bg-red-100 text-red-600 px-3.5 py-2 rounded-xl text-xs font-bold transition">
+                                    🗑️ Delete
+                                </a>
+                            </div>
                         </td>
                     </tr>
                     {% empty %}

@@ -89,10 +89,14 @@ def checkout(request):
     user = get_object_or_404(User, id=user_id)
     carts = Cart.objects.filter(user=user)
     total = sum(item.total_price() for item in carts)
+    
+    from accounts.models import UserAddress
+    addresses = UserAddress.objects.filter(user=user).order_by('-id')
 
     context = {
         "carts": carts,
         "total": total,
+        "addresses": addresses,
     }
 
     return render(request, "cart/checkout.html", context)
@@ -120,6 +124,10 @@ def order_success(request):
                 address=address,
                 phone=phone
             )
+            # Save address to UserAddress if not already saved
+            from accounts.models import UserAddress
+            if address:
+                UserAddress.objects.get_or_create(user=user, address_text=address.strip())
             # Save each cart item as OrderItem
             from orders.models import OrderItem
             for item in carts:

@@ -216,6 +216,22 @@ def popular_list(request):
     })
 
 
+def edit_popular(request, id):
+    item = get_object_or_404(PopularItem, id=id)
+    if request.method == "POST":
+        form = PopularItemForm(request.POST, request.FILES, instance=item)
+        if form.is_valid():
+            form.save()
+            return redirect("popular_list")
+    else:
+        form = PopularItemForm(instance=item)
+
+    return render(request, "dashboard/edit_popular.html", {
+        "form": form,
+        "item": item
+    })
+
+
 def delete_popular(request, id):
     item = get_object_or_404(PopularItem, id=id)
     if request.method == "POST":

@@ -52,6 +52,15 @@ Manage Orders
                                 </button>
                             </form>
                             {% endif %}
+                            {% if order.status != 'Delivered' and order.status != 'Cancelled' %}
+                            <form method="POST" action="{% url 'update_order_status' order.id %}" class="inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="status" value="Cancelled">
+                                <button type="submit" class="bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-lg text-xs font-bold transition">
+                                    ✗ Cancel
+                                </button>
+                            </form>
+                            {% endif %}
                         </div>
                     </td>
                 </tr>

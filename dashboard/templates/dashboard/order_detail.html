@@ -51,13 +51,22 @@ Order Detail
                 <h3 class="text-lg font-bold text-yellow-800">Pending Confirmation</h3>
                 <p class="text-slate-500 text-sm mt-1">This order is currently pending. Please verify user details and confirm to begin preparation.</p>
             </div>
-            <form method="POST" action="{% url 'update_order_status' order.id %}">
-                {% csrf_token %}
-                <input type="hidden" name="status" value="Confirmed">
-                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-3 rounded-xl transition shadow-md shadow-green-900/10">
-                    ✓ Confirm Order
-                </button>
-            </form>
+            <div class="flex gap-3">
+                <form method="POST" action="{% url 'update_order_status' order.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="status" value="Confirmed">
+                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold px-6 py-3 rounded-xl transition shadow-md shadow-green-900/10">
+                        ✓ Confirm Order
+                    </button>
+                </form>
+                <form method="POST" action="{% url 'update_order_status' order.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="status" value="Cancelled">
+                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3 rounded-xl transition shadow-md shadow-red-900/10">
+                        ✗ Cancel Order
+                    </button>
+                </form>
+            </div>
         </div>
         {% endif %}
 
