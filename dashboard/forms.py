@@ -30,3 +30,33 @@ class PopularItemForm(forms.ModelForm):
             'order': forms.NumberInput(attrs={'class': 'w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 outline-none', 'placeholder': 'e.g. 1'}),
             'is_active': forms.CheckboxInput(attrs={'class': 'h-5 w-5 text-red-600 border-gray-300 rounded focus:ring-red-500'}),
         }
+
+
+from coupons.models import Coupon
+
+class CouponForm(forms.ModelForm):
+    class Meta:
+        model = Coupon
+        fields = [
+            'code', 'name', 'description', 'discount_type', 'discount_value',
+            'minimum_order_amount', 'maximum_discount_amount', 'start_date',
+            'expiry_date', 'active', 'usage_limit', 'one_time_per_user',
+            'applicable_categories', 'applicable_products', 'excluded_products'
+        ]
+        widgets = {
+            'code': forms.TextInput(attrs={'class': 'w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 outline-none', 'placeholder': 'e.g. SAVE20'}),
+            'name': forms.TextInput(attrs={'class': 'w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 outline-none', 'placeholder': 'e.g. 20% Discount'}),
+            'description': forms.Textarea(attrs={'class': 'w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 outline-none', 'rows': 2, 'placeholder': 'Optional description'}),
+            'discount_type': forms.Select(attrs={'class': 'w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 outline-none'}),
+            'discount_value': forms.NumberInput(attrs={'class': 'w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 outline-none', 'placeholder': 'e.g. 20 or 100'}),
+            'minimum_order_amount': forms.NumberInput(attrs={'class': 'w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 outline-none', 'placeholder': 'e.g. 200'}),
+            'maximum_discount_amount': forms.NumberInput(attrs={'class': 'w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 outline-none', 'placeholder': 'e.g. 500 (Optional)'}),
+            'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 outline-none'}),
+            'expiry_date': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 outline-none'}),
+            'active': forms.CheckboxInput(attrs={'class': 'h-5 w-5 text-red-600 border-gray-300 rounded focus:ring-red-500'}),
+            'usage_limit': forms.NumberInput(attrs={'class': 'w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 outline-none', 'placeholder': 'e.g. 100 (Optional)'}),
+            'one_time_per_user': forms.CheckboxInput(attrs={'class': 'h-5 w-5 text-red-600 border-gray-300 rounded focus:ring-red-500'}),
+            'applicable_categories': forms.SelectMultiple(attrs={'class': 'w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 outline-none', 'style': 'height: 120px;'}),
+            'applicable_products': forms.SelectMultiple(attrs={'class': 'w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 outline-none', 'style': 'height: 120px;'}),
+            'excluded_products': forms.SelectMultiple(attrs={'class': 'w-full border rounded-lg px-4 py-3 focus:ring-2 focus:ring-red-500 outline-none', 'style': 'height: 120px;'}),
+        }

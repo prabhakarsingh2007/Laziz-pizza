@@ -1,0 +1,27 @@
+{% extends 'dashboard/dashboard_base.html' %}
+
+{% block title %}
+Delete Coupon
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="max-w-md mx-auto bg-white border border-slate-100 shadow-xl rounded-2xl p-8 my-12 text-center">
+    <div class="w-16 h-16 bg-red-50 text-red-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-6">
+        ⚠️
+    </div>
+    <h1 class="text-2xl font-black text-slate-800 mb-2">Delete Coupon</h1>
+    <p class="text-slate-500 text-sm mb-8">
+        Are you sure you want to permanently delete the coupon code <strong class="text-red-600 font-extrabold">{{ coupon.code }}</strong>? This action cannot be undone.
+    </p>
+
+    <form method="POST" class="flex gap-4">
+        {% csrf_token %}
+        <a href="{% url 'coupon_list' %}" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3 rounded-xl transition text-center">
+            Cancel
+        </a>
+        <button type="submit" class="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition">
+            Delete
+        </button>
+    </form>
+</div>
+{% endblock %}

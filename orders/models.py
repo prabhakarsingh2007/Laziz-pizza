@@ -15,6 +15,10 @@ class Order(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    original_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    discount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    coupon = models.ForeignKey('coupons.Coupon', null=True, blank=True, on_delete=models.SET_NULL, related_name='orders')
+    coupon_code = models.CharField(max_length=50, blank=True, null=True)
     address = models.TextField()
     phone = models.CharField(max_length=15)
     status = models.CharField(max_length=30, choices=STATUS, default='Pending')

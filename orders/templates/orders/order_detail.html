@@ -78,8 +78,18 @@ Order Details
 
             <div class="space-y-4">
 
+                {% if order.coupon_code %}
+                <div class="flex justify-between text-slate-500 text-sm font-semibold">
+                    <span>Original Total</span>
+                    <span>₹{{ order.original_total|floatformat:0 }}</span>
+                </div>
+                <div class="flex justify-between text-green-600 text-sm font-bold">
+                    <span>Coupon ({{ order.coupon_code }})</span>
+                    <span>-₹{{ order.discount|floatformat:0 }}</span>
+                </div>
+                {% endif %}
                 <div class="flex justify-between">
-                    <span>Total Amount</span>
+                    <span>{% if order.coupon_code %}Final{% endif %} Total Amount</span>
                     <span class="font-bold text-green-600">
                         ₹{{ order.total_price }}
                     </span>

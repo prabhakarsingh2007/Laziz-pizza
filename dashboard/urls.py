@@ -33,6 +33,11 @@ urlpatterns = [
     # Order Count API (AJAX Polling)
     path("order-count/", views.order_count, name="order_count"),
 
+    # Coupon & Offer Management
+    path("coupons/", views.coupon_list, name="coupon_list"),
+    path("coupons/edit/<int:id>/", views.edit_coupon, name="edit_coupon"),
+    path("coupons/delete/<int:id>/", views.delete_coupon, name="delete_coupon"),
+
     # User Management
     path("users/", views.admin_users, name="admin_users"),
 ]

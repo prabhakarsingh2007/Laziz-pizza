@@ -256,3 +256,45 @@ def order_count(request):
     return JsonResponse({
         "count": Order.objects.count()
     })
+
+
+# ================= Coupon & Offer Management =================
+from coupons.models import Coupon
+from .forms import CouponForm
+
+def coupon_list(request):
+    if request.method == "POST":
+        form = CouponForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("coupon_list")
+    else:
+        form = CouponForm()
+
+    coupons = Coupon.objects.all().order_by("-created_at")
+    return render(request, "dashboard/coupons.html", {
+        "coupons": coupons,
+        "form": form
+    })
+
+def edit_coupon(request, id):
+    coupon = get_object_or_404(Coupon, id=id)
+    if request.method == "POST":
+        form = CouponForm(request.POST, instance=coupon)
+        if form.is_valid():
+            form.save()
+            return redirect("coupon_list")
+    else:
+        form = CouponForm(instance=coupon)
+
+    return render(request, "dashboard/edit_coupon.html", {
+        "form": form,
+        "coupon": coupon
+    })
+
+def delete_coupon(request, id):
+    coupon = get_object_or_404(Coupon, id=id)
+    if request.method == "POST":
+        coupon.delete()
+        return redirect("coupon_list")
+    return render(request, "dashboard/delete_coupon.html", {"coupon": coupon})

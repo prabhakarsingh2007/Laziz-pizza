@@ -38,7 +38,13 @@ Order Detail
             <div>
                 <h2 class="font-bold text-lg mb-2">Order Summary</h2>
 
-                <p><strong>Total :</strong> ₹{{ order.total_price }}</p>
+                {% if order.coupon_code %}
+                <p><strong>Original Total :</strong> ₹{{ order.original_total|floatformat:0 }}</p>
+                <p class="text-green-600"><strong>Coupon Used :</strong> {{ order.coupon_code }} (-₹{{ order.discount|floatformat:0 }})</p>
+                <p class="font-extrabold text-red-600"><strong>Final Price :</strong> ₹{{ order.total_price }}</p>
+                {% else %}
+                <p><strong>Total Price :</strong> ₹{{ order.total_price }}</p>
+                {% endif %}
             </div>
 
         </div>

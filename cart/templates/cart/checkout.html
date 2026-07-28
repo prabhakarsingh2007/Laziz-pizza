@@ -14,23 +14,61 @@ Checkout
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-        <!-- Order Summary (Left) -->
-        <div class="bg-white border border-slate-100 shadow-xl rounded-2xl p-6 h-fit">
-            <h2 class="text-xl font-bold text-slate-800 mb-6 border-b pb-4">Order Summary</h2>
-            <div class="space-y-4 max-h-[300px] overflow-y-auto pr-2">
-                {% for item in carts %}
-                <div class="flex justify-between items-center border-b border-slate-50 pb-3">
-                    <div>
-                        <p class="font-bold text-slate-800 text-sm">{{ item.food.name }}</p>
-                        <p class="text-slate-400 text-xs mt-0.5">Quantity: {{ item.quantity }}</p>
-                    </div>
-                    <p class="font-extrabold text-slate-800 text-sm">₹{{ item.total_price }}</p>
+        <!-- Left Side: Coupon & Order Summary -->
+        <div class="space-y-6 h-fit">
+            <!-- Coupon Code Section -->
+            <div class="bg-white border border-slate-100 shadow-xl rounded-2xl p-6">
+                <h2 class="text-xl font-bold text-slate-800 mb-4 border-b pb-3">Have a Coupon?</h2>
+                
+                <div class="flex gap-2">
+                    <input type="text" id="coupon-code-input" placeholder="Enter Coupon Code" 
+                           class="flex-1 border border-slate-200 rounded-xl px-4 py-2.5 outline-none focus:ring-2 focus:ring-red-500 text-slate-800 text-sm uppercase font-bold"
+                           value="{{ request.session.coupon_code|default:'' }}">
+                    <button type="button" id="apply-coupon-btn" class="bg-slate-900 hover:bg-slate-800 text-white font-bold px-6 py-2.5 rounded-xl text-sm transition">
+                        Apply
+                    </button>
+                    <button type="button" id="remove-coupon-btn" class="bg-red-50 hover:bg-red-100 text-red-650 text-red-600 font-bold px-4 py-2.5 rounded-xl text-sm transition hidden">
+                        Remove
+                    </button>
                 </div>
-                {% endfor %}
+                
+                <!-- Loading Indicator -->
+                <div id="coupon-loading" class="hidden flex items-center gap-2 mt-3 text-xs text-slate-400 font-medium">
+                    <span class="animate-spin text-base">⏳</span> Validating coupon...
+                </div>
+
+                <!-- Messages container -->
+                <div id="coupon-message" class="mt-3 text-sm font-semibold hidden"></div>
             </div>
-            <div class="mt-6 flex justify-between items-center font-black text-lg border-t border-slate-100 pt-4">
-                <span class="text-slate-700">Total Amount:</span>
-                <span class="text-red-600 text-2xl">₹{{ total }}</span>
+
+            <!-- Order Summary Card -->
+            <div class="bg-white border border-slate-100 shadow-xl rounded-2xl p-6">
+                <h2 class="text-xl font-bold text-slate-800 mb-6 border-b pb-4">Order Summary</h2>
+                <div class="space-y-4 max-h-[300px] overflow-y-auto pr-2">
+                    {% for item in carts %}
+                    <div class="flex justify-between items-center border-b border-slate-50 pb-3">
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">{{ item.food.name }}</p>
+                            <p class="text-slate-400 text-xs mt-0.5">Quantity: {{ item.quantity }}</p>
+                        </div>
+                        <p class="font-extrabold text-slate-800 text-sm">₹{{ item.total_price }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="mt-6 border-t border-slate-100 pt-4 space-y-3">
+                    <div class="flex justify-between items-center text-sm font-semibold text-slate-500">
+                        <span>Subtotal:</span>
+                        <span id="summary-subtotal">₹{{ total }}</span>
+                    </div>
+                    <div id="discount-row" class="flex justify-between items-center text-sm font-bold text-green-600 hidden">
+                        <span>Discount:</span>
+                        <span id="summary-discount">-₹0</span>
+                    </div>
+                    <div class="flex justify-between items-center font-black text-lg pt-2 border-t border-slate-50">
+                        <span class="text-slate-700">Total Amount:</span>
+                        <span id="summary-total" class="text-red-600 text-2xl">₹{{ total }}</span>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -74,12 +112,136 @@ Checkout
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+    // Saved addresses helper
     const selector = document.getElementById("saved-addresses");
     const textarea = document.getElementById("address");
     if (selector && textarea) {
         selector.addEventListener("change", function() {
             textarea.value = this.value;
         });
+    }
+
+    // Coupon logic selectors
+    const couponInput = document.getElementById("coupon-code-input");
+    const applyBtn = document.getElementById("apply-coupon-btn");
+    const removeBtn = document.getElementById("remove-coupon-btn");
+    const loadingIndicator = document.getElementById("coupon-loading");
+    const msgContainer = document.getElementById("coupon-message");
+    
+    const discountRow = document.getElementById("discount-row");
+    const summaryDiscount = document.getElementById("summary-discount");
+    const summaryTotal = document.getElementById("summary-total");
+
+    function showMessage(text, isSuccess) {
+        msgContainer.innerHTML = text;
+        msgContainer.className = `mt-3 text-sm font-black ${isSuccess ? 'text-green-600' : 'text-red-650 text-red-600'}`;
+        msgContainer.classList.remove("hidden");
+    }
+
+    function clearMessage() {
+        msgContainer.innerHTML = "";
+        msgContainer.classList.add("hidden");
+    }
+
+    function applyCouponCode(code) {
+        if (!code) return;
+        
+        clearMessage();
+        loadingIndicator.classList.remove("hidden");
+        applyBtn.disabled = true;
+
+        fetch("{% url 'apply_coupon' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            body: JSON.stringify({ coupon_code: code })
+        })
+        .then(response => response.json())
+        .then(data => {
+            loadingIndicator.classList.add("hidden");
+            applyBtn.disabled = false;
+
+            if (data.success) {
+                showMessage(`✓ ${data.message}`, true);
+                
+                discountRow.classList.remove("hidden");
+                summaryDiscount.innerHTML = `-₹${data.discount.toFixed(0)}`;
+                summaryTotal.innerHTML = `₹${data.final_total.toFixed(0)}`;
+
+                applyBtn.classList.add("hidden");
+                removeBtn.classList.remove("hidden");
+                couponInput.disabled = true;
+            } else {
+                showMessage(`✗ ${data.message}`, false);
+                
+                discountRow.classList.add("hidden");
+                summaryTotal.innerHTML = `₹{{ total }}`;
+
+                applyBtn.classList.remove("hidden");
+                removeBtn.classList.add("hidden");
+                couponInput.disabled = false;
+            }
+        })
+        .catch(error => {
+            console.error("Error applying coupon:", error);
+            loadingIndicator.classList.add("hidden");
+            applyBtn.disabled = false;
+            showMessage("An error occurred. Please try again.", false);
+        });
+    }
+
+    function removeCouponCode() {
+        clearMessage();
+        loadingIndicator.classList.remove("hidden");
+        removeBtn.disabled = true;
+
+        fetch("{% url 'remove_coupon' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}"
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            loadingIndicator.classList.add("hidden");
+            removeBtn.disabled = false;
+
+            if (data.success) {
+                showMessage("Coupon removed successfully.", true);
+                
+                discountRow.classList.add("hidden");
+                summaryTotal.innerHTML = `₹{{ total }}`;
+                couponInput.value = "";
+
+                applyBtn.classList.remove("hidden");
+                removeBtn.classList.add("hidden");
+                couponInput.disabled = false;
+            } else {
+                showMessage(`✗ ${data.message}`, false);
+            }
+        })
+        .catch(error => {
+            console.error("Error removing coupon:", error);
+            loadingIndicator.classList.add("hidden");
+            removeBtn.disabled = false;
+            showMessage("An error occurred. Please try again.", false);
+        });
+    }
+
+    applyBtn.addEventListener("click", function() {
+        applyCouponCode(couponInput.value.trim());
+    });
+
+    removeBtn.addEventListener("click", function() {
+        removeCouponCode();
+    });
+
+    // Auto-check on page load if session already has a code prefilled
+    if (couponInput.value.trim() !== "") {
+        applyCouponCode(couponInput.value.trim());
     }
 });
 </script>
