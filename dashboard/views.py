@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
 from accounts.models import User
 from menu.models import FoodItem, Category
 from home.models import PopularItem
@@ -221,3 +222,11 @@ def delete_popular(request, id):
         item.delete()
         return redirect("popular_list")
     return render(request, "dashboard/delete_popular.html", {"item": item})
+
+
+# ================= Order Count API for AJAX notifications =================
+
+def order_count(request):
+    return JsonResponse({
+        "count": Order.objects.count()
+    })

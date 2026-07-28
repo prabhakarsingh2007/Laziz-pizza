@@ -114,12 +114,21 @@ def order_success(request):
         
         if total > 0:
             # Save the Order
-            Order.objects.create(
+            order = Order.objects.create(
                 user=user,
                 total_price=total,
                 address=address,
                 phone=phone
             )
+            # Save each cart item as OrderItem
+            from orders.models import OrderItem
+            for item in carts:
+                OrderItem.objects.create(
+                    order=order,
+                    food=item.food,
+                    quantity=item.quantity,
+                    price=item.food.price
+                )
             # Clear user's cart
             carts.delete()
             return render(request, "cart/order_success.html")

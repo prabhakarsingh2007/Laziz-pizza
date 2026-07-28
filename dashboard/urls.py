@@ -28,6 +28,9 @@ urlpatterns = [
     path("popular/", views.popular_list, name="popular_list"),
     path("popular/delete/<int:id>/", views.delete_popular, name="delete_popular"),
 
+    # Order Count API (AJAX Polling)
+    path("order-count/", views.order_count, name="order_count"),
+
     # User Management
     path("users/", views.admin_users, name="admin_users"),
 ]

@@ -20,7 +20,7 @@ Order Details
             </p>
         </div>
 
-        <a href="{% url 'order_list' %}"
+        <a href="{% url 'my_orders' %}"
            class="bg-gray-700 hover:bg-gray-800 text-white px-5 py-3 rounded-lg">
             ← Back to Orders
         </a>
@@ -156,29 +156,29 @@ Order Details
             </thead>
 
             <tbody>
-
-                <!-- Later Order Items Loop -->
-
-                <tr class="border-b">
-
-                    <td class="py-4 px-4">
-                        Margherita Pizza
+                {% for item in order.items.all %}
+                <tr class="border-b hover:bg-slate-50 transition">
+                    <td class="py-4 px-4 font-bold flex items-center gap-3">
+                        {% if item.food.image %}
+                        <img src="{{ item.food.image.url }}" class="w-10 h-10 rounded-full object-cover border border-slate-100">
+                        {% endif %}
+                        <span>{{ item.food.name }}</span>
                     </td>
-
-                    <td class="text-center">
-                        2
+                    <td class="text-center font-semibold text-slate-700">
+                        {{ item.quantity }}
                     </td>
-
-                    <td class="text-center">
-                        ₹299
+                    <td class="text-center font-semibold text-slate-600">
+                        ₹{{ item.price|floatformat:0 }}
                     </td>
-
                     <td class="text-center font-bold text-green-600">
-                        ₹598
+                        ₹{% widthratio item.price 1 item.quantity %}
                     </td>
-
                 </tr>
-
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="py-6 text-center text-slate-500 font-medium">No items found for this order.</td>
+                </tr>
+                {% endfor %}
             </tbody>
 
         </table>
