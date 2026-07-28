@@ -78,20 +78,33 @@ Order Details
 
             <div class="space-y-4">
 
-                {% if order.coupon_code %}
                 <div class="flex justify-between text-slate-500 text-sm font-semibold">
-                    <span>Original Total</span>
+                    <span>Subtotal</span>
                     <span>₹{{ order.original_total|floatformat:0 }}</span>
                 </div>
+                <div class="flex justify-between text-slate-500 text-sm font-semibold">
+                    <span>GST (5%)</span>
+                    <span>₹{{ order.gst }}</span>
+                </div>
+                <div class="flex justify-between text-slate-500 text-sm font-semibold">
+                    <span>Delivery Charge</span>
+                    <span>₹{{ order.delivery_charge|floatformat:0 }}</span>
+                </div>
+                <div class="flex justify-between text-slate-500 text-sm font-semibold">
+                    <span>Packing Charge</span>
+                    <span>₹{{ order.packing_charge|floatformat:0 }}</span>
+                </div>
+                {% if order.discount > 0 %}
                 <div class="flex justify-between text-green-600 text-sm font-bold">
-                    <span>Coupon ({{ order.coupon_code }})</span>
+                    <span>Discount {% if order.coupon_code %}({{ order.coupon_code }}){% endif %}</span>
                     <span>-₹{{ order.discount|floatformat:0 }}</span>
                 </div>
                 {% endif %}
-                <div class="flex justify-between">
-                    <span>{% if order.coupon_code %}Final{% endif %} Total Amount</span>
-                    <span class="font-bold text-green-600">
-                        ₹{{ order.total_price }}
+                <hr class="border-dashed border-slate-200 my-2">
+                <div class="flex justify-between font-black text-lg">
+                    <span>Grand Total</span>
+                    <span class="font-extrabold text-red-600">
+                        ₹{{ order.total_price|floatformat:0 }}
                     </span>
                 </div>
 

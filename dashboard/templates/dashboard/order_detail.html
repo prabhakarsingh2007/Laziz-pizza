@@ -38,13 +38,15 @@ Order Detail
             <div>
                 <h2 class="font-bold text-lg mb-2">Order Summary</h2>
 
-                {% if order.coupon_code %}
-                <p><strong>Original Total :</strong> ₹{{ order.original_total|floatformat:0 }}</p>
-                <p class="text-green-600"><strong>Coupon Used :</strong> {{ order.coupon_code }} (-₹{{ order.discount|floatformat:0 }})</p>
-                <p class="font-extrabold text-red-600"><strong>Final Price :</strong> ₹{{ order.total_price }}</p>
-                {% else %}
-                <p><strong>Total Price :</strong> ₹{{ order.total_price }}</p>
+                <p><strong>Subtotal :</strong> ₹{{ order.original_total|floatformat:0 }}</p>
+                <p><strong>GST (5%) :</strong> ₹{{ order.gst }}</p>
+                <p><strong>Delivery Charge :</strong> ₹{{ order.delivery_charge|floatformat:0 }}</p>
+                <p><strong>Packing Charge :</strong> ₹{{ order.packing_charge|floatformat:0 }}</p>
+                {% if order.discount > 0 %}
+                <p class="text-green-600"><strong>Discount :</strong> -₹{{ order.discount|floatformat:0 }} {% if order.coupon_code %}({{ order.coupon_code }}){% endif %}</p>
                 {% endif %}
+                <hr class="border-dashed border-slate-200 my-2">
+                <p class="font-extrabold text-red-600 text-xl"><strong>Grand Total :</strong> ₹{{ order.total_price|floatformat:0 }}</p>
             </div>
 
         </div>

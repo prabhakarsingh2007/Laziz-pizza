@@ -95,11 +95,22 @@ def checkout(request):
     
     from accounts.models import UserAddress
     addresses = UserAddress.objects.filter(user=user).order_by('-id')
+    
+    subtotal = float(total)
+    gst = round(subtotal * 0.05, 2)
+    delivery_charge = 40.00
+    packing_charge = 10.00
+    grand_total = round(subtotal + gst + delivery_charge + packing_charge, 2)
 
     context = {
         "carts": carts,
         "total": total,
         "addresses": addresses,
+        "subtotal": subtotal,
+        "gst": gst,
+        "delivery_charge": delivery_charge,
+        "packing_charge": packing_charge,
+        "grand_total": grand_total,
     }
 
     return render(request, "cart/checkout.html", context)
@@ -124,33 +135,43 @@ def order_success(request):
             discount_amount = 0
             applied_coupon = None
 
-            if coupon_code:
-                from coupons.services import validate_and_calculate_discount
-                from coupons.models import Coupon, CouponUsage
-                is_valid, calc_discount, message = validate_and_calculate_discount(
-                    coupon_code=coupon_code,
-                    user=user,
-                    cart_items=carts,
-                    cart_total=total
-                )
-                if is_valid:
-                    discount_amount = calc_discount
-                    applied_coupon = Coupon.objects.get(code=coupon_code.upper().strip())
-                    
-                    from django.db import transaction
-                    with transaction.atomic():
-                        db_coupon = Coupon.objects.select_for_update().get(id=applied_coupon.id)
-                        db_coupon.used_count += 1
-                        db_coupon.save()
+            try:
+                if coupon_code:
+                    from coupons.services import validate_and_calculate_discount
+                    from coupons.models import Coupon
+                    is_valid, calc_discount, message = validate_and_calculate_discount(
+                        coupon_code=coupon_code,
+                        user=user,
+                        cart_items=carts,
+                        cart_total=total
+                    )
+                    if is_valid:
+                        discount_amount = calc_discount
+                        applied_coupon = Coupon.objects.get(code=coupon_code.upper().strip())
+                        
+                        from django.db import transaction
+                        with transaction.atomic():
+                            db_coupon = Coupon.objects.select_for_update().get(id=applied_coupon.id)
+                            db_coupon.used_count += 1
+                            db_coupon.save()
+            except ImportError:
+                pass
 
-            final_price = max(total - discount_amount, 0)
+            subtotal = float(total)
+            gst = round(subtotal * 0.05, 2)
+            delivery_charge = 40.00
+            packing_charge = 10.00
+            grand_total = round(subtotal + gst + delivery_charge + packing_charge - float(discount_amount), 2)
 
             # Save the Order
             order = Order.objects.create(
                 user=user,
-                total_price=final_price,
+                total_price=grand_total,
                 original_total=total,
                 discount=discount_amount,
+                gst=gst,
+                delivery_charge=delivery_charge,
+                packing_charge=packing_charge,
                 coupon=applied_coupon,
                 coupon_code=coupon_code.upper().strip() if coupon_code else None,
                 address=address,
