@@ -125,6 +125,16 @@ def admin_reservations(request):
     return render(request, "dashboard/reservations.html", {"reservations": reservations})
 
 
+def update_reservation_status(request, id):
+    reservation = get_object_or_404(Reservation, id=id)
+    if request.method == "POST":
+        status = request.POST.get("status")
+        if status in ['Confirmed', 'Cancelled']:
+            reservation.status = status
+            reservation.save()
+    return redirect("admin_reservations")
+
+
 # ================= Manage Users =================
 
 def admin_users(request):

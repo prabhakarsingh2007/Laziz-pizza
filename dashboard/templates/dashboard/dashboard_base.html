@@ -51,7 +51,7 @@
 </audio>
 
 <script>
-let old_count = {{ total_orders|default:0 }};
+let old_count = parseInt("{{ total_orders|default:0 }}");
 
 setInterval(function(){
 

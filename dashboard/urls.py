@@ -19,6 +19,7 @@ urlpatterns = [
 
     # Reservation Management
     path("reservations/", views.admin_reservations, name="admin_reservations"),
+    path("reservations/update/<int:id>/", views.update_reservation_status, name="update_reservation_status"),
 
     # Category Management
     path("categories/", views.category_list, name="category_list"),

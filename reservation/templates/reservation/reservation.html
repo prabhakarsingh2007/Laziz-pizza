@@ -14,6 +14,17 @@ Table Reservation
         <p class="text-gray-500 mt-4">Book your dining slot online and enjoy piping hot fresh pizzas with friends & family.</p>
     </div>
 
+    <!-- Messages Alert -->
+    {% if messages %}
+    <div class="max-w-3xl mx-auto mb-6">
+        {% for message in messages %}
+        <div class="p-4 rounded-xl text-sm font-bold {% if message.tags == 'error' %}bg-red-50 text-red-600 border border-red-100{% else %}bg-green-50 text-green-600 border border-green-100{% endif %}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
     <div class="max-w-3xl mx-auto bg-white border border-slate-100 shadow-xl rounded-2xl p-8">
         <form method="POST" class="space-y-6">
             {% csrf_token %}
@@ -57,7 +68,7 @@ Table Reservation
                 <!-- Time -->
                 <div>
                     <label class="block text-slate-700 font-bold mb-2 text-sm">Booking Time</label>
-                    <input type="time" name="booking_time" required
+                    <input type="time" name="booking_time" min="08:00" max="22:00" required
                            class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-red-500 text-slate-800 text-sm">
                 </div>
             </div>
@@ -81,4 +92,13 @@ Table Reservation
 
 </div>
 
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const today = new Date().toISOString().split('T')[0];
+    const dateInput = document.querySelector('input[name="booking_date"]');
+    if (dateInput) {
+        dateInput.min = today;
+    }
+});
+</script>
 {% endblock %}

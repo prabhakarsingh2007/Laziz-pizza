@@ -23,6 +23,7 @@ Manage Bookings
                     <th class="text-center">Date & Time</th>
                     <th class="text-left">Special Request</th>
                     <th class="text-center">Status</th>
+                    <th class="text-center">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -39,10 +40,40 @@ Manage Bookings
                             {{ reservation.status }}
                         </span>
                     </td>
+                    <td class="text-center py-4">
+                        <div class="flex items-center justify-center gap-2">
+                            {% if reservation.status == 'Pending' %}
+                            <form method="POST" action="{% url 'update_reservation_status' reservation.id %}" class="inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="status" value="Confirmed">
+                                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">
+                                    ✓ Confirm
+                                </button>
+                            </form>
+                            <form method="POST" action="{% url 'update_reservation_status' reservation.id %}" class="inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="status" value="Cancelled">
+                                <button type="submit" class="bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-lg text-xs font-bold transition">
+                                    ✗ Cancel
+                                </button>
+                            </form>
+                            {% elif reservation.status == 'Confirmed' %}
+                            <form method="POST" action="{% url 'update_reservation_status' reservation.id %}" class="inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="status" value="Cancelled">
+                                <button type="submit" class="bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-lg text-xs font-bold transition">
+                                    ✗ Cancel
+                                </button>
+                            </form>
+                            {% else %}
+                            <span class="text-xs text-slate-400 font-medium">None</span>
+                            {% endif %}
+                        </div>
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="7" class="py-10 text-center text-gray-500">
+                    <td colspan="8" class="py-10 text-center text-gray-500">
                         No Bookings Available
                     </td>
                 </tr>
