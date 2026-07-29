@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from accounts.models import User
 from .models import Order
 
@@ -17,7 +17,7 @@ def order_detail(request, id):
     if not user_id:
         return redirect('login')
         
-    order = Order.objects.get(id=id, user_id=user_id)
+    order = get_object_or_404(Order, id=id, user_id=user_id)
     return render(request, "orders/order_detail.html", {
         "order": order
     })
