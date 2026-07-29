@@ -1,0 +1,172 @@
+{% extends 'dashboard/dashboard_base.html' %}
+
+{% block title %}
+Order Detail
+{% endblock %}
+
+{% block dashboard_content %}
+
+<div class="max-w-4xl mx-auto space-y-8">
+
+    <div class="bg-white rounded-3xl border border-slate-100 shadow-xl p-6 sm:p-10 space-y-8">
+
+        <!-- Detail Header -->
+        <div class="flex justify-between items-center border-b border-slate-100 pb-6">
+            <div>
+                <span class="text-xs font-bold text-red-500 uppercase tracking-widest block mb-1">Order Details</span>
+                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">
+                    Order #ORD{{ order.id }}
+                </h1>
+            </div>
+
+            <a href="{% url 'admin_orders' %}"
+                class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-5 py-2.5 rounded-xl text-xs uppercase tracking-wider transition">
+                ← Back to List
+            </a>
+        </div>
+
+        <!-- Customer & Cost Overview Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-slate-50/50 p-6 rounded-3xl border border-slate-100">
+
+            <div class="space-y-3 text-xs">
+                <h2 class="font-extrabold text-slate-400 uppercase tracking-wider text-[10px]">Customer Information</h2>
+                <p class="font-bold text-slate-900 text-sm"><strong class="text-slate-500 font-medium">Name:</strong> {{ order.user.name }} (@{{ order.user.username }})</p>
+                <p class="font-bold text-slate-900 text-sm"><strong class="text-slate-500 font-medium">Status:</strong> {{ order.status }}</p>
+                <p class="font-bold text-slate-900 text-sm"><strong class="text-slate-500 font-medium">Date:</strong> {{ order.created_at|date:"d M Y, h:i A" }}</p>
+                <p class="font-bold text-slate-900 text-sm"><strong class="text-slate-500 font-medium">Contact:</strong> {{ order.phone }}</p>
+                <div class="pt-2">
+                    <strong class="text-slate-500 font-medium block mb-1">Delivery Address:</strong>
+                    <p class="text-slate-700 bg-white border border-slate-150 p-3 rounded-xl leading-relaxed">{{ order.address }}</p>
+                </div>
+            </div>
+
+            <div class="space-y-3 text-xs flex flex-col justify-between">
+                <div class="space-y-2">
+                    <h2 class="font-extrabold text-slate-400 uppercase tracking-wider text-[10px]">Order Summary</h2>
+                    <div class="flex justify-between text-slate-600">
+                        <span>Subtotal:</span>
+                        <span class="font-bold text-slate-900">₹{{ order.original_total|default:order.total_price|floatformat:0 }}</span>
+                    </div>
+                    <div class="flex justify-between text-slate-600">
+                        <span>GST (5%):</span>
+                        <span class="font-bold text-slate-900">₹{{ order.gst|default:"0" }}</span>
+                    </div>
+                    <div class="flex justify-between text-slate-600">
+                        <span>Delivery Charge:</span>
+                        <span class="font-bold text-slate-900">₹{{ order.delivery_charge|default:"0"|floatformat:0 }}</span>
+                    </div>
+                    <div class="flex justify-between text-slate-600">
+                        <span>Packing Charge:</span>
+                        <span class="font-bold text-slate-900">₹{{ order.packing_charge|default:"0"|floatformat:0 }}</span>
+                    </div>
+                    {% if order.discount > 0 %}
+                    <div class="flex justify-between text-emerald-600 font-bold">
+                        <span>Discount {% if order.coupon_code %}({{ order.coupon_code }}){% endif %}:</span>
+                        <span>-₹{{ order.discount|floatformat:0 }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="border-t border-slate-100 pt-3 flex justify-between items-center">
+                    <span class="font-black text-slate-900 text-sm">Grand Total:</span>
+                    <span class="text-xl font-black text-red-600">₹{{ order.total_price|floatformat:0 }}</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Conditional Pending Action Alert -->
+        {% if order.status == 'Pending' %}
+        <div class="bg-amber-50 border border-amber-200/80 rounded-2xl p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+                <h3 class="text-sm font-bold text-amber-900 flex items-center gap-1.5">
+                    <span>⏱️</span> Pending Confirmation
+                </h3>
+                <p class="text-amber-700/80 text-xs mt-1 leading-relaxed max-w-md">This order is currently pending. Please verify user details and confirm to begin preparation.</p>
+            </div>
+            <div class="flex gap-2.5 w-full sm:w-auto shrink-0">
+                <form method="POST" action="{% url 'update_order_status' order.id %}" class="w-full sm:w-auto">
+                    {% csrf_token %}
+                    <input type="hidden" name="status" value="Confirmed">
+                    <button type="submit" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition shadow-md shadow-emerald-600/10 flex items-center justify-center gap-1.5 active:scale-95">
+                        <i data-lucide="check" class="w-4 h-4"></i> Confirm Order
+                    </button>
+                </form>
+                <form method="POST" action="{% url 'update_order_status' order.id %}" class="w-full sm:w-auto">
+                    {% csrf_token %}
+                    <input type="hidden" name="status" value="Cancelled">
+                    <button type="submit" class="w-full sm:w-auto bg-rose-50 hover:bg-rose-100 text-rose-650 text-rose-600 font-bold px-5 py-2.5 rounded-xl text-xs transition border border-rose-250 flex items-center justify-center gap-1.5 active:scale-95">
+                        <i data-lucide="x" class="w-4 h-4"></i> Cancel Order
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Items Details Table -->
+        <div class="space-y-4">
+            <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                Ordered Items
+            </h2>
+            <div class="border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-slate-50 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-100">
+                        <tr>
+                            <th class="py-3.5 px-4">Food Name</th>
+                            <th class="py-3.5 px-4 text-center">Quantity</th>
+                            <th class="py-3.5 px-4 text-center">Unit Price</th>
+                            <th class="py-3.5 px-4 text-right">Total Price</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100 text-slate-800">
+                        {% for item in order.items.all %}
+                        <tr class="hover:bg-slate-50/50 transition">
+                            <td class="py-4 px-4 font-bold flex items-center gap-3">
+                                {% if item.food.image %}
+                                <img src="{{ item.food.image.url }}" class="w-10 h-10 rounded-xl object-cover border border-slate-100">
+                                {% endif %}
+                                <span>{{ item.food.name }}</span>
+                            </td>
+                            <td class="py-4 px-4 text-center font-bold text-slate-700">{{ item.quantity }}</td>
+                            <td class="py-4 px-4 text-center font-semibold text-slate-500">₹{{ item.price|floatformat:0 }}</td>
+                            <td class="py-4 px-4 text-right font-extrabold text-emerald-600">₹{% widthratio item.price 1 item.quantity %}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="py-8 text-center text-slate-400 font-medium">No items found for this order.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Update Status Selection Control -->
+        <div class="space-y-4 pt-4 border-t border-slate-100">
+            <h2 class="text-base font-bold text-slate-900">
+                Change Status
+            </h2>
+
+            <form method="POST" action="{% url 'update_order_status' order.id %}" class="flex flex-col sm:flex-row items-center gap-3">
+                {% csrf_token %}
+
+                <select name="status" class="w-full sm:w-64 bg-slate-50 border border-slate-200 rounded-2xl p-3.5 outline-none focus:ring-2 focus:ring-red-500 focus:bg-white text-slate-800 text-xs font-bold transition">
+                    <option value="Pending" {% if order.status == "Pending" %}selected{% endif %}>Pending</option>
+                    <option value="Confirmed" {% if order.status == "Confirmed" %}selected{% endif %}>Confirmed</option>
+                    <option value="Preparing" {% if order.status == "Preparing" %}selected{% endif %}>Preparing</option>
+                    <option value="Delivered" {% if order.status == "Delivered" %}selected{% endif %}>Delivered</option>
+                    {% if order.status == "Pending" or order.status == "Cancelled" %}
+                    <option value="Cancelled" {% if order.status == "Cancelled" %}selected{% endif %}>Cancelled</option>
+                    {% endif %}
+                </select>
+
+                <button type="submit" class="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-6 rounded-2xl shadow-sm transition-all duration-200 text-xs uppercase tracking-wider text-center active:scale-95">
+                    Update Status
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

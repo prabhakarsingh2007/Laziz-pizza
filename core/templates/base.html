@@ -47,6 +47,14 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #ef4444;
         }
+        /* Hide scrollbar utility */
+        .scrollbar-none::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-none {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 
     {% block extra_head %}{% endblock %}

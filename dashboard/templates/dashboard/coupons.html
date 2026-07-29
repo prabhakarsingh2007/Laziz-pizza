@@ -1,0 +1,186 @@
+{% extends 'dashboard/dashboard_base.html' %}
+
+{% block title %}
+Manage Coupons & Offers
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="flex flex-col lg:flex-row gap-8">
+    
+    <!-- Coupons List (Left Side - 8 Cols equivalent) -->
+    <div class="flex-1 space-y-6">
+        <div class="flex justify-between items-center">
+            <h1 class="text-2xl lg:text-3xl font-extrabold text-slate-900 flex items-center gap-2">
+                🎟️ Coupons & Offers
+            </h1>
+            <span class="bg-red-50 border border-red-200 text-red-600 text-xs font-bold px-3 py-1 rounded-full">
+                {{ coupons|length }} Total
+            </span>
+        </div>
+
+        <div class="bg-white shadow-xl rounded-3xl overflow-hidden border border-slate-100">
+            <div class="overflow-x-auto">
+                <table class="w-full text-slate-800 text-sm">
+                    <thead class="bg-red-600 text-white text-xs font-bold uppercase tracking-wider">
+                        <tr>
+                            <th class="py-4 px-4 text-left">Code</th>
+                            <th class="py-4 px-4 text-left">Name</th>
+                            <th class="py-4 px-4 text-center">Type</th>
+                            <th class="py-4 px-4 text-center">Value</th>
+                            <th class="py-4 px-4 text-center">Min Order</th>
+                            <th class="py-4 px-4 text-center">Expiry</th>
+                            <th class="py-4 px-4 text-center">Status</th>
+                            <th class="py-4 px-4 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        {% for coupon in coupons %}
+                        <tr class="hover:bg-slate-50 transition duration-150">
+                            <!-- Code -->
+                            <td class="py-4 px-4 font-black text-red-600 tracking-wider uppercase">
+                                {{ coupon.code }}
+                            </td>
+                            <!-- Name -->
+                            <td class="py-4 px-4 font-bold text-slate-800 text-xs">
+                                {{ coupon.name }}
+                            </td>
+                            <!-- Type -->
+                            <td class="py-4 px-4 text-center">
+                                <span class="px-2 py-0.5 rounded text-[10px] font-extrabold uppercase bg-slate-100 text-slate-600">
+                                    {{ coupon.discount_type }}
+                                </span>
+                            </td>
+                            <!-- Value -->
+                            <td class="py-4 px-4 text-center font-extrabold text-emerald-600">
+                                {% if coupon.discount_type == 'Percentage' %}
+                                    {{ coupon.discount_value|floatformat:0 }}%
+                                {% else %}
+                                    ₹{{ coupon.discount_value }}
+                                {% endif %}
+                            </td>
+                            <!-- Min Order -->
+                            <td class="py-4 px-4 text-center font-bold text-slate-600">
+                                ₹{{ coupon.minimum_order_amount|floatformat:0 }}
+                            </td>
+                            <!-- Expiry -->
+                            <td class="py-4 px-4 text-center text-[10px] text-slate-400 font-semibold">
+                                {{ coupon.expiry_date|date:"d M Y, h:i A" }}
+                            </td>
+                            <!-- Status -->
+                            <td class="py-4 px-4 text-center">
+                                {% if coupon.active %}
+                                    <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full text-xs font-bold inline-block">Active</span>
+                                {% else %}
+                                    <span class="bg-slate-50 text-slate-500 border border-slate-200 px-2.5 py-1 rounded-full text-xs font-bold inline-block">Inactive</span>
+                                {% endif %}
+                            </td>
+                            <!-- Actions -->
+                            <td class="py-4 px-4 text-center">
+                                <div class="flex items-center justify-center gap-1.5">
+                                    <a href="{% url 'edit_coupon' coupon.id %}" 
+                                       class="w-7 h-7 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 flex items-center justify-center transition shadow-sm"
+                                       title="Edit Coupon">
+                                        <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
+                                    </a>
+                                    <a href="{% url 'delete_coupon' coupon.id %}" 
+                                       class="w-7 h-7 rounded-lg bg-rose-50 text-rose-600 hover:bg-rose-600 hover:text-white flex items-center justify-center transition shadow-sm"
+                                       title="Delete Coupon">
+                                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8" class="py-12 text-center text-slate-400 font-medium">
+                                No Coupons Configured Yet. Use the form on the right to add a new coupon code.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Coupon Form (Right Side - 4 Cols equivalent) -->
+    <div class="w-full lg:w-96 bg-white border border-slate-100 shadow-xl rounded-3xl p-6 sm:p-8 h-fit space-y-6">
+        <div>
+            <h2 class="text-xl font-bold font-serif-heading text-slate-900">Create New Coupon</h2>
+            <p class="text-xs text-slate-400 mt-1">Configure code rules and discount rates</p>
+        </div>
+        
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+            
+            <div class="space-y-1.5">
+                <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Coupon Code</label>
+                {{ form.code }}
+            </div>
+            
+            <div class="space-y-1.5">
+                <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Coupon Name</label>
+                {{ form.name }}
+            </div>
+            
+            <div class="space-y-1.5">
+                <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Description</label>
+                {{ form.description }}
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Type</label>
+                    {{ form.discount_type }}
+                </div>
+                <div class="space-y-1.5">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Value</label>
+                    {{ form.discount_value }}
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-1.5">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Min Order (₹)</label>
+                    {{ form.minimum_order_amount }}
+                </div>
+                <div class="space-y-1.5">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Max Disc (₹)</label>
+                    {{ form.maximum_discount_amount }}
+                </div>
+            </div>
+            
+            <div class="space-y-1.5">
+                <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Start Date</label>
+                {{ form.start_date }}
+            </div>
+            
+            <div class="space-y-1.5">
+                <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Expiry Date</label>
+                {{ form.expiry_date }}
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4 pt-2">
+                <div class="space-y-1.5">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Usage Limit</label>
+                    {{ form.usage_limit }}
+                </div>
+                <div class="flex items-center gap-2 mt-6">
+                    {{ form.one_time_per_user }}
+                    <label class="text-slate-800 font-bold text-xs uppercase tracking-wider cursor-pointer">1-Time/User</label>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-2 pt-2">
+                {{ form.active }}
+                <label class="text-slate-800 font-bold text-xs uppercase tracking-wider cursor-pointer">Active Status</label>
+            </div>
+
+            <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-6 rounded-2xl shadow-md transition duration-150 text-xs uppercase tracking-wider text-center flex items-center justify-center gap-2 mt-4 active:scale-95">
+                <i data-lucide="check" class="w-4 h-4"></i> Save Coupon Code
+            </button>
+        </form>
+    </div>
+    
+</div>
+{% endblock %}
