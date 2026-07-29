@@ -1,156 +1,168 @@
 {% extends 'base.html' %}
 
 {% block title %}
-My Orders
+My Orders - TastyBite
 {% endblock %}
 
 {% block content %}
 
-<section class="container mx-auto px-4 py-10">
+<!-- Fonts & Custom Styles -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <!-- Heading -->
-    <div class="flex justify-between items-center mb-8">
+<style>
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-serif-heading {
+        font-family: 'Playfair Display', serif;
+    }
+    .font-script {
+        font-family: 'Pacifico', cursive;
+    }
+</style>
 
-        <div>
-            <h1 class="text-4xl font-bold text-red-600">
-                My Orders
-            </h1>
-            <p class="text-gray-500 mt-2">
-                View all your placed orders.
-            </p>
+<div class="bg-[#faf7f2] min-h-screen py-12 lg:py-16 px-6">
+    <div class="max-w-6xl mx-auto space-y-10">
+
+        <!-- Page Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6 bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-xl">
+            <div class="space-y-1">
+                <p class="text-red-500 font-script text-xl">Order History</p>
+                <h1 class="text-3xl sm:text-4xl font-bold font-serif-heading text-slate-900 tracking-tight">
+                    My Orders
+                </h1>
+                <p class="text-slate-500 text-xs sm:text-sm font-medium">
+                    View and track all your placed orders in one place.
+                </p>
+            </div>
+
+            <a href="{% url 'menu' %}" 
+               class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3.5 rounded-2xl shadow-lg shadow-red-600/20 transition duration-200 text-xs uppercase tracking-wider active:scale-95 whitespace-nowrap self-start sm:self-auto">
+                <span>Continue Shopping</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
         </div>
 
-        <a href="{% url 'menu' %}"
-            class="bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-lg">
-            Continue Shopping
-        </a>
+        {% if orders %}
+        <!-- Orders Card Container -->
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-slate-700">
+                    <thead class="bg-slate-50 text-slate-400 font-bold uppercase text-[11px] tracking-wider border-b border-slate-100">
+                        <tr>
+                            <th class="py-4 px-6">Order ID</th>
+                            <th class="py-4 px-6">Date</th>
+                            <th class="py-4 px-6">Total Amount</th>
+                            <th class="py-4 px-6">Status</th>
+                            <th class="py-4 px-6 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        {% for order in orders %}
+                        <tr class="hover:bg-slate-50/60 transition duration-150">
+                            <!-- Order ID -->
+                            <td class="py-5 px-6 font-bold text-slate-900">
+                                #{{ order.id }}
+                            </td>
+
+                            <!-- Order Date -->
+                            <td class="py-5 px-6 text-slate-500 text-xs font-semibold">
+                                {{ order.created_at|date:"d M Y, h:i A"|default:order.created_at }}
+                            </td>
+
+                            <!-- Total Price -->
+                            <td class="py-5 px-6 font-extrabold text-emerald-600 text-base">
+                                ₹{{ order.total_price|floatformat:0 }}
+                            </td>
+
+                            <!-- Order Status Badges -->
+                            <td class="py-5 px-6">
+                                {% if order.status == "Pending" %}
+                                <span class="px-3.5 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 border border-amber-200">
+                                    <span class="w-2 h-2 rounded-full bg-amber-500"></span> Pending
+                                </span>
+
+                                {% elif order.status == "Preparing" %}
+                                <span class="px-3.5 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 border border-blue-200">
+                                    <span class="w-2 h-2 rounded-full bg-blue-500"></span> Preparing
+                                </span>
+
+                                {% elif order.status == "Out for Delivery" %}
+                                <span class="px-3.5 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 border border-purple-200">
+                                    <span class="w-2 h-2 rounded-full bg-purple-500"></span> Out for Delivery
+                                </span>
+
+                                {% elif order.status == "Delivered" %}
+                                <span class="px-3.5 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Delivered
+                                </span>
+
+                                {% else %}
+                                <span class="px-3.5 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider inline-flex items-center gap-1.5 bg-rose-50 text-rose-700 border border-rose-200">
+                                    <span class="w-2 h-2 rounded-full bg-rose-500"></span> Cancelled
+                                </span>
+                                {% endif %}
+                            </td>
+
+                            <!-- View Action Button -->
+                            <td class="py-5 px-6 text-center">
+                                <a href="{% url 'order_detail' order.id %}" 
+                                   class="inline-flex items-center gap-1.5 bg-slate-900 hover:bg-red-600 text-white font-bold py-2.5 px-5 rounded-2xl shadow-sm transition-all duration-200 text-xs uppercase tracking-wider active:scale-95">
+                                    <span>View Details</span>
+                                    <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <!-- Empty Orders View -->
+                        <tr>
+                            <td colspan="5" class="py-16 text-center space-y-4">
+                                <div class="w-20 h-20 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto text-3xl font-bold">
+                                    📜
+                                </div>
+                                <div class="space-y-1">
+                                    <h3 class="text-2xl font-bold font-serif-heading text-slate-900">No Orders Found</h3>
+                                    <p class="text-slate-500 text-xs leading-relaxed max-w-sm mx-auto">
+                                        Looks like you haven't placed any food orders yet. Start ordering your favorite delicious pizza!
+                                    </p>
+                                </div>
+                                <a href="{% url 'menu' %}" 
+                                   class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-3.5 rounded-2xl shadow-lg shadow-red-600/20 transition duration-200 text-xs uppercase tracking-wider">
+                                    <span>Order Now</span>
+                                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% else %}
+        <!-- Standalone Empty Orders Card -->
+        <div class="max-w-md mx-auto bg-white border border-slate-100 shadow-xl rounded-3xl p-10 text-center space-y-5">
+            <div class="w-20 h-20 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto text-3xl font-bold">
+                📜
+            </div>
+            
+            <div class="space-y-1">
+                <h2 class="text-2xl font-bold font-serif-heading text-slate-900">No Orders Found</h2>
+                <p class="text-slate-500 text-xs leading-relaxed">
+                    Looks like you haven't placed any food orders yet. Start ordering your favorite delicious pizza!
+                </p>
+            </div>
+
+            <a href="{% url 'menu' %}" 
+               class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-3.5 rounded-2xl shadow-lg shadow-red-600/20 transition duration-200 text-xs uppercase tracking-wider">
+                <span>Order Now</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+        </div>
+        {% endif %}
 
     </div>
-
-    <!-- Orders Table -->
-
-    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-
-        <table class="min-w-full">
-
-            <thead class="bg-red-600 text-white">
-
-                <tr>
-
-                    <th class="py-4 px-6 text-left">
-                        Order ID
-                    </th>
-
-                    <th class="py-4 px-6 text-left">
-                        Date
-                    </th>
-
-                    <th class="py-4 px-6 text-left">
-                        Total
-                    </th>
-
-                    <th class="py-4 px-6 text-left">
-                        Status
-                    </th>
-
-                    <th class="py-4 px-6 text-center">
-                        Action
-                    </th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                {% for order in orders %}
-
-                <tr class="border-b hover:bg-gray-50">
-
-                    <td class="py-4 px-6 font-semibold">
-                        #{{ order.id }}
-                    </td>
-
-                    <td class="py-4 px-6">
-                        {{ order.created_at }}
-                    </td>
-
-                    <td class="py-4 px-6 font-semibold text-green-600">
-                        ₹{{ order.total_price }}
-                    </td>
-
-                    <td class="py-4 px-6">
-
-                        {% if order.status == "Pending" %}
-                        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
-                            Pending
-                        </span>
-
-                        {% elif order.status == "Preparing" %}
-                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
-                            Preparing
-                        </span>
-
-                        {% elif order.status == "Out for Delivery" %}
-                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm">
-                            Out for Delivery
-                        </span>
-
-                        {% elif order.status == "Delivered" %}
-                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
-                            Delivered
-                        </span>
-
-                        {% else %}
-                        <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm">
-                            Cancelled
-                        </span>
-                        {% endif %}
-
-                    </td>
-
-                    <td class="py-4 px-6 text-center">
-
-                        <a href="{% url 'order_detail' order.id %}"
-                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
-                            View Details
-                        </a>
-
-                    </td>
-
-                </tr>
-
-                {% empty %}
-
-                <tr>
-
-                    <td colspan="5" class="text-center py-12">
-
-                        <h2 class="text-2xl font-bold text-gray-500">
-                            No Orders Found
-                        </h2>
-
-                        <p class="text-gray-400 mt-2">
-                            Start ordering your favourite pizza.
-                        </p>
-
-                        <a href="{% url 'menu' %}"
-                            class="inline-block mt-5 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg">
-                            Order Now
-                        </a>
-
-                    </td>
-
-                </tr>
-
-                {% endfor %}
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-</section>
+</div>
 
 {% endblock %}

@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Book a Table - TastyBite
+{% endblock %}
+
+{% block content %}
+
+<!-- Fonts & Custom Styles -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-serif-heading {
+        font-family: 'Playfair Display', serif;
+    }
+    .font-script {
+        font-family: 'Pacifico', cursive;
+    }
+</style>
+
+<!-- Hero Banner Section -->
+<section class="relative bg-slate-950 text-white py-16 lg:py-20 px-6 overflow-hidden">
+    <div class="absolute inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=1600&auto=format&fit=crop&q=80" 
+             alt="Table Reservation Background" 
+             class="w-full h-full object-cover opacity-25">
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/90 to-slate-950"></div>
+    </div>
+
+    <div class="max-w-4xl mx-auto text-center relative z-10 space-y-3">
+        <p class="text-red-500 font-script text-2xl sm:text-3xl">Save Your Spot</p>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold font-serif-heading tracking-tight text-white">
+            Book a Table
+        </h1>
+        <p class="text-slate-300 text-sm sm:text-base max-w-lg mx-auto font-normal">
+            Whether it's a family gathering, date night, or birthday celebration, reserve your spot for a premium dining experience.
+        </p>
+    </div>
+</section>
+
+<!-- Reservation Content Section -->
+<section class="bg-[#faf7f2] py-12 lg:py-16 px-6 min-h-screen">
+    <div class="max-w-6xl mx-auto">
+
+        <!-- Main Form Grid Container -->
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-12">
+            
+            <!-- Left Side: Visual Feature Banner (5 Cols) -->
+            <div class="lg:col-span-5 relative bg-slate-900 min-h-[320px] lg:min-h-full p-8 lg:p-12 flex flex-col justify-between overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?w=800&auto=format&fit=crop&q=80" 
+                     alt="Restaurant Dining Area" 
+                     class="absolute inset-0 w-full h-full object-cover opacity-40">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent"></div>
+
+                <div class="relative z-10">
+                    <span class="bg-red-600 text-white text-[10px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full inline-block shadow-md">
+                        Premium Dining
+                    </span>
+                </div>
+
+                <div class="relative z-10 space-y-4">
+                    <h2 class="text-2xl sm:text-3xl font-bold font-serif-heading text-white leading-snug">
+                        Memorable Feasts, Reserved Just for You.
+                    </h2>
+                    
+                    <ul class="space-y-2.5 text-xs text-slate-300 font-medium">
+                        <li class="flex items-center gap-2">
+                            <span class="text-emerald-400 font-bold">✓</span> Priority seating in our aesthetic dining zone
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-emerald-400 font-bold">✓</span> Zero waiting line on weekends & peak hours
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <span class="text-emerald-400 font-bold">✓</span> Custom birthday & anniversary arrangements
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Right Side: Booking Form (7 Cols) -->
+            <div class="lg:col-span-7 p-6 sm:p-10 lg:p-12">
+                <div class="border-b border-slate-100 pb-4 mb-6">
+                    <h2 class="text-2xl font-bold font-serif-heading text-slate-900">Reservation Details</h2>
+                    <p class="text-xs text-slate-400 mt-1">Fill out the form below to confirm your table</p>
+                </div>
+
+                <form method="POST" action="{% url 'reservation' %}" class="space-y-5">
+                    {% csrf_token %}
+
+                    <!-- Full Name -->
+                    <div class="space-y-1.5">
+                        <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Your Full Name</label>
+                        <input type="text" 
+                               name="name" 
+                               required 
+                               value="{{ request.user.get_full_name|default:request.user.username }}"
+                               placeholder="Enter your name" 
+                               class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 outline-none focus:ring-2 focus:ring-red-500 focus:bg-white text-slate-800 text-xs font-medium transition">
+                    </div>
+
+                    <!-- Email & Phone Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="space-y-1.5">
+                            <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Email Address</label>
+                            <input type="email" 
+                                   name="email" 
+                                   required 
+                                   value="{{ request.user.email }}"
+                                   placeholder="name@example.com" 
+                                   class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 outline-none focus:ring-2 focus:ring-red-500 focus:bg-white text-slate-800 text-xs font-medium transition">
+                        </div>
+
+                        <div class="space-y-1.5">
+                            <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Phone Number</label>
+                            <input type="tel" 
+                                   name="phone" 
+                                   required 
+                                   placeholder="10-digit phone number" 
+                                   class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 outline-none focus:ring-2 focus:ring-red-500 focus:bg-white text-slate-800 text-xs font-medium transition">
+                        </div>
+                    </div>
+
+                    <!-- Date, Time & Guests Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <!-- Date -->
+                        <div class="space-y-1.5">
+                            <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Booking Date</label>
+                            <input type="date" 
+                                   name="booking_date" 
+                                   required 
+                                   class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 outline-none focus:ring-2 focus:ring-red-500 focus:bg-white text-slate-800 text-xs font-medium transition">
+                        </div>
+
+                        <!-- Time -->
+                        <div class="space-y-1.5">
+                            <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Booking Time</label>
+                            <input type="time" 
+                                   name="booking_time" 
+                                   required 
+                                   class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 outline-none focus:ring-2 focus:ring-red-500 focus:bg-white text-slate-800 text-xs font-medium transition">
+                        </div>
+
+                        <!-- Number of Guests -->
+                        <div class="space-y-1.5">
+                            <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Number of Guests</label>
+                            <select name="guests" 
+                                    required 
+                                    class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 outline-none focus:ring-2 focus:ring-red-500 focus:bg-white text-slate-800 text-xs font-medium transition">
+                                <option value="1">1 Person</option>
+                                <option value="2" selected>2 Persons</option>
+                                <option value="3">3 Persons</option>
+                                <option value="4">4 Persons</option>
+                                <option value="5">5 Persons</option>
+                                <option value="6">6+ Persons (Family)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Special Instructions -->
+                    <div class="space-y-1.5">
+                        <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Special Request (Optional)</label>
+                        <textarea name="special_request" 
+                                  rows="3" 
+                                  placeholder="Anniversary celebration, birthday decor, high chair needed, etc." 
+                                  class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 outline-none focus:ring-2 focus:ring-red-500 focus:bg-white text-slate-800 text-xs font-medium transition placeholder-slate-400"></textarea>
+                    </div>
+
+                    <!-- Confirm Button -->
+                    <button type="submit" 
+                            class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-6 rounded-2xl shadow-lg shadow-red-600/30 transition-all duration-200 text-xs uppercase tracking-wider text-center active:scale-95">
+                        Confirm Table Reservation
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

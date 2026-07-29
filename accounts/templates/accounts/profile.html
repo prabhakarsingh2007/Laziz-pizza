@@ -1,53 +1,123 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Profile
+My Profile - TastyBite
 {% endblock %}
 
 {% block content %}
 
-<div class="max-w-3xl mx-auto mt-10 bg-white shadow-lg rounded-lg p-8">
+<!-- Fonts & Custom Styles -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <h2 class="text-3xl font-bold text-center text-red-600 mb-8">
-        My Profile
-    </h2>
+<style>
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-serif-heading {
+        font-family: 'Playfair Display', serif;
+    }
+    .font-script {
+        font-family: 'Pacifico', cursive;
+    }
+</style>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="bg-[#faf7f2] min-h-screen py-12 lg:py-16 px-6">
+    <div class="max-w-4xl mx-auto space-y-8">
 
-        <div>
-            <label class="font-semibold">Full Name</label>
-            <input type="text" value="John Doe" class="w-full border rounded-lg p-3 mt-2" readonly>
+        <!-- Page Header -->
+        <div class="text-center max-w-2xl mx-auto space-y-2">
+            <p class="text-red-500 font-script text-2xl">User Account</p>
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold font-serif-heading text-slate-900 tracking-tight">
+                My Profile
+            </h1>
+            <div class="w-12 h-1 bg-red-600 mx-auto mt-3 rounded-full"></div>
         </div>
 
-        <div>
-            <label class="font-semibold">Username</label>
-            <input type="text" value="johndoe" class="w-full border rounded-lg p-3 mt-2" readonly>
-        </div>
+        <!-- Profile Information Card -->
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-xl p-6 sm:p-10 space-y-8 relative overflow-hidden">
+            
+            <!-- User Avatar & Basic Info Header -->
+            <div class="flex flex-col sm:flex-row items-center gap-6 border-b border-slate-100 pb-8 text-center sm:text-left">
+                <div class="w-20 h-20 rounded-full bg-red-50 border-2 border-red-500/30 text-red-600 flex items-center justify-center font-black text-2xl uppercase shadow-md shrink-0">
+                    {{ user.username|first|default:"U" }}
+                </div>
+                <div>
+                    <h2 class="text-2xl font-bold font-serif-heading text-slate-900">
+                        {{ user.name|default:user.username }}
+                    </h2>
+                    <p class="text-slate-400 text-xs font-semibold mt-0.5">
+                        Member status: <span class="text-slate-700 font-bold">Recently Joined</span>
+                    </p>
+                    <span class="inline-block bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider mt-2">
+                        ● Active Account
+                    </span>
+                </div>
+            </div>
 
-        <div>
-            <label class="font-semibold">Email</label>
-            <input type="email" value="john@gmail.com" class="w-full border rounded-lg p-3 mt-2" readonly>
-        </div>
+            <!-- Readonly Profile Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 
-        <div>
-            <label class="font-semibold">Phone</label>
-            <input type="text" value="9876543210" class="w-full border rounded-lg p-3 mt-2" readonly>
+                <!-- Full Name -->
+                <div class="space-y-1.5">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Full Name</label>
+                    <input type="text" 
+                           value="{{ user.name|default:user.username }}" 
+                           readonly 
+                           class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-slate-800 text-xs font-semibold outline-none cursor-default">
+                </div>
+
+                <!-- Username -->
+                <div class="space-y-1.5">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Username</label>
+                    <input type="text" 
+                           value="{{ user.username }}" 
+                           readonly 
+                           class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-slate-800 text-xs font-semibold outline-none cursor-default">
+                </div>
+
+                <!-- Email Address -->
+                <div class="space-y-1.5">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Email Address</label>
+                    <input type="email" 
+                           value="{{ user.email|default:'Not provided' }}" 
+                           readonly 
+                           class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-slate-800 text-xs font-semibold outline-none cursor-default">
+                </div>
+
+                <!-- Phone Number -->
+                <div class="space-y-1.5">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Phone Number</label>
+                    <input type="text" 
+                           value="{{ user.phone|default:'Not provided' }}" 
+                           readonly 
+                           class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-slate-800 text-xs font-semibold outline-none cursor-default">
+                </div>
+
+            </div>
+
+            <!-- Action Buttons Grid -->
+            <div class="pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-center gap-4">
+                <a href="#" 
+                   class="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-6 rounded-2xl shadow-sm transition-all duration-200 text-xs uppercase tracking-wider text-center">
+                    Edit Profile
+                </a>
+
+                <a href="/accounts/change-password/" 
+                   class="w-full sm:w-auto bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg shadow-red-600/20 transition-all duration-200 text-xs uppercase tracking-wider text-center active:scale-95">
+                    Change Password
+                </a>
+
+                <a href="{% url 'my_orders' %}" 
+                   class="w-full sm:w-auto bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3.5 px-6 rounded-2xl transition duration-200 text-xs uppercase tracking-wider text-center sm:ml-auto">
+                    View My Orders
+                </a>
+            </div>
+
         </div>
 
     </div>
-
-    <div class="mt-8 flex gap-4">
-
-        <a href="#" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
-            Edit Profile
-        </a>
-
-        <a href="/accounts/change-password/" class="bg-red-600 text-white px-6 py-3 rounded-lg hover:bg-red-700">
-            Change Password
-        </a>
-
-    </div>
-
 </div>
 
 {% endblock %}

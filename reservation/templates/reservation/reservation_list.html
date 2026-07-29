@@ -1,94 +1,160 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Reservation List
+My Table Reservations - TastyBite
 {% endblock %}
 
 {% block content %}
 
-<section class="container mx-auto px-6 py-10">
+<!-- Fonts & Custom Styles -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <div class="flex justify-between items-center mb-8">
+<style>
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-serif-heading {
+        font-family: 'Playfair Display', serif;
+    }
+    .font-script {
+        font-family: 'Pacifico', cursive;
+    }
+</style>
 
-        <div>
-            <h1 class="text-4xl font-bold text-red-600">
-                Reservation List
-            </h1>
+<div class="bg-[#faf7f2] min-h-screen py-12 lg:py-16 px-6">
+    <div class="max-w-6xl mx-auto space-y-10">
 
-            <p class="text-gray-500 mt-2">
-                View all table reservations.
-            </p>
+        <!-- Page Header -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-6 bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-xl">
+            <div class="space-y-1">
+                <p class="text-red-500 font-script text-xl">Saved Tables</p>
+                <h1 class="text-3xl sm:text-4xl font-bold font-serif-heading text-slate-900 tracking-tight">
+                    Reservation List
+                </h1>
+                <p class="text-slate-500 text-xs sm:text-sm font-medium">
+                    View and manage all your table reservations in one place.
+                </p>
+            </div>
+
+            <a href="{% url 'reservation' %}" 
+               class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold px-6 py-3.5 rounded-2xl shadow-lg shadow-red-600/20 transition duration-200 text-xs uppercase tracking-wider active:scale-95 whitespace-nowrap self-start sm:self-auto">
+                <span>+ New Reservation</span>
+            </a>
         </div>
 
-        <a href="{% url 'reservation' %}"
-           class="bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-lg">
-            + New Reservation
-        </a>
+        {% if reservations %}
+        <!-- Reservation Cards Container -->
+        <div class="bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-slate-700">
+                    <thead class="bg-slate-50 text-slate-400 font-bold uppercase text-[11px] tracking-wider border-b border-slate-100">
+                        <tr>
+                            <th class="py-4 px-6">Customer Name</th>
+                            <th class="py-4 px-6">Phone</th>
+                            <th class="py-4 px-6">Booking Date</th>
+                            <th class="py-4 px-6">Time</th>
+                            <th class="py-4 px-6 text-center">Guests</th>
+                            <th class="py-4 px-6">Status</th>
+                            <th class="py-4 px-6 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        {% for reservation in reservations %}
+                        <tr class="hover:bg-slate-50/60 transition duration-150">
+                            <!-- Name -->
+                            <td class="py-5 px-6 font-bold text-slate-900">
+                                {{ reservation.name }}
+                            </td>
+
+                            <!-- Phone -->
+                            <td class="py-5 px-6 text-slate-600 text-xs font-semibold">
+                                {{ reservation.phone }}
+                            </td>
+
+                            <!-- Date -->
+                            <td class="py-5 px-6 text-slate-800 text-xs font-bold">
+                                {{ reservation.booking_date }}
+                            </td>
+
+                            <!-- Time -->
+                            <td class="py-5 px-6 text-slate-500 text-xs font-medium">
+                                {{ reservation.booking_time }}
+                            </td>
+
+                            <!-- Guests -->
+                            <td class="py-5 px-6 text-center font-extrabold text-slate-800">
+                                {{ reservation.guests }} Person(s)
+                            </td>
+
+                            <!-- Status Badge -->
+                            <td class="py-5 px-6">
+                                <span class="px-3.5 py-1.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider inline-flex items-center gap-1.5
+                                    {% if reservation.status == 'Pending' %}bg-amber-50 text-amber-700 border border-amber-200
+                                    {% elif reservation.status == 'Approved' or reservation.status == 'Confirmed' %}bg-emerald-50 text-emerald-700 border border-emerald-200
+                                    {% else %}bg-rose-50 text-rose-700 border border-rose-200{% endif %}">
+                                    ● {{ reservation.status|default:"Confirmed" }}
+                                </span>
+                            </td>
+
+                            <!-- View Action Button -->
+                            <td class="py-5 px-6 text-center">
+                                <a href="{% url 'reservation_detail' reservation.id %}" 
+                                   class="inline-flex items-center gap-1.5 bg-slate-900 hover:bg-red-600 text-white font-bold py-2.5 px-5 rounded-2xl shadow-sm transition-all duration-200 text-xs uppercase tracking-wider active:scale-95">
+                                    <span>View</span>
+                                    <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <!-- Empty Reservations Row -->
+                        <tr>
+                            <td colspan="7" class="py-16 text-center space-y-4">
+                                <div class="w-20 h-20 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto text-3xl font-bold">
+                                    🍽️
+                                </div>
+                                <div class="space-y-1">
+                                    <h3 class="text-2xl font-bold font-serif-heading text-slate-900">No Reservations Found</h3>
+                                    <p class="text-slate-500 text-xs leading-relaxed max-w-sm mx-auto">
+                                        Looks like you haven't booked any tables yet. Plan your feast with us today!
+                                    </p>
+                                </div>
+                                <a href="{% url 'reservation' %}" 
+                                   class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-3.5 rounded-2xl shadow-lg shadow-red-600/20 transition duration-200 text-xs uppercase tracking-wider">
+                                    <span>Book a Table Now</span>
+                                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% else %}
+        <!-- Standalone Empty State -->
+        <div class="max-w-md mx-auto bg-white border border-slate-100 shadow-xl rounded-3xl p-10 text-center space-y-5">
+            <div class="w-20 h-20 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto text-3xl font-bold">
+                🍽️
+            </div>
+            
+            <div class="space-y-1">
+                <h2 class="text-2xl font-bold font-serif-heading text-slate-900">No Reservations Found</h2>
+                <p class="text-slate-500 text-xs leading-relaxed">
+                    Looks like you haven't booked any tables yet. Plan your feast with us today!
+                </p>
+            </div>
+
+            <a href="{% url 'reservation' %}" 
+               class="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-bold px-8 py-3.5 rounded-2xl shadow-lg shadow-red-600/20 transition duration-200 text-xs uppercase tracking-wider">
+                <span>Book a Table Now</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+        </div>
+        {% endif %}
 
     </div>
-
-    <div class="bg-white shadow-lg rounded-xl overflow-hidden">
-
-        <table class="w-full">
-
-            <thead class="bg-red-600 text-white">
-
-                <tr>
-
-                    <th class="py-4">Name</th>
-                    <th>Phone</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Guests</th>
-                    <th>Status</th>
-                    <th>Action</th>
-
-                </tr>
-
-            </thead>
-
-            <tbody>
-
-                {% for reservation in reservations %}
-
-                <tr class="text-center border-b hover:bg-gray-50">
-
-                    <td class="py-4">{{ reservation.name }}</td>
-                    <td>{{ reservation.phone }}</td>
-                    <td>{{ reservation.booking_date }}</td>
-                    <td>{{ reservation.booking_time }}</td>
-                    <td>{{ reservation.guests }}</td>
-                    <td>{{ reservation.status }}</td>
-
-                    <td>
-
-                        <a href="{% url 'reservation_detail' reservation.id %}"
-                           class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-                            View
-                        </a>
-
-                    </td>
-
-                </tr>
-
-                {% empty %}
-
-                <tr>
-
-                    <td colspan="7" class="py-8 text-center text-gray-500">
-                        No Reservation Found
-                    </td>
-
-                </tr>
-
-                {% endfor %}
-
-            </tbody>
-
-        </table>
-
-    </div>
-
-</section>
+</div>
 
 {% endblock %}

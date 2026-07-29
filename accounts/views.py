@@ -37,3 +37,10 @@ def login(request):
 def logout(request):
     request.session.flush()
     return redirect('home')
+
+def profile(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login')
+    user = User.objects.get(id=user_id)
+    return render(request, 'accounts/profile.html', {'user': user})

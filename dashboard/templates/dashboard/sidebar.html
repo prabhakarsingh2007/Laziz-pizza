@@ -1,0 +1,118 @@
+<!-- Admin Dashboard Sidebar -->
+<aside class="w-64 bg-[#d91212] text-white flex flex-col justify-between min-h-screen shrink-0 font-sans shadow-xl">
+    
+    <div>
+        <!-- Brand Logo Header -->
+        <div class="p-6 flex items-center gap-3 border-b border-red-700/50">
+            <div class="w-10 h-10 bg-white/10 rounded-2xl border border-white/20 flex items-center justify-center text-white text-xl font-black">
+                🍕
+            </div>
+            <div>
+                <h1 class="font-extrabold text-lg leading-tight tracking-wide text-white">Laziz Pizza</h1>
+                <p class="text-[11px] text-red-200 font-medium font-sans">Admin Panel</p>
+            </div>
+        </div>
+
+        <!-- Navigation Links Group -->
+        <nav class="p-4 space-y-1">
+            
+            <!-- Dashboard Overview -->
+            <a href="{% url 'dashboard' %}" 
+               class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition duration-150 {% if request.resolver_match.url_name == 'dashboard' %}bg-white text-[#d91212] shadow-sm{% else %}text-white hover:bg-red-700/60{% endif %}">
+                <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                <span>Dashboard Overview</span>
+            </a>
+
+            <!-- Manage Menu -->
+            <a href="{% url 'food_list' %}" 
+               class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition duration-150 {% if request.resolver_match.url_name == 'food_list' or request.resolver_match.url_name == 'add_food' or request.resolver_match.url_name == 'edit_food' or request.resolver_match.url_name == 'delete_food' %}bg-white text-[#d91212] shadow-sm{% else %}text-white hover:bg-red-700/60{% endif %}">
+                <i data-lucide="pizza" class="w-5 h-5"></i>
+                <span>Manage Menu</span>
+            </a>
+
+            <!-- Manage Categories -->
+            <a href="{% url 'category_list' %}" 
+               class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition duration-150 {% if request.resolver_match.url_name == 'category_list' or request.resolver_match.url_name == 'delete_category' %}bg-white text-[#d91212] shadow-sm{% else %}text-white hover:bg-red-700/60{% endif %}">
+                <i data-lucide="folder" class="w-5 h-5"></i>
+                <span>Manage Categories</span>
+            </a>
+
+            <!-- Manage Popular Cards -->
+            <a href="{% url 'popular_list' %}" 
+               class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition duration-150 {% if request.resolver_match.url_name == 'popular_list' or request.resolver_match.url_name == 'delete_popular' %}bg-white text-[#d91212] shadow-sm{% else %}text-white hover:bg-red-700/60{% endif %}">
+                <i data-lucide="sparkles" class="w-5 h-5"></i>
+                <span>Manage Popular Cards</span>
+            </a>
+
+            <!-- Manage Orders -->
+            <a href="{% url 'admin_orders' %}" 
+               class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition duration-150 {% if request.resolver_match.url_name == 'admin_orders' %}bg-white text-[#d91212] shadow-sm{% else %}text-white hover:bg-red-700/60{% endif %}">
+                <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                <span>Manage Orders</span>
+            </a>
+
+            <!-- Manage Bookings -->
+            <a href="{% url 'admin_reservations' %}" 
+               class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition duration-150 {% if request.resolver_match.url_name == 'admin_reservations' %}bg-white text-[#d91212] shadow-sm{% else %}text-white hover:bg-red-700/60{% endif %}">
+                <i data-lucide="calendar" class="w-5 h-5"></i>
+                <span>Manage Bookings</span>
+            </a>
+
+            <!-- Manage Users -->
+            <a href="{% url 'admin_users' %}" 
+               class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition duration-150 {% if request.resolver_match.url_name == 'admin_users' %}bg-white text-[#d91212] shadow-sm{% else %}text-white hover:bg-red-700/60{% endif %}">
+                <i data-lucide="users" class="w-5 h-5"></i>
+                <span>Manage Users</span>
+            </a>
+
+            <!-- Sales Report -->
+            <a href="{% url 'sales' %}" 
+               class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition duration-150 {% if request.resolver_match.url_name == 'sales' %}bg-white text-[#d91212] shadow-sm{% else %}text-white hover:bg-red-700/60{% endif %}">
+                <i data-lucide="indian-rupee" class="w-5 h-5"></i>
+                <span>Sales Report</span>
+            </a>
+
+            <!-- Manage Coupons -->
+            <a href="{% url 'coupon_list' %}" 
+               class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition duration-150 {% if request.resolver_match.url_name == 'coupon_list' or request.resolver_match.url_name == 'edit_coupon' or request.resolver_match.url_name == 'delete_coupon' %}bg-white text-[#d91212] shadow-sm{% else %}text-white hover:bg-red-700/60{% endif %}">
+                <i data-lucide="ticket" class="w-5 h-5"></i>
+                <span>Manage Coupons</span>
+            </a>
+
+            <!-- View Website -->
+            <a href="/" 
+               class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-white hover:bg-red-700/60 transition duration-150">
+                <i data-lucide="globe" class="w-5 h-5"></i>
+                <span>View Website</span>
+            </a>
+
+        </nav>
+    </div>
+
+    <!-- Bottom User Profile & Logout -->
+    <div class="p-4 bg-[#0f172a] mt-6 border-t border-slate-800">
+        <!-- Admin Profile -->
+        <div class="flex items-center gap-3 p-2 mb-3">
+            <div class="relative">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80" 
+                     alt="Admin Avatar" 
+                     class="w-10 h-10 rounded-full object-cover border-2 border-white/20">
+                <span class="w-3 h-3 bg-emerald-500 rounded-full border-2 border-[#0f172a] absolute bottom-0 right-0"></span>
+            </div>
+            <div>
+                <h4 class="font-bold text-sm text-white leading-tight font-sans">
+                    {{ request.session.name|default:"Admin" }}
+                </h4>
+                <p class="text-[11px] text-slate-400 font-medium font-sans">@{{ request.session.username|default:"admin" }}</p>
+            </div>
+        </div>
+
+        <!-- Logout Button -->
+        <a href="{% url 'logout' %}" 
+           class="w-full bg-[#d91212] hover:bg-red-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 transition duration-200 shadow-md">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+
+</aside>

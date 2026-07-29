@@ -1,0 +1,202 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Our Menu - TastyBite / Laziz Pizza
+{% endblock %}
+
+{% block content %}
+
+<!-- Fonts & Custom Styles -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-serif-heading {
+        font-family: 'Playfair Display', serif;
+    }
+    .font-script {
+        font-family: 'Pacifico', cursive;
+    }
+</style>
+
+<!-- Menu Hero Banner Section -->
+<section class="relative bg-slate-950 text-white py-16 lg:py-20 px-6 overflow-hidden">
+    <div class="absolute inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1600&auto=format&fit=crop&q=80" 
+             alt="Menu Background" 
+             class="w-full h-full object-cover opacity-25">
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/90 to-slate-950"></div>
+    </div>
+
+    <div class="max-w-4xl mx-auto text-center relative z-10 space-y-3">
+        <p class="text-red-500 font-script text-2xl sm:text-3xl">Fresh & Hot Delicacies</p>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold font-serif-heading tracking-tight text-white">
+            Explore Our Menu
+        </h1>
+        <p class="text-slate-300 text-sm sm:text-base max-w-lg mx-auto font-normal">
+            Savor the finest handcrafted pizzas, gourmet burgers, fresh pastas, and irresistible desserts.
+        </p>
+
+        <!-- Search & Filter Bar -->
+        <div class="pt-6 max-w-xl mx-auto">
+            <form method="GET" action="{% url 'menu' %}" class="relative flex items-center">
+                {% if request.GET.type %}
+                    <input type="hidden" name="type" value="{{ request.GET.type }}">
+                {% endif %}
+                {% if request.GET.category %}
+                    <input type="hidden" name="category" value="{{ request.GET.category }}">
+                {% endif %}
+                <input type="text" 
+                       name="q" 
+                       value="{{ request.GET.q|default:'' }}" 
+                       placeholder="Search your favorite dish (e.g. Pizza, Burger)..." 
+                       class="w-full bg-white/10 backdrop-blur-md border border-white/20 text-white placeholder-slate-400 text-sm rounded-2xl py-3.5 pl-12 pr-28 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition">
+                
+                <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-4"></i>
+                
+                <button type="submit" class="absolute right-2 bg-red-600 hover:bg-red-700 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition shadow-md">
+                    Search
+                </button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Menu Content Section -->
+<section class="bg-[#faf7f2] py-12 lg:py-16 px-6 min-h-screen">
+    <div class="max-w-7xl mx-auto space-y-8">
+
+        <!-- Filter Control Panel: Veg/Non-Veg & Categories -->
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6 bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+            
+            <!-- 🟢🔴 Veg / Non-Veg Toggle Options -->
+            <div class="flex items-center gap-2 w-full md:w-auto justify-center">
+                <!-- All Dishes -->
+                <a href="{% url 'menu' %}{% if request.GET.category %}?category={{ request.GET.category }}{% endif %}" 
+                   class="px-4 py-2.5 rounded-xl font-bold text-xs transition border flex items-center gap-1.5 {% if not request.GET.type and not selected_food_type %}bg-slate-900 text-white border-slate-900 shadow-md{% else %}bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100{% endif %}">
+                    <span>All</span>
+                </a>
+
+                <!-- Pure Veg Filter -->
+                <a href="{% url 'menu' %}?type=Veg{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" 
+                   class="px-4 py-2.5 rounded-xl font-bold text-xs transition border flex items-center gap-1.5 {% if request.GET.type == 'Veg' or selected_food_type == 'Veg' %}bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20{% else %}bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100{% endif %}">
+                    <span class="w-2 h-2 rounded-full {% if request.GET.type == 'Veg' or selected_food_type == 'Veg' %}bg-white{% else %}bg-emerald-600{% endif %}"></span>
+                    <span>Pure Veg</span>
+                </a>
+
+                <!-- Non-Veg Filter -->
+                <a href="{% url 'menu' %}?type=Non-Veg{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" 
+                   class="px-4 py-2.5 rounded-xl font-bold text-xs transition border flex items-center gap-1.5 {% if request.GET.type == 'Non-Veg' or selected_food_type == 'Non-Veg' %}bg-rose-600 text-white border-rose-600 shadow-md shadow-rose-600/20{% else %}bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100{% endif %}">
+                    <span class="w-2 h-2 rounded-full {% if request.GET.type == 'Non-Veg' or selected_food_type == 'Non-Veg' %}bg-white{% else %}bg-rose-600{% endif %}"></span>
+                    <span>Non-Veg</span>
+                </a>
+            </div>
+
+            <!-- Categories Filter Badges -->
+            <div class="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none">
+                <a href="{% url 'menu' %}{% if request.GET.type %}?type={{ request.GET.type }}{% endif %}" 
+                   class="px-4 py-2 rounded-xl font-bold text-xs whitespace-nowrap transition border {% if not selected_category %}bg-red-600 text-white border-red-600{% else %}bg-white text-slate-600 border-slate-200 hover:border-red-500{% endif %}">
+                    All Categories
+                </a>
+
+                {% for category in categories %}
+                <a href="{% url 'menu' %}?category={{ category.id }}{% if request.GET.type %}&type={{ request.GET.type }}{% elif selected_food_type %}&type={{ selected_food_type }}{% endif %}" 
+                   class="px-4 py-2 rounded-xl font-bold text-xs whitespace-nowrap transition border {% if selected_category == category.id|stringformat:'s' or selected_category == category.name %}bg-red-600 text-white border-red-600{% else %}bg-white text-slate-600 border-slate-200 hover:border-red-500{% endif %}">
+                    {{ category.name }}
+                </a>
+                {% endfor %}
+            </div>
+
+        </div>
+
+        <!-- Food Grid Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+            {% for item in food_items %}
+            <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 flex flex-col justify-between group">
+                
+                <!-- Food Image Section -->
+                <div class="relative h-48 sm:h-52 overflow-hidden bg-slate-100">
+                    <!-- Veg / Non-Veg Indicator Badge -->
+                    <span class="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider text-slate-800 border border-slate-200 flex items-center gap-1.5 z-10 shadow-sm">
+                        {% if item.food_type == 'Veg' %}
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Veg
+                        {% else %}
+                        <span class="w-2 h-2 rounded-full bg-rose-500"></span> Non-Veg
+                        {% endif %}
+                    </span>
+
+                    {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="{{ item.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&auto=format&fit=crop&q=80" alt="{{ item.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    {% endif %}
+                </div>
+
+                <!-- Details Section -->
+                <div class="p-5 flex-1 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-start justify-between gap-2 mb-1.5">
+                            <h3 class="font-bold text-slate-900 text-base lg:text-lg leading-snug group-hover:text-red-600 transition-colors">
+                                <a href="{% url 'food_detail' item.id %}">{{ item.name }}</a>
+                            </h3>
+                            <span class="text-red-600 font-extrabold text-lg lg:text-xl whitespace-nowrap">
+                                ₹{{ item.price|floatformat:0 }}
+                            </span>
+                        </div>
+
+                        <!-- Rating Badge -->
+                        <div class="flex items-center gap-1.5 mb-2">
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400 text-amber-400"></i>
+                            <span class="text-xs font-bold text-slate-800">4.5</span>
+                            <span class="text-xs text-slate-400">(85)</span>
+                        </div>
+
+                        <p class="text-slate-500 text-xs line-clamp-2 leading-relaxed">
+                            {% if item.description %}
+                                {{ item.description }}
+                            {% else %}
+                                Freshly baked with authentic herbs, rich cheese, and premium toppings.
+                            {% endif %}
+                        </p>
+                    </div>
+
+                    <!-- Cart Action Button -->
+                    <div class="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                            {{ item.category.name|default:"TastyBite" }}
+                        </span>
+                        
+                        <a href="{% url 'add_to_cart' item.id %}" 
+                           class="bg-red-50 hover:bg-red-600 text-red-600 hover:text-white font-bold text-xs px-4 py-2 rounded-xl transition duration-200 flex items-center gap-1.5 shadow-sm active:scale-95">
+                            <i data-lucide="shopping-cart" class="w-3.5 h-3.5"></i>
+                            <span>Add</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            {% empty %}
+            <!-- Empty State -->
+            <div class="col-span-full py-16 text-center space-y-4">
+                <div class="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto text-2xl font-bold">
+                    🍽️
+                </div>
+                <h3 class="text-xl font-bold text-slate-800">No Food Items Found</h3>
+                <p class="text-slate-500 text-sm max-w-sm mx-auto">
+                    We couldn't find any items matching your selected criteria. Try changing your filters.
+                </p>
+                <a href="{% url 'menu' %}" class="inline-block bg-red-600 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-md hover:bg-red-700 transition">
+                    Reset All Filters
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}

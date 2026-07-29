@@ -7,26 +7,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>
-        {% block title %}Laziz Pizza{% endblock %}
+        {% block title %}TastyBite | Laziz Pizza - Fresh, Hot & Delicious{% endblock %}
     </title>
+
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts (Playfair Display, Plus Jakarta Sans, Pacifico) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Global Styling Overrides -->
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .font-serif-heading {
+            font-family: 'Playfair Display', serif;
+        }
+        .font-script {
+            font-family: 'Pacifico', cursive;
+        }
+        /* Custom scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #faf7f2;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ef4444;
+        }
+    </style>
+
+    {% block extra_head %}{% endblock %}
 </head>
 
-<body class="bg-gray-100 min-h-screen flex flex-col">
+<body class="bg-[#faf7f2] min-h-screen flex flex-col font-sans text-slate-800 antialiased selection:bg-red-500 selection:text-white">
 
+    <!-- Navigation Header Bar -->
     {% include 'partials/navbar.html' %}
 
+    <!-- Global Django Toast / Alert Messages Banner -->
+    {% if messages %}
+    <div class="max-w-7xl mx-auto px-6 pt-4 w-full space-y-2">
+        {% for message in messages %}
+        <div class="p-4 rounded-2xl text-xs font-bold flex items-center justify-between shadow-sm transition-all duration-300
+            {% if message.tags == 'error' %}bg-rose-50 text-rose-700 border border-rose-200/80
+            {% elif message.tags == 'success' %}bg-emerald-50 text-emerald-700 border border-emerald-200/80
+            {% else %}bg-amber-50 text-amber-700 border border-amber-200/80{% endif %}">
+            <div class="flex items-center gap-2">
+                <span>{{ message }}</span>
+            </div>
+            <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-slate-700 font-extrabold text-sm ml-4">
+                ✕
+            </button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main Page Content Block -->
     <main class="flex-1">
         {% block content %}
         {% endblock %}
     </main>
 
+    <!-- Global Footer -->
     {% include 'partials/footer.html' %}
 
+    <!-- Custom Script File -->
     <script src="{% static 'js/script.js' %}"></script>
+
+    <!-- Lucide Icons Initialization -->
     <script>
-        lucide.createIcons();
+        document.addEventListener("DOMContentLoaded", function () {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
     </script>
 
     {% block scripts %}

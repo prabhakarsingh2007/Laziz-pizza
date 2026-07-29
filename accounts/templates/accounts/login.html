@@ -1,57 +1,107 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Login
+Login - TastyBite
 {% endblock %}
 
 {% block content %}
 
-<div class="max-w-md mx-auto mt-10 bg-white shadow-lg rounded-lg p-6">
+<!-- Fonts & Custom Styles -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <h2 class="text-3xl font-bold text-center text-red-600 mb-6">
-        Login
-    </h2>
+<style>
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-serif-heading {
+        font-family: 'Playfair Display', serif;
+    }
+    .font-script {
+        font-family: 'Pacifico', cursive;
+    }
+</style>
 
-    {% if error %}
-    <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg text-sm text-center font-semibold animate-pulse">
-        {{ error }}
+<div class="bg-[#faf7f2] min-h-screen py-16 lg:py-24 px-6 flex items-center justify-center">
+    <div class="max-w-md w-full bg-white rounded-3xl border border-slate-100 shadow-xl p-8 sm:p-10 space-y-6 relative overflow-hidden">
+        
+        <!-- Subtle Glow Accent Background -->
+        <div class="absolute -top-12 -right-12 w-32 h-32 bg-red-600/10 rounded-full blur-2xl pointer-events-none"></div>
+
+        <!-- Header -->
+        <div class="text-center space-y-1">
+            <p class="text-red-500 font-script text-2xl">Welcome Back</p>
+            <h1 class="text-3xl font-bold font-serif-heading text-slate-900">
+                User Login
+            </h1>
+            <p class="text-slate-400 text-xs font-medium pt-1">
+                Enter your credentials to access your account
+            </p>
+        </div>
+
+        <!-- Messages / Error Alert -->
+        {% if error %}
+        <div class="bg-rose-50 border border-rose-200 text-rose-700 px-4 py-3 rounded-2xl text-xs font-bold text-center shadow-sm animate-pulse">
+            {{ error }}
+        </div>
+        {% endif %}
+
+        {% if messages %}
+        <div class="space-y-2">
+            {% for message in messages %}
+            <div class="p-3.5 rounded-2xl text-xs font-bold flex items-center justify-between shadow-sm
+                {% if message.tags == 'error' %}bg-rose-50 text-rose-700 border border-rose-200
+                {% elif message.tags == 'success' %}bg-emerald-50 text-emerald-700 border border-emerald-200
+                {% else %}bg-amber-50 text-amber-700 border border-amber-200{% endif %}">
+                <span>{{ message }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Login Form -->
+        <form method="POST" class="space-y-4">
+            {% csrf_token %}
+
+            <!-- Username Input -->
+            <div class="space-y-1.5">
+                <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Username</label>
+                <input type="text" 
+                       name="username" 
+                       required 
+                       placeholder="Enter Username"
+                       class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 outline-none focus:ring-2 focus:ring-red-500 focus:bg-white text-slate-800 text-xs font-medium transition">
+            </div>
+
+            <!-- Password Input -->
+            <div class="space-y-1.5">
+                <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Password</label>
+                <input type="password" 
+                       name="password" 
+                       required 
+                       placeholder="Enter Password"
+                       class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 outline-none focus:ring-2 focus:ring-red-500 focus:bg-white text-slate-800 text-xs font-medium transition">
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" 
+                    class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-6 rounded-2xl shadow-lg shadow-red-600/30 transition-all duration-200 text-xs uppercase tracking-wider text-center active:scale-95 mt-2">
+                Login to Account
+            </button>
+        </form>
+
+        <!-- Redirect to Register -->
+        <div class="text-center pt-2 border-t border-slate-100">
+            <p class="text-xs text-slate-500 font-medium">
+                Don't have an account? 
+                <a href="{% url 'register' %}" class="text-red-600 font-extrabold hover:underline ml-1">
+                    Register Now
+                </a>
+            </p>
+        </div>
+
     </div>
-    {% endif %}
-
-    <form method="POST">
-        {% csrf_token %}
-
-        <div class="mb-4">
-            <label class="block font-semibold mb-2">
-                Username
-            </label>
-
-            <input type="text" name="username" placeholder="Enter Username"
-                class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500" required>
-        </div>
-
-        <div class="mb-4">
-            <label class="block font-semibold mb-2">
-                Password
-            </label>
-
-            <input type="password" name="password" placeholder="Enter Password"
-                class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500" required>
-        </div>
-
-        <button type="submit" class="w-full bg-red-600 text-white p-3 rounded-lg hover:bg-red-700">
-            Login
-        </button>
-
-    </form>
-
-    <p class="text-center mt-5">
-        Don't have an account?
-        <a href="/accounts/register/" class="text-red-600 font-bold">
-            Register
-        </a>
-    </p>
-
 </div>
 
 {% endblock %}

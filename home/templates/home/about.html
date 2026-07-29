@@ -1,50 +1,136 @@
 {% extends 'base.html' %}
 
 {% block title %}
-About Us
+About Us - TastyBite
 {% endblock %}
 
 {% block content %}
 
-<section class="max-w-6xl mx-auto py-12 px-6">
+<!-- Fonts & Custom Styles -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <h1 class="text-4xl font-bold text-center text-red-600 mb-8">
-        About Laziz Pizza
-    </h1>
+<style>
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-serif-heading {
+        font-family: 'Playfair Display', serif;
+    }
+    .font-script {
+        font-family: 'Pacifico', cursive;
+    }
+</style>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+<!-- Hero Section -->
+<section class="relative bg-slate-950 text-white py-16 lg:py-20 px-6 overflow-hidden">
+    <div class="absolute inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600&auto=format&fit=crop&q=80" 
+             alt="Restaurant Interior" 
+             class="w-full h-full object-cover opacity-25">
+        <div class="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-950/90 to-slate-950"></div>
+    </div>
 
-        <!-- Image -->
-        <div>
-            <img src="https://via.placeholder.com/600x400" alt="Laziz Pizza" class="rounded-lg shadow-lg w-full">
+    <div class="max-w-4xl mx-auto text-center relative z-10 space-y-3">
+        <p class="text-red-500 font-script text-2xl sm:text-3xl">Our Story</p>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold font-serif-heading tracking-tight text-white">
+            About Laziz Pizza
+        </h1>
+        <p class="text-slate-300 text-sm sm:text-base max-w-lg mx-auto font-normal">
+            Crafting memorable food experiences with fresh ingredients, passion, and authentic Italian recipes.
+        </p>
+    </div>
+</section>
+
+<!-- Main Story Section -->
+<section class="bg-[#faf7f2] py-16 lg:py-20 px-6">
+    <div class="max-w-6xl mx-auto space-y-16">
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+
+            <!-- High Quality Image Stack (6 Cols) -->
+            <div class="lg:col-span-6 relative">
+                <div class="relative z-10 rounded-3xl overflow-hidden border border-slate-100 shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop&q=80" 
+                         alt="Laziz Pizza Kitchen" 
+                         class="w-full h-[360px] sm:h-[440px] object-cover">
+                </div>
+                
+                <!-- Floating Decorative Badge -->
+                <div class="absolute -bottom-6 -right-6 bg-white p-6 rounded-3xl border border-slate-100 shadow-xl hidden sm:flex items-center gap-4 z-20">
+                    <div class="w-12 h-12 bg-red-50 text-red-600 rounded-2xl flex items-center justify-center text-2xl font-bold">
+                        🍕
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-slate-900 text-base">100% Fresh</h4>
+                        <p class="text-xs text-slate-400 font-medium">Handcrafted Daily</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Details (6 Cols) -->
+            <div class="lg:col-span-6 space-y-6">
+                <div class="space-y-2">
+                    <span class="bg-red-50 text-red-600 text-xs font-extrabold px-3.5 py-1.5 rounded-full uppercase tracking-wider inline-block">
+                        Welcome to Our Kitchen
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-bold font-serif-heading text-slate-900 leading-tight">
+                        Serving Happiness, One Slice at a Time 🍕
+                    </h2>
+                </div>
+
+                <div class="space-y-4 text-slate-600 text-sm leading-relaxed font-normal">
+                    <p>
+                        <strong class="text-slate-900">Laziz Pizza</strong> is dedicated to serving fresh, delicious, and high-quality pizzas made with premium mozzarella, organic toppings, and hand-stretched dough.
+                    </p>
+                    <p>
+                        Beyond pizzas, we offer a wide variety of handcrafted gourmet burgers, creamy pastas, chilled beverages, and mouth-watering desserts — backed by lightning-fast delivery and top-notch customer service.
+                    </p>
+                    <p>
+                        Our mission is simple: provide wholesome food, a warm friendly atmosphere, and a memorable dining experience for every food lover who walks through our doors.
+                    </p>
+                </div>
+
+                <div class="pt-2 flex items-center gap-4">
+                    <a href="{% url 'menu' %}" 
+                       class="bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 px-8 rounded-2xl shadow-lg shadow-red-600/20 transition-all duration-200 text-xs uppercase tracking-wider active:scale-95">
+                        Explore Our Menu
+                    </a>
+                    
+                    <a href="{% url 'reservation' %}" 
+                       class="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3.5 px-6 rounded-2xl transition duration-200 text-xs uppercase tracking-wider">
+                        Book a Table
+                    </a>
+                </div>
+            </div>
+
         </div>
 
-        <!-- Content -->
-        <div>
+        <!-- Counter / Stats Grid -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 pt-8">
+            <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-xl text-center space-y-1">
+                <h3 class="text-3xl sm:text-4xl font-black text-red-600 font-serif-heading">15k+</h3>
+                <p class="text-xs font-bold text-slate-700 uppercase tracking-wider">Happy Customers</p>
+            </div>
 
-            <h2 class="text-3xl font-bold mb-4">
-                Welcome to Laziz Pizza 🍕
-            </h2>
+            <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-xl text-center space-y-1">
+                <h3 class="text-3xl sm:text-4xl font-black text-red-600 font-serif-heading">30+</h3>
+                <p class="text-xs font-bold text-slate-700 uppercase tracking-wider">Pizza Varieties</p>
+            </div>
 
-            <p class="text-gray-700 mb-4">
-                Laziz Pizza is dedicated to serving fresh, delicious, and
-                high-quality pizzas made with premium ingredients.
-            </p>
+            <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-xl text-center space-y-1">
+                <h3 class="text-3xl sm:text-4xl font-black text-red-600 font-serif-heading">25 Mins</h3>
+                <p class="text-xs font-bold text-slate-700 uppercase tracking-wider">Avg. Delivery Time</p>
+            </div>
 
-            <p class="text-gray-700 mb-4">
-                We offer a wide variety of pizzas, burgers, pasta, drinks,
-                and desserts with fast delivery and excellent customer service.
-            </p>
-
-            <p class="text-gray-700">
-                Our mission is to provide tasty food, a friendly atmosphere,
-                and a memorable dining experience for every customer.
-            </p>
-
+            <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-xl text-center space-y-1">
+                <h3 class="text-3xl sm:text-4xl font-black text-red-600 font-serif-heading">4.9 ★</h3>
+                <p class="text-xs font-bold text-slate-700 uppercase tracking-wider">Customer Rating</p>
+            </div>
         </div>
 
     </div>
-
 </section>
 
 {% endblock %}
