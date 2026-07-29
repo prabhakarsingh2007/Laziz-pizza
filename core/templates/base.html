@@ -10,6 +10,7 @@
         {% block title %}Laziz Pizza{% endblock %}
     </title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 
 <body class="bg-gray-100 min-h-screen flex flex-col">
@@ -24,6 +25,9 @@
     {% include 'partials/footer.html' %}
 
     <script src="{% static 'js/script.js' %}"></script>
+    <script>
+        lucide.createIcons();
+    </script>
 
     {% block scripts %}
     {% endblock %}

@@ -25,8 +25,12 @@
 
             <!-- Category Badge Floating overlay -->
             <div class="absolute top-4 left-4">
-                <span class="px-3.5 py-1.5 rounded-full text-xs font-black tracking-wide uppercase backdrop-blur-md shadow-sm border {% if food.food_type == 'Veg' %}bg-emerald-500/90 text-white border-emerald-400{% else %}bg-rose-600/90 text-white border-rose-500{% endif %}">
-                    {% if food.food_type == 'Veg' %}🟢 Veg{% else %}🔴 Non-Veg{% endif %}
+                <span class="px-3.5 py-1.5 rounded-full text-xs font-black tracking-wide uppercase backdrop-blur-md shadow-sm border flex items-center gap-1.5 {% if food.food_type == 'Veg' %}bg-emerald-500/90 text-white border-emerald-400{% else %}bg-rose-600/90 text-white border-rose-500{% endif %}">
+                    {% if food.food_type == 'Veg' %}
+                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> Veg
+                    {% else %}
+                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> Non-Veg
+                    {% endif %}
                 </span>
             </div>
         </div>
@@ -81,12 +85,12 @@
                 <div class="flex flex-col sm:flex-row gap-3 pt-1">
                     <button type="submit"
                             class="flex-1 bg-gradient-to-r from-red-600 to-amber-500 hover:from-red-700 hover:to-amber-600 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-red-500/20 active:scale-[0.98] transition duration-200 flex items-center justify-center gap-2 text-sm">
-                        <span>🛒</span> Add to Cart
+                        <i data-lucide="shopping-cart" class="w-4 h-4"></i> Add to Cart
                     </button>
                     
                     <a href="{% url 'menu' %}"
-                       class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3.5 px-6 rounded-xl transition active:scale-[0.98] flex items-center justify-center gap-1 text-sm">
-                        ← Back to Menu
+                       class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3.5 px-6 rounded-xl transition active:scale-[0.98] flex items-center justify-center gap-1.5 text-sm">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Menu
                     </a>
                 </div>
             </form>

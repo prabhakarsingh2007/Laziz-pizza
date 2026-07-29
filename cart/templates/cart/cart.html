@@ -9,7 +9,9 @@ My Cart
 <div class="container mx-auto px-6 py-12 max-w-5xl">
 
     <div class="text-center max-w-2xl mx-auto mb-10">
-        <h1 class="text-4xl font-black tracking-tight text-slate-900">🛒 Shopping Cart</h1>
+        <h1 class="text-4xl font-black tracking-tight text-slate-900 flex items-center justify-center gap-3">
+            <i data-lucide="shopping-cart" class="w-10 h-10 text-red-600"></i> Shopping Cart
+        </h1>
         <div class="h-1.5 w-16 bg-red-600 mx-auto mt-4 rounded-full"></div>
     </div>
 
@@ -51,8 +53,8 @@ My Cart
                         </td>
                         <td class="py-4 px-6 text-center font-extrabold text-slate-800">₹{{ item.total_price }}</td>
                         <td class="py-4 px-6 text-center">
-                            <a href="{% url 'remove_from_cart' item.id %}" class="bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-xl text-xs font-bold transition">
-                                🗑️ Remove
+                            <a href="{% url 'remove_from_cart' item.id %}" class="bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 w-max mx-auto">
+                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Remove
                             </a>
                         </td>
                     </tr>
@@ -77,8 +79,10 @@ My Cart
         </div>
     </div>
     {% else %}
-    <div class="max-w-md mx-auto bg-white border border-slate-100 shadow-xl rounded-2xl p-8 text-center">
-        <div class="text-6xl mb-4">🛒</div>
+    <div class="max-w-md mx-auto bg-white border border-slate-100 shadow-xl rounded-2xl p-8 text-center flex flex-col items-center">
+        <div class="mb-4 text-slate-300">
+            <i data-lucide="shopping-cart" class="w-16 h-16"></i>
+        </div>
         <h2 class="text-2xl font-bold text-slate-800 mb-2">Your Cart is Empty</h2>
         <p class="text-slate-500 text-sm mb-6">Looks like you haven't added anything to your cart yet.</p>
         <a href="{% url 'menu' %}" class="inline-block bg-gradient-to-r from-red-600 to-amber-500 text-white font-bold px-8 py-3.5 rounded-xl shadow-lg shadow-red-900/20 hover:brightness-110 transition">

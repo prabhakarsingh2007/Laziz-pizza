@@ -16,11 +16,11 @@
             <div class="flex items-center gap-6">
                 <!-- Notification Bell -->
                 <div class="relative">
-                    <a href="{% url 'admin_orders' %}" class="text-slate-600 hover:text-red-650 transition text-xl relative p-1.5 hover:bg-slate-50 rounded-xl block">
-                        🔔
+                    <a href="{% url 'admin_orders' %}" class="text-slate-600 hover:text-red-650 transition relative p-1.5 hover:bg-slate-50 rounded-xl block">
+                        <i data-lucide="bell" class="w-5 h-5"></i>
                         {% if total_orders %}
                         <span id="notification-count"
-                              class="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold rounded-full px-1.5 py-0.5 leading-none">
+                              class="absolute -top-0.5 -right-0.5 bg-red-600 text-white text-[9px] font-bold rounded-full px-1.5 py-0.5 leading-none">
                             {{ total_orders }}
                         </span>
                         {% endif %}

@@ -170,7 +170,7 @@ Laziz Pizza - Fresh, Hot & Delicious
         <!-- Hero Text -->
         <div class="space-y-6 text-center lg:text-left">
             <span class="inline-block bg-red-600/20 text-red-400 border border-red-500/30 text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full backdrop-blur-md">
-                🔥 Hot & Fresh Italian Pizza
+                Hot & Fresh Italian Pizza
             </span>
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
                 Crafted to Perfection,<br>
@@ -181,10 +181,10 @@ Laziz Pizza - Fresh, Hot & Delicious
             </p>
             <div class="flex flex-wrap justify-center lg:justify-start gap-4 pt-2">
                 <a href="{% url 'menu' %}" class="bg-gradient-to-r from-red-600 to-amber-500 text-white font-extrabold px-8 py-4 rounded-xl shadow-lg shadow-red-900/40 hover:brightness-110 active:scale-95 transition duration-200 flex items-center gap-2">
-                    🍕 Order Online
+                    <i data-lucide="shopping-cart" class="w-5 h-5"></i> Order Online
                 </a>
                 <a href="{% url 'reservation' %}" class="bg-slate-800/80 hover:bg-slate-700 text-white font-bold px-8 py-4 rounded-xl border border-slate-700 active:scale-95 transition duration-200 backdrop-blur-sm flex items-center gap-2">
-                    📅 Book a Table
+                    <i data-lucide="calendar" class="w-5 h-5"></i> Book a Table
                 </a>
             </div>
         </div>
@@ -239,8 +239,8 @@ Laziz Pizza - Fresh, Hot & Delicious
         <div class="group relative bg-white rounded-3xl p-8 border border-slate-200/80 shadow-lg shadow-slate-200/50 hover:shadow-2xl hover:shadow-red-500/10 hover:-translate-y-2 hover:border-red-500/40 transition-all duration-300 overflow-hidden">
             <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-green-500/10 to-transparent rounded-bl-full transition-all duration-500 group-hover:scale-110"></div>
             
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-3xl shadow-lg shadow-green-500/30 mb-6 group-hover:scale-110 transition-transform duration-300">
-                🌿
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-green-500/30 mb-6 group-hover:scale-110 transition-transform duration-300">
+                <i data-lucide="leaf" class="w-8 h-8 text-white"></i>
             </div>
             
             <h3 class="text-xl font-extrabold text-slate-900 group-hover:text-green-600 transition-colors">100% Fresh Ingredients</h3>
@@ -256,8 +256,8 @@ Laziz Pizza - Fresh, Hot & Delicious
         <div class="group relative bg-white rounded-3xl p-8 border border-slate-200/80 shadow-lg shadow-slate-200/50 hover:shadow-2xl hover:shadow-amber-500/10 hover:-translate-y-2 hover:border-amber-500/40 transition-all duration-300 overflow-hidden">
             <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-amber-500/10 to-transparent rounded-bl-full transition-all duration-500 group-hover:scale-110"></div>
             
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-3xl shadow-lg shadow-amber-500/30 mb-6 group-hover:scale-110 transition-transform duration-300">
-                ⚡
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-lg shadow-amber-500/30 mb-6 group-hover:scale-110 transition-transform duration-300">
+                <i data-lucide="zap" class="w-8 h-8 text-white"></i>
             </div>
             
             <h3 class="text-xl font-extrabold text-slate-900 group-hover:text-amber-600 transition-colors">Lightning Express Delivery</h3>
@@ -273,8 +273,8 @@ Laziz Pizza - Fresh, Hot & Delicious
         <div class="group relative bg-white rounded-3xl p-8 border border-slate-200/80 shadow-lg shadow-slate-200/50 hover:shadow-2xl hover:shadow-red-500/10 hover:-translate-y-2 hover:border-red-500/40 transition-all duration-300 overflow-hidden">
             <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-red-500/10 to-transparent rounded-bl-full transition-all duration-500 group-hover:scale-110"></div>
             
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-600 to-rose-700 flex items-center justify-center text-3xl shadow-lg shadow-red-500/30 mb-6 group-hover:scale-110 transition-transform duration-300">
-                🧑‍🍳
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-600 to-rose-700 flex items-center justify-center shadow-lg shadow-red-500/30 mb-6 group-hover:scale-110 transition-transform duration-300">
+                <i data-lucide="utensils" class="w-8 h-8 text-white"></i>
             </div>
             
             <h3 class="text-xl font-extrabold text-slate-900 group-hover:text-red-600 transition-colors">Master Italian Chefs</h3>
@@ -296,14 +296,14 @@ Laziz Pizza - Fresh, Hot & Delicious
                 Limited Time Offer
             </span>
             <h2 class="text-3xl sm:text-4xl font-black leading-tight">
-                Buy 1 Medium Pizza & Get 1 Free Garlic Bread! 🥖
+                Buy 1 Medium Pizza & Get 1 Free Garlic Bread!
             </h2>
             <p class="text-amber-100 text-sm sm:text-base">
                 Use Code <strong class="bg-black/20 px-2 py-0.5 rounded text-white tracking-wider">LAZIZDEAL</strong> at checkout. Valid on online orders today.
             </p>
         </div>
         <a href="{% url 'menu' %}" class="bg-slate-900 hover:bg-slate-800 text-white font-extrabold px-8 py-4 rounded-xl shadow-lg active:scale-95 transition duration-200 whitespace-nowrap z-10">
-            Claim Offer Now 🔥
+            Claim Offer Now
         </a>
     </div>
 </section>
@@ -362,12 +362,16 @@ Laziz Pizza - Fresh, Hot & Delicious
 
                     <!-- Hover Revealed Details -->
                     <div class="uiverse-title flex flex-col items-center justify-center space-y-2 absolute inset-0 bg-red-950/85 backdrop-blur-sm rounded-20 p-4">
-                      <span class="text-[10px] uppercase bg-white/20 px-2.5 py-1 rounded-full font-black tracking-widest text-white border border-white/20">
-                        {% if item.food_type == 'Veg' %}🟢 Veg{% else %}🔴 Non-Veg{% endif %}
+                      <span class="text-[10px] uppercase bg-white/20 px-2.5 py-1 rounded-full font-black tracking-widest text-white border border-white/20 flex items-center gap-1.5">
+                        {% if item.food_type == 'Veg' %}
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Veg
+                        {% else %}
+                        <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Non-Veg
+                        {% endif %}
                       </span>
                       <div class="text-3xl font-black text-white">₹{{ item.price|floatformat:0 }}</div>
                       <div class="bg-white text-red-600 px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider hover:bg-amber-400 hover:text-slate-900 transition-all duration-200 mt-2 flex items-center gap-1.5 shadow-lg">
-                        🛒 Order Now
+                        <i data-lucide="shopping-cart" class="w-4 h-4"></i> Order Now
                       </div>
                     </div>
 
@@ -430,10 +434,9 @@ Laziz Pizza - Fresh, Hot & Delicious
                     <span class="text-green-600 text-lg font-bold">✓</span>
                     <p class="text-slate-700 font-semibold text-sm sm:text-base">Custom table arrangements for anniversaries or birthdays</p>
                 </div>
-            </div>
-            <div class="pt-4">
-                <a href="{% url 'reservation' %}" class="inline-block bg-gradient-to-r from-red-600 to-amber-500 text-white font-black px-8 py-4 rounded-xl shadow-lg shadow-red-900/20 hover:brightness-110 active:scale-95 transition duration-150">
-                    🍽 Book A Table Now
+             <div class="pt-4">
+                <a href="{% url 'reservation' %}" class="inline-block bg-gradient-to-r from-red-600 to-amber-500 text-white font-black px-8 py-4 rounded-xl shadow-lg shadow-red-900/20 hover:brightness-110 active:scale-95 transition duration-150 flex items-center gap-2">
+                    <i data-lucide="utensils" class="w-5 h-5"></i> Book A Table Now
                 </a>
             </div>
         </div>
@@ -479,13 +482,25 @@ Laziz Pizza - Fresh, Hot & Delicious
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div class="bg-white border border-slate-100 p-8 rounded-2xl shadow-lg shadow-slate-100 space-y-4">
-            <div class="flex items-center gap-1 text-amber-500">⭐⭐⭐⭐⭐</div>
+            <div class="flex items-center gap-0.5 text-amber-500">
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500 text-amber-500"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500 text-amber-500"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500 text-amber-500"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500 text-amber-500"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500 text-amber-500"></i>
+            </div>
             <p class="text-gray-600 italic leading-relaxed">"Laziz Pizza is hands down the best pizza joint in town. The cheese pull is absolute perfection, and the service is top-notch!"</p>
             <p class="font-bold text-slate-800 text-sm">- Rahul S.</p>
         </div>
 
         <div class="bg-white border border-slate-100 p-8 rounded-2xl shadow-lg shadow-slate-100 space-y-4">
-            <div class="flex items-center gap-1 text-amber-500">⭐⭐⭐⭐⭐</div>
+            <div class="flex items-center gap-0.5 text-amber-500">
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500 text-amber-500"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500 text-amber-500"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500 text-amber-500"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500 text-amber-500"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500 text-amber-500"></i>
+            </div>
             <p class="text-gray-600 italic leading-relaxed">"Delivered hot in 20 minutes! The garlic bread and veggie supreme pizza are highly recommended."</p>
             <p class="font-bold text-slate-800 text-sm">- Priya M.</p>
         </div>
