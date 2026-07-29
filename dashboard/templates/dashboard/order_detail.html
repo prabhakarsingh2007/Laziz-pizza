@@ -143,10 +143,12 @@ Order Detail
                     Delivered
                 </option>
 
+                {% if order.status == "Pending" or order.status == "Cancelled" %}
                 <option value="Cancelled"
                     {% if order.status == "Cancelled" %}selected{% endif %}>
                     Cancelled
                 </option>
+                {% endif %}
 
             </select>
 
