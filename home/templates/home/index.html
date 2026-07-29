@@ -1,508 +1,314 @@
 {% extends 'base.html' %}
 
 {% block title %}
-Laziz Pizza - Fresh, Hot & Delicious
+TastyBite - Delicious Food Made For You
 {% endblock %}
 
 {% block content %}
 
+<!-- Google Fonts (Playfair Display for headings & Pacifico/Script style for accents) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
-/* Floating Animation for Hero Pizza Image */
-@keyframes float {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-15px) rotate(3deg); }
-}
-
-.float-anim {
-  animation: float 6s ease-in-out infinite;
-}
-
-/* --- Interactive 3D Card Styling --- */
-.uiverse-container {
-  position: relative;
-  width: 270px;
-  height: 360px;
-  transition: transform 200ms ease;
-}
-
-.uiverse-container:active {
-  transform: scale(0.97);
-}
-
-.uiverse-card {
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 20px;
-  transition: transform 300ms ease-out, filter 300ms ease;
-  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 46%, #f59e0b 100%);
-  padding: 24px 16px;
-  box-shadow: 0 10px 25px -5px rgba(220, 38, 38, 0.4);
-}
-
-.uiverse-card::before {
-  content: '';
-  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 46%, #f59e0b 100%);
-  filter: blur(2rem);
-  opacity: 0.35;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  transition: opacity 300ms ease;
-}
-
-.uiverse-container:hover .uiverse-card::before {
-  opacity: 0.7;
-}
-
-.uiverse-img {
-  width: 140px;
-  height: 140px;
-  object-fit: cover;
-  border-radius: 50%;
-  border: 4px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-  transition: transform 400ms ease;
-  z-index: 20;
-}
-
-.uiverse-container:hover .uiverse-img {
-  transform: scale(1.08) rotate(5deg);
-}
-
-.uiverse-prompt {
-  z-index: 20;
-  font-size: 1.25rem;
-  font-weight: 800;
-  transition: opacity 300ms ease-in-out;
-  color: #ffffff;
-  text-align: center;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-}
-
-.uiverse-title {
-  opacity: 0;
-  transition: opacity 300ms ease-in-out, transform 300ms ease-in-out;
-  transform: translateY(10px);
-  z-index: 20;
-}
-
-.canvas:hover ~ .uiverse-card .uiverse-prompt {
-  opacity: 0;
-}
-
-.canvas:hover ~ .uiverse-card .uiverse-title {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.canvas:hover ~ .uiverse-card {
-  filter: brightness(1.08);
-}
-
-/* 3D Tilt Grid Tracker Layer */
-.canvas {
-  perspective: 800px;
-  inset: 0;
-  z-index: 30;
-  position: absolute;
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-}
-
-.tracker {
-  position: relative;
-  z-index: 30;
-  width: 100%;
-  height: 100%;
-}
-
-.tracker:hover {
-  cursor: pointer;
-}
-
-/* 3D Hover Transformations */
-.tr-1:hover ~ .uiverse-card { transform: rotateX(15deg) rotateY(-10deg); }
-.tr-2:hover ~ .uiverse-card { transform: rotateX(15deg) rotateY(-5deg); }
-.tr-3:hover ~ .uiverse-card { transform: rotateX(15deg) rotateY(0deg); }
-.tr-4:hover ~ .uiverse-card { transform: rotateX(15deg) rotateY(5deg); }
-.tr-5:hover ~ .uiverse-card { transform: rotateX(15deg) rotateY(10deg); }
-.tr-6:hover ~ .uiverse-card { transform: rotateX(8deg) rotateY(-10deg); }
-.tr-7:hover ~ .uiverse-card { transform: rotateX(8deg) rotateY(-5deg); }
-.tr-8:hover ~ .uiverse-card { transform: rotateX(8deg) rotateY(0deg); }
-.tr-9:hover ~ .uiverse-card { transform: rotateX(8deg) rotateY(5deg); }
-.tr-10:hover ~ .uiverse-card { transform: rotateX(8deg) rotateY(10deg); }
-.tr-11:hover ~ .uiverse-card { transform: rotateX(0deg) rotateY(-10deg); }
-.tr-12:hover ~ .uiverse-card { transform: rotateX(0deg) rotateY(-5deg); }
-.tr-13:hover ~ .uiverse-card { transform: rotateX(0deg) rotateY(0deg); }
-.tr-14:hover ~ .uiverse-card { transform: rotateX(0deg) rotateY(5deg); }
-.tr-15:hover ~ .uiverse-card { transform: rotateX(0deg) rotateY(10deg); }
-.tr-16:hover ~ .uiverse-card { transform: rotateX(-8deg) rotateY(-10deg); }
-.tr-17:hover ~ .uiverse-card { transform: rotateX(-8deg) rotateY(-5deg); }
-.tr-18:hover ~ .uiverse-card { transform: rotateX(-8deg) rotateY(0deg); }
-.tr-19:hover ~ .uiverse-card { transform: rotateX(-8deg) rotateY(5deg); }
-.tr-20:hover ~ .uiverse-card { transform: rotateX(-8deg) rotateY(10deg); }
-.tr-21:hover ~ .uiverse-card { transform: rotateX(-15deg) rotateY(-10deg); }
-.tr-22:hover ~ .uiverse-card { transform: rotateX(-15deg) rotateY(-5deg); }
-.tr-23:hover ~ .uiverse-card { transform: rotateX(-15deg) rotateY(0deg); }
-.tr-24:hover ~ .uiverse-card { transform: rotateX(-15deg) rotateY(5deg); }
-.tr-25:hover ~ .uiverse-card { transform: rotateX(-15deg) rotateY(10deg); }
-
-.noselect {
-  user-select: none;
-  -webkit-user-select: none;
-}
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-serif-heading {
+        font-family: 'Playfair Display', serif;
+    }
+    .font-script {
+        font-family: 'Pacifico', cursive;
+    }
 </style>
 
 <!-- Hero Section -->
-<section class="relative bg-gradient-to-br from-slate-950 via-slate-900 to-red-950 text-white overflow-hidden py-20 lg:py-28 px-6">
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(220,38,38,0.25),transparent_50%)]"></div>
-    <div class="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10 max-w-6xl">
-        
-        <!-- Hero Text -->
-        <div class="space-y-6 text-center lg:text-left">
-            <span class="inline-block bg-red-600/20 text-red-400 border border-red-500/30 text-xs font-black uppercase tracking-widest px-4 py-1.5 rounded-full backdrop-blur-md">
-                Hot & Fresh Italian Pizza
-            </span>
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
-                Crafted to Perfection,<br>
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-amber-400">Baked with Passion</span>
-            </h1>
-            <p class="text-base sm:text-lg text-slate-300 max-w-lg mx-auto lg:mx-0 leading-relaxed">
-                Experience the authentic taste of freshly baked pizzas loaded with rich mozzarella cheese, organic fresh toppings, and hand-stretched dough.
-            </p>
-            <div class="flex flex-wrap justify-center lg:justify-start gap-4 pt-2">
-                <a href="{% url 'menu' %}" class="bg-gradient-to-r from-red-600 to-amber-500 text-white font-extrabold px-8 py-4 rounded-xl shadow-lg shadow-red-900/40 hover:brightness-110 active:scale-95 transition duration-200 flex items-center gap-2">
-                    <i data-lucide="shopping-cart" class="w-5 h-5"></i> Order Online
-                </a>
-                <a href="{% url 'reservation' %}" class="bg-slate-800/80 hover:bg-slate-700 text-white font-bold px-8 py-4 rounded-xl border border-slate-700 active:scale-95 transition duration-200 backdrop-blur-sm flex items-center gap-2">
-                    <i data-lucide="calendar" class="w-5 h-5"></i> Book a Table
-                </a>
-            </div>
-        </div>
-
-        <!-- Floating Pizza Image -->
-        <div class="flex justify-center relative">
-            <div class="absolute w-80 h-80 bg-red-600/25 blur-3xl rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
-            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&auto=format&fit=crop&q=80" 
-                 alt="Delicious Floating Pizza" 
-                 class="w-[380px] sm:w-[460px] max-w-full rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.6)] float-anim relative z-10">
-        </div>
-    </div>
-</section>
-
-<!-- Stats / Social Proof Counter Bar -->
-<section class="bg-red-600 text-white py-8 border-t border-red-500 shadow-inner">
-    <div class="max-w-6xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-        <div class="space-y-1">
-            <h3 class="text-3xl font-black">15k+</h3>
-            <p class="text-xs uppercase tracking-wider text-red-100 font-semibold">Happy Customers</p>
-        </div>
-        <div class="space-y-1">
-            <h3 class="text-3xl font-black">30+</h3>
-            <p class="text-xs uppercase tracking-wider text-red-100 font-semibold">Pizza Varieties</p>
-        </div>
-        <div class="space-y-1">
-            <h3 class="text-3xl font-black">25 Mins</h3>
-            <p class="text-xs uppercase tracking-wider text-red-100 font-semibold">Avg. Delivery Time</p>
-        </div>
-        <div class="space-y-1">
-            <h3 class="text-3xl font-black">4.9 ★</h3>
-            <p class="text-xs uppercase tracking-wider text-red-100 font-semibold">Customer Rating</p>
-        </div>
-    </div>
-</section>
-
-<!-- Features Section -->
-<!-- Redesigned Features Section -->
-<section class="max-w-6xl mx-auto py-20 px-6 relative">
-    <!-- Subtle Background Glow -->
-    <div class="absolute inset-0 bg-gradient-to-r from-red-500/5 via-amber-500/5 to-red-500/5 blur-3xl -z-10 rounded-full"></div>
-
-    <div class="text-center max-w-2xl mx-auto mb-16">
-        <span class="text-red-600 font-extrabold text-xs uppercase tracking-widest bg-red-100 px-3 py-1 rounded-full">Our Promise</span>
-        <h2 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight mt-3">Why Foodies Love Us</h2>
-        <div class="h-1.5 w-20 bg-gradient-to-r from-red-600 to-amber-500 mx-auto mt-4 rounded-full"></div>
-        <p class="text-gray-500 mt-4 text-sm sm:text-base">We are dedicated to providing the ultimate Italian pizza experience right to your doorstep.</p>
+<section class="relative bg-slate-950 text-white min-h-[580px] lg:min-h-[640px] flex items-center overflow-hidden">
+    <!-- Background Image with Overlay -->
+    <div class="absolute inset-0 z-0">
+        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1600&auto=format&fit=crop&q=80" 
+             alt="Restaurant Ambient Background" 
+             class="w-full h-full object-cover object-center opacity-30 blur-[1px]">
+        <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent"></div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <!-- Feature 1 -->
-        <div class="group relative bg-white rounded-3xl p-8 border border-slate-200/80 shadow-lg shadow-slate-200/50 hover:shadow-2xl hover:shadow-red-500/10 hover:-translate-y-2 hover:border-red-500/40 transition-all duration-300 overflow-hidden">
-            <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-green-500/10 to-transparent rounded-bl-full transition-all duration-500 group-hover:scale-110"></div>
+    <div class="container mx-auto px-6 lg:px-12 relative z-10 py-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center shadow-lg shadow-green-500/30 mb-6 group-hover:scale-110 transition-transform duration-300">
-                <i data-lucide="leaf" class="w-8 h-8 text-white"></i>
-            </div>
-            
-            <h3 class="text-xl font-extrabold text-slate-900 group-hover:text-green-600 transition-colors">100% Fresh Ingredients</h3>
-            <p class="text-gray-600 mt-3 text-sm leading-relaxed">We source organic vegetables, fresh mozzarella, and premium olive oil daily for our signature recipes.</p>
-            
-            <div class="mt-6 flex items-center text-xs font-bold text-green-600">
-                <span>Farm Fresh Daily</span>
-                <span class="ml-1 group-hover:translate-x-1 transition-transform">→</span>
-            </div>
-        </div>
-
-        <!-- Feature 2 -->
-        <div class="group relative bg-white rounded-3xl p-8 border border-slate-200/80 shadow-lg shadow-slate-200/50 hover:shadow-2xl hover:shadow-amber-500/10 hover:-translate-y-2 hover:border-amber-500/40 transition-all duration-300 overflow-hidden">
-            <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-amber-500/10 to-transparent rounded-bl-full transition-all duration-500 group-hover:scale-110"></div>
-            
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-lg shadow-amber-500/30 mb-6 group-hover:scale-110 transition-transform duration-300">
-                <i data-lucide="zap" class="w-8 h-8 text-white"></i>
-            </div>
-            
-            <h3 class="text-xl font-extrabold text-slate-900 group-hover:text-amber-600 transition-colors">Lightning Express Delivery</h3>
-            <p class="text-gray-600 mt-3 text-sm leading-relaxed">Our smart logistics ensures hot, oven-fresh pizzas are delivered to your doorstep within 30 mins.</p>
-            
-            <div class="mt-6 flex items-center text-xs font-bold text-amber-600">
-                <span>Under 30 Minutes</span>
-                <span class="ml-1 group-hover:translate-x-1 transition-transform">→</span>
-            </div>
-        </div>
-
-        <!-- Feature 3 -->
-        <div class="group relative bg-white rounded-3xl p-8 border border-slate-200/80 shadow-lg shadow-slate-200/50 hover:shadow-2xl hover:shadow-red-500/10 hover:-translate-y-2 hover:border-red-500/40 transition-all duration-300 overflow-hidden">
-            <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-red-500/10 to-transparent rounded-bl-full transition-all duration-500 group-hover:scale-110"></div>
-            
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-600 to-rose-700 flex items-center justify-center shadow-lg shadow-red-500/30 mb-6 group-hover:scale-110 transition-transform duration-300">
-                <i data-lucide="utensils" class="w-8 h-8 text-white"></i>
-            </div>
-            
-            <h3 class="text-xl font-extrabold text-slate-900 group-hover:text-red-600 transition-colors">Master Italian Chefs</h3>
-            <p class="text-gray-600 mt-3 text-sm leading-relaxed">Our hand-stretched dough and marinara sauces are prepared by authentic master chefs with passion.</p>
-            
-            <div class="mt-6 flex items-center text-xs font-bold text-red-600">
-                <span>Authentic Recipes</span>
-                <span class="ml-1 group-hover:translate-x-1 transition-transform">→</span>
-            </div>
-        </div>
-    </div>
-</section>
-<!-- Today's Special Offers Banner -->
-<section class="max-w-6xl mx-auto mb-20 px-6">
-    <div class="relative bg-gradient-to-r from-amber-500 via-orange-500 to-red-600 rounded-3xl p-8 sm:p-12 text-white overflow-hidden shadow-2xl flex flex-col md:flex-row items-center justify-between gap-8">
-        <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/10 rounded-full blur-2xl pointer-events-none"></div>
-        <div class="space-y-4 max-w-xl text-center md:text-left z-10">
-            <span class="bg-white text-red-600 text-xs font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-sm">
-                Limited Time Offer
-            </span>
-            <h2 class="text-3xl sm:text-4xl font-black leading-tight">
-                Buy 1 Medium Pizza & Get 1 Free Garlic Bread!
-            </h2>
-            <p class="text-amber-100 text-sm sm:text-base">
-                Use Code <strong class="bg-black/20 px-2 py-0.5 rounded text-white tracking-wider">LAZIZDEAL</strong> at checkout. Valid on online orders today.
-            </p>
-        </div>
-        <a href="{% url 'menu' %}" class="bg-slate-900 hover:bg-slate-800 text-white font-extrabold px-8 py-4 rounded-xl shadow-lg active:scale-95 transition duration-200 whitespace-nowrap z-10">
-            Claim Offer Now
-        </a>
-    </div>
-</section>
-
-<!-- Popular Menu Section -->
-<section class="bg-slate-50/80 py-20 px-6 border-y border-slate-200/60">
-    <div class="max-w-6xl mx-auto">
-        <div class="text-center max-w-2xl mx-auto mb-16">
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">Our Bestselling Menu</h2>
-            <div class="h-1.5 w-20 bg-red-600 mx-auto mt-4 rounded-full"></div>
-            <p class="text-gray-500 mt-4">Order our most loved signature pizzas, burgers and combos.</p>
-        </div>
-
-        <div class="flex flex-wrap justify-center gap-8">
-            {% for item in food_items %}
-            <!-- Interactive Card -->
-            <div class="uiverse-container noselect">
-              <a href="{% url 'add_to_cart' item.id %}" class="block w-full h-full text-inherit no-underline">
-                <div class="canvas">
-                  <div class="tracker tr-1"></div>
-                  <div class="tracker tr-2"></div>
-                  <div class="tracker tr-3"></div>
-                  <div class="tracker tr-4"></div>
-                  <div class="tracker tr-5"></div>
-                  <div class="tracker tr-6"></div>
-                  <div class="tracker tr-7"></div>
-                  <div class="tracker tr-8"></div>
-                  <div class="tracker tr-9"></div>
-                  <div class="tracker tr-10"></div>
-                  <div class="tracker tr-11"></div>
-                  <div class="tracker tr-12"></div>
-                  <div class="tracker tr-13"></div>
-                  <div class="tracker tr-14"></div>
-                  <div class="tracker tr-15"></div>
-                  <div class="tracker tr-16"></div>
-                  <div class="tracker tr-17"></div>
-                  <div class="tracker tr-18"></div>
-                  <div class="tracker tr-19"></div>
-                  <div class="tracker tr-20"></div>
-                  <div class="tracker tr-21"></div>
-                  <div class="tracker tr-22"></div>
-                  <div class="tracker tr-23"></div>
-                  <div class="tracker tr-24"></div>
-                  <div class="tracker tr-25"></div>
-                  
-                  <div class="uiverse-card">
-                    <!-- Food Image -->
-                    {% if item.image %}
-                    <img src="{{ item.image.url }}" alt="{{ item.name }}" class="uiverse-img">
-                    {% else %}
-                    <img src="https://via.placeholder.com/150" alt="{{ item.name }}" class="uiverse-img">
-                    {% endif %}
+            <!-- Hero Left Content -->
+            <div class="lg:col-span-6 space-y-6 text-left">
+                <p class="text-red-500 font-script text-2xl sm:text-3xl tracking-wide">
+                    Welcome to Laziz Pizza
+                </p>
+                
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-bold font-serif-heading text-white leading-[1.1] tracking-tight">
+                    Delicious Food<br>
+                    <span class="text-white">Made For You</span>
+                </h1>
+                
+                <p class="text-slate-300 text-base sm:text-lg max-w-md font-normal leading-relaxed pt-1">
+                    Discover the best dishes in town, made with fresh ingredients and love.
+                </p>
+                
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap items-center gap-4 pt-4">
+                    <a href="{% url 'menu' %}" class="bg-red-600 hover:bg-red-700 text-white font-semibold px-7 py-3.5 rounded-lg shadow-lg hover:shadow-red-600/30 transition duration-200 flex items-center gap-2 text-sm">
+                        <span>Order Now</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
                     
-                    <!-- Item Title -->
-                    <p class="uiverse-prompt">{{ item.name }}</p>
-
-                    <!-- Hover Revealed Details -->
-                    <div class="uiverse-title flex flex-col items-center justify-center space-y-2 absolute inset-0 bg-red-950/85 backdrop-blur-sm rounded-20 p-4">
-                      <span class="text-[10px] uppercase bg-white/20 px-2.5 py-1 rounded-full font-black tracking-widest text-white border border-white/20 flex items-center gap-1.5">
-                        {% if item.food_type == 'Veg' %}
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Veg
-                        {% else %}
-                        <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Non-Veg
-                        {% endif %}
-                      </span>
-                      <div class="text-3xl font-black text-white">₹{{ item.price|floatformat:0 }}</div>
-                      <div class="bg-white text-red-600 px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider hover:bg-amber-400 hover:text-slate-900 transition-all duration-200 mt-2 flex items-center gap-1.5 shadow-lg">
-                        <i data-lucide="shopping-cart" class="w-4 h-4"></i> Order Now
-                      </div>
-                    </div>
-
-                    <!-- Category Subtitle -->
-                    <div class="uiverse-subtitle">
-                      <span class="text-xs font-bold uppercase tracking-widest text-amber-300">{{ item.category.name }}</span>
-                    </div>
-                  </div>
+                    <a href="{% url 'reservation' %}" class="bg-transparent hover:bg-white/10 text-white border border-white/80 font-semibold px-6 py-3.5 rounded-lg transition duration-200 flex items-center gap-2 text-sm">
+                        <span>Book a Table</span>
+                        <i data-lucide="calendar" class="w-4 h-4"></i>
+                    </a>
                 </div>
-              </a>
+            </div>
+
+            <!-- Hero Right Image (Pizza Plate) -->
+            <div class="lg:col-span-6 flex justify-center lg:justify-end mt-8 lg:mt-0">
+                <div class="relative w-full max-w-[480px] lg:max-w-[540px]">
+                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=900&auto=format&fit=crop&q=80" 
+                         alt="Fresh Italian Pizza" 
+                         class="w-full h-auto object-cover rounded-3xl drop-shadow-[0_25px_35px_rgba(0,0,0,0.85)] transform lg:scale-105 transition-transform duration-500">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Our Specialties / Popular Dishes Section -->
+<section class="bg-[#faf7f2] py-16 lg:py-20 px-6">
+    <div class="max-w-7xl mx-auto">
+        
+        <!-- Section Header -->
+        <div class="text-center space-y-2 mb-12">
+            <p class="text-red-500 font-script text-xl sm:text-2xl">Our Specialties</p>
+            <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold font-serif-heading text-slate-900 tracking-tight">
+                Popular Dishes
+            </h2>
+            <div class="w-12 h-1 bg-red-600 mx-auto mt-3 rounded-full"></div>
+        </div>
+
+        <!-- Food Items Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+            {% for item in food_items %}
+            <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 flex flex-col justify-between group">
+                
+                <!-- Image Wrapper -->
+                <div class="relative h-48 sm:h-52 overflow-hidden bg-slate-100">
+                    {% if forloop.first %}
+                    <span class="absolute top-3 left-3 bg-red-600 text-white text-[11px] font-bold px-3 py-1 rounded-full z-10 uppercase tracking-wider shadow-md">
+                        Bestseller
+                    </span>
+                    {% endif %}
+
+                    {% if item.image %}
+                    <img src="{{ item.image.url }}" alt="{{ item.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    {% else %}
+                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&auto=format&fit=crop&q=80" alt="{{ item.name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    {% endif %}
+                </div>
+
+                <!-- Content Details -->
+                <div class="p-5 flex-1 flex flex-col justify-between">
+                    <div>
+                        <!-- Title & Price Header -->
+                        <div class="flex items-start justify-between gap-2 mb-2">
+                            <h3 class="font-bold text-slate-900 text-base lg:text-lg leading-snug group-hover:text-red-600 transition-colors">
+                                {{ item.name }}
+                            </h3>
+                            <span class="text-red-600 font-extrabold text-lg lg:text-xl whitespace-nowrap">
+                                ₹{{ item.price|floatformat:0 }}
+                            </span>
+                        </div>
+
+                        <!-- Rating Badge -->
+                        <div class="flex items-center gap-1.5 mb-2">
+                            <i data-lucide="star" class="w-4 h-4 fill-amber-400 text-amber-400"></i>
+                            <span class="text-xs font-bold text-slate-800">4.5</span>
+                            <span class="text-xs text-slate-400">(120)</span>
+                        </div>
+
+                        <!-- Short Description -->
+                        <p class="text-slate-500 text-xs line-clamp-2 leading-relaxed">
+                            {% if item.description %}
+                                {{ item.description }}
+                            {% else %}
+                                Classic delicious preparation made with fresh ingredients and authentic sauce.
+                            {% endif %}
+                        </p>
+                    </div>
+
+                    <!-- Add to Cart Action -->
+                    <div class="mt-4 pt-3 flex justify-end">
+                        <a href="{% url 'add_to_cart' item.id %}" 
+                           class="w-10 h-10 rounded-xl border border-red-500/40 text-red-600 hover:bg-red-600 hover:text-white flex items-center justify-center transition-all duration-200 shadow-sm active:scale-95">
+                            <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+
             </div>
             {% empty %}
-            <p class="text-slate-500 font-medium py-8">No popular items available right now.</p>
+            <!-- Demo Fallback Cards when database is empty -->
+            <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 flex flex-col justify-between">
+                <div class="relative h-48 overflow-hidden">
+                    <span class="absolute top-3 left-3 bg-red-600 text-white text-[11px] font-bold px-3 py-1 rounded-full z-10">Bestseller</span>
+                    <img src="https://images.unsplash.com/photo-1604382355076-af4b0eb60143?w=600&auto=format&fit=crop&q=80" alt="Margherita Pizza" class="w-full h-full object-cover">
+                </div>
+                <div class="p-5">
+                    <div class="flex items-start justify-between gap-2 mb-1">
+                        <h3 class="font-bold text-slate-900 text-base">Margherita Pizza</h3>
+                        <span class="text-red-600 font-extrabold text-lg">₹299</span>
+                    </div>
+                    <div class="flex items-center gap-1 mb-2">
+                        <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i>
+                        <span class="text-xs font-bold">4.5</span>
+                        <span class="text-xs text-slate-400">(120)</span>
+                    </div>
+                    <p class="text-slate-500 text-xs">Classic delight with 100% real mozzarella cheese.</p>
+                    <div class="mt-4 flex justify-end">
+                        <button class="w-9 h-9 rounded-xl border border-red-500 text-red-600 hover:bg-red-600 hover:text-white flex items-center justify-center transition">
+                            <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 flex flex-col justify-between">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&auto=format&fit=crop&q=80" alt="Veggie Burger" class="w-full h-full object-cover">
+                </div>
+                <div class="p-5">
+                    <div class="flex items-start justify-between gap-2 mb-1">
+                        <h3 class="font-bold text-slate-900 text-base">Veggie Burger</h3>
+                        <span class="text-red-600 font-extrabold text-lg">₹199</span>
+                    </div>
+                    <div class="flex items-center gap-1 mb-2">
+                        <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i>
+                        <span class="text-xs font-bold">4.3</span>
+                        <span class="text-xs text-slate-400">(98)</span>
+                    </div>
+                    <p class="text-slate-500 text-xs">A delicious veggie burger with fresh ingredients.</p>
+                    <div class="mt-4 flex justify-end">
+                        <button class="w-9 h-9 rounded-xl border border-red-500 text-red-600 hover:bg-red-600 hover:text-white flex items-center justify-center transition">
+                            <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 flex flex-col justify-between">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1621996346565-e3d5d6281288?w=600&auto=format&fit=crop&q=80" alt="Pasta Alfredo" class="w-full h-full object-cover">
+                </div>
+                <div class="p-5">
+                    <div class="flex items-start justify-between gap-2 mb-1">
+                        <h3 class="font-bold text-slate-900 text-base">Pasta Alfredo</h3>
+                        <span class="text-red-600 font-extrabold text-lg">₹249</span>
+                    </div>
+                    <div class="flex items-center gap-1 mb-2">
+                        <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i>
+                        <span class="text-xs font-bold">4.6</span>
+                        <span class="text-xs text-slate-400">(86)</span>
+                    </div>
+                    <p class="text-slate-500 text-xs">Creamy white sauce pasta with extra cheese.</p>
+                    <div class="mt-4 flex justify-end">
+                        <button class="w-9 h-9 rounded-xl border border-red-500 text-red-600 hover:bg-red-600 hover:text-white flex items-center justify-center transition">
+                            <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 flex flex-col justify-between">
+                <div class="relative h-48 overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&auto=format&fit=crop&q=80" alt="Choco Lava Cake" class="w-full h-full object-cover">
+                </div>
+                <div class="p-5">
+                    <div class="flex items-start justify-between gap-2 mb-1">
+                        <h3 class="font-bold text-slate-900 text-base">Choco Lava Cake</h3>
+                        <span class="text-red-600 font-extrabold text-lg">₹149</span>
+                    </div>
+                    <div class="flex items-center gap-1 mb-2">
+                        <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-400 text-amber-400"></i>
+                        <span class="text-xs font-bold">4.7</span>
+                        <span class="text-xs text-slate-400">(110)</span>
+                    </div>
+                    <p class="text-slate-500 text-xs">Warm chocolate cake with melting lava inside.</p>
+                    <div class="mt-4 flex justify-end">
+                        <button class="w-9 h-9 rounded-xl border border-red-500 text-red-600 hover:bg-red-600 hover:text-white flex items-center justify-center transition">
+                            <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
             {% endfor %}
         </div>
 
         {% if has_more_foods %}
-        <div class="text-center mt-16">
-            <a href="{% url 'menu' %}" class="inline-block bg-gradient-to-r from-red-600 to-amber-500 text-white font-bold px-8 py-4 rounded-xl shadow-lg shadow-red-900/20 hover:brightness-110 active:scale-95 transition duration-150">
-                Explore Full Menu →
+        <div class="text-center mt-12">
+            <a href="{% url 'menu' %}" class="inline-flex items-center gap-2 bg-red-600 text-white font-semibold px-8 py-3.5 rounded-xl shadow-lg hover:bg-red-700 transition">
+                <span>View Full Menu</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </a>
         </div>
         {% endif %}
+
     </div>
 </section>
 
-<!-- Table Reservation Section -->
-<section class="py-20 px-6 bg-white">
-    <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <!-- Left: Image -->
-        <div class="relative rounded-3xl overflow-hidden shadow-2xl group">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent z-10"></div>
-            <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=800&auto=format&fit=crop&q=80" 
-                 alt="Restaurant table setup" 
-                 class="w-full h-[380px] sm:h-[440px] object-cover group-hover:scale-105 transition duration-500">
-            <div class="absolute bottom-6 left-6 z-20">
-                <span class="bg-red-600 text-white text-xs font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Premium Dining</span>
-                <h3 class="text-2xl font-black text-white mt-2">Reserved for Comfort</h3>
-            </div>
-        </div>
-        <!-- Right: Content -->
-        <div class="space-y-6">
-            <div class="h-1.5 w-16 bg-red-600 rounded-full"></div>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-                Plan a Feast. We'll Save You a Table!
-            </h2>
-            <p class="text-gray-600 leading-relaxed text-base sm:text-lg">
-                Whether it's a family gathering, a cozy date night, or a birthday party, booking a table in advance guarantees a hassle-free, premium dining experience.
-            </p>
-            <div class="space-y-3 pt-2">
-                <div class="flex items-center gap-3">
-                    <span class="text-green-600 text-lg font-bold">✓</span>
-                    <p class="text-slate-700 font-semibold text-sm sm:text-base">Priority seating inside our aesthetic premium dining zone</p>
+<!-- Bottom Features Bar Section -->
+<section class="bg-white py-12 border-t border-slate-100">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            
+            <!-- Feature 1 -->
+            <div class="flex items-center gap-4 p-2">
+                <div class="w-14 h-14 rounded-full bg-red-100/70 text-red-600 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="bike" class="w-6 h-6"></i>
                 </div>
-                <div class="flex items-center gap-3">
-                    <span class="text-green-600 text-lg font-bold">✓</span>
-                    <p class="text-slate-700 font-semibold text-sm sm:text-base">No waiting lines or long queues on peak weekends</p>
+                <div>
+                    <h4 class="font-bold text-slate-900 text-sm sm:text-base">Fast Delivery</h4>
+                    <p class="text-slate-500 text-xs mt-0.5">Quick delivery to your door</p>
                 </div>
-                <div class="flex items-center gap-3">
-                    <span class="text-green-600 text-lg font-bold">✓</span>
-                    <p class="text-slate-700 font-semibold text-sm sm:text-base">Custom table arrangements for anniversaries or birthdays</p>
+            </div>
+
+            <!-- Feature 2 -->
+            <div class="flex items-center gap-4 p-2">
+                <div class="w-14 h-14 rounded-full bg-red-100/70 text-red-600 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="award" class="w-6 h-6"></i>
                 </div>
-             <div class="pt-4">
-                <a href="{% url 'reservation' %}" class="inline-block bg-gradient-to-r from-red-600 to-amber-500 text-white font-black px-8 py-4 rounded-xl shadow-lg shadow-red-900/20 hover:brightness-110 active:scale-95 transition duration-150 flex items-center gap-2">
-                    <i data-lucide="utensils" class="w-5 h-5"></i> Book A Table Now
-                </a>
+                <div>
+                    <h4 class="font-bold text-slate-900 text-sm sm:text-base">Best Quality</h4>
+                    <p class="text-slate-500 text-xs mt-0.5">We use the best ingredients</p>
+                </div>
             </div>
-        </div>
-    </div>
-</section>
 
-<!-- Restaurant Food Gallery Grid -->
-<section class="bg-slate-900 py-20 px-6 text-white">
-    <div class="max-w-6xl mx-auto">
-        <div class="text-center max-w-2xl mx-auto mb-14">
-            <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">Food Gallery</h2>
-            <div class="h-1.5 w-20 bg-red-600 mx-auto mt-4 rounded-full"></div>
-            <p class="text-slate-400 mt-4">A sneak peek into our kitchen and freshly served delicacies.</p>
-        </div>
+            <!-- Feature 3 -->
+            <div class="flex items-center gap-4 p-2">
+                <div class="w-14 h-14 rounded-full bg-red-100/70 text-red-600 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="credit-card" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-900 text-sm sm:text-base">Easy Payments</h4>
+                    <p class="text-slate-500 text-xs mt-0.5">Multiple secure payment options</p>
+                </div>
+            </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="overflow-hidden rounded-2xl group relative h-48 sm:h-60">
-                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&auto=format&fit=crop&q=80" alt="Pizza 1" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center font-bold text-sm">Woodfired Pizza</div>
+            <!-- Feature 4 -->
+            <div class="flex items-center gap-4 p-2">
+                <div class="w-14 h-14 rounded-full bg-red-100/70 text-red-600 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="headphone-off" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h4 class="font-bold text-slate-900 text-sm sm:text-base">24/7 Support</h4>
+                    <p class="text-slate-500 text-xs mt-0.5">We are here to help you</p>
+                </div>
             </div>
-            <div class="overflow-hidden rounded-2xl group relative h-48 sm:h-60">
-                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&auto=format&fit=crop&q=80" alt="Burger" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center font-bold text-sm">Juicy Burgers</div>
-            </div>
-            <div class="overflow-hidden rounded-2xl group relative h-48 sm:h-60">
-                <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=500&auto=format&fit=crop&q=80" alt="Pasta" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center font-bold text-sm">Italian Pasta</div>
-            </div>
-            <div class="overflow-hidden rounded-2xl group relative h-48 sm:h-60">
-                <img src="https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=500&auto=format&fit=crop&q=80" alt="Pizza Cheese Pull" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
-                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-300 flex items-center justify-center font-bold text-sm">Extra Cheese Pull</div>
-            </div>
-        </div>
-    </div>
-</section>
 
-<!-- Testimonials Section -->
-<section class="max-w-6xl mx-auto py-20 px-6">
-    <div class="text-center max-w-2xl mx-auto mb-16">
-        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">What Foodies Say</h2>
-        <div class="h-1.5 w-20 bg-red-600 mx-auto mt-4 rounded-full"></div>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="bg-white border border-slate-100 p-8 rounded-2xl shadow-lg shadow-slate-100 space-y-4">
-            <div class="flex items-center gap-0.5 text-amber-500">
-                <i data-lucide="star" class="w-4 h-4 fill-amber-500 text-amber-500"></i>
-                <i data-lucide="star" class="w-4 h-4 fill-amber-500 text-amber-500"></i>
-                <i data-lucide="star" class="w-4 h-4 fill-amber-500 text-amber-500"></i>
-                <i data-lucide="star" class="w-4 h-4 fill-amber-500 text-amber-500"></i>
-                <i data-lucide="star" class="w-4 h-4 fill-amber-500 text-amber-500"></i>
-            </div>
-            <p class="text-gray-600 italic leading-relaxed">"Laziz Pizza is hands down the best pizza joint in town. The cheese pull is absolute perfection, and the service is top-notch!"</p>
-            <p class="font-bold text-slate-800 text-sm">- Rahul S.</p>
-        </div>
-
-        <div class="bg-white border border-slate-100 p-8 rounded-2xl shadow-lg shadow-slate-100 space-y-4">
-            <div class="flex items-center gap-0.5 text-amber-500">
-                <i data-lucide="star" class="w-4 h-4 fill-amber-500 text-amber-500"></i>
-                <i data-lucide="star" class="w-4 h-4 fill-amber-500 text-amber-500"></i>
-                <i data-lucide="star" class="w-4 h-4 fill-amber-500 text-amber-500"></i>
-                <i data-lucide="star" class="w-4 h-4 fill-amber-500 text-amber-500"></i>
-                <i data-lucide="star" class="w-4 h-4 fill-amber-500 text-amber-500"></i>
-            </div>
-            <p class="text-gray-600 italic leading-relaxed">"Delivered hot in 20 minutes! The garlic bread and veggie supreme pizza are highly recommended."</p>
-            <p class="font-bold text-slate-800 text-sm">- Priya M.</p>
         </div>
     </div>
 </section>
