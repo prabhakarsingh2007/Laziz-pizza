@@ -1,74 +1,118 @@
 {% extends 'dashboard/dashboard_base.html' %}
 
 {% block title %}
-Order Detail
+Order Details #ORD{{ order.id }} - TastyBite Admin
 {% endblock %}
 
 {% block dashboard_content %}
 
+<!-- Fonts & Custom Styles -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+    href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .font-serif-heading {
+        font-family: 'Playfair Display', serif;
+    }
+
+    .font-script {
+        font-family: 'Pacifico', cursive;
+    }
+</style>
+
 <div class="max-w-4xl mx-auto space-y-8">
 
-    <div class="bg-white rounded-3xl border border-slate-100 shadow-xl p-6 sm:p-10 space-y-8">
+    <div class="bg-white rounded-3xl border border-slate-100 shadow-xl p-6 sm:p-10 space-y-8 relative overflow-hidden">
 
         <!-- Detail Header -->
-        <div class="flex justify-between items-center border-b border-slate-100 pb-6">
-            <div>
-                <span class="text-xs font-bold text-red-500 uppercase tracking-widest block mb-1">Order Details</span>
-                <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">
-                    Order #ORD{{ order.id }}
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6">
+            <div class="space-y-1">
+                <span class="text-xs font-bold text-red-500 uppercase tracking-widest block font-script">Order Management</span>
+                <h1 class="text-2xl sm:text-3xl font-bold font-serif-heading text-slate-900 flex items-center gap-3">
+                    <span>Order #ORD{{ order.id }}</span>
+                    <span class="text-xs font-extrabold uppercase tracking-wider px-3 py-1 rounded-full border
+                        {% if order.status == 'Delivered' %}bg-emerald-50 text-emerald-700 border-emerald-200
+                        {% elif order.status == 'Preparing' %}bg-amber-50 text-amber-700 border-amber-200
+                        {% elif order.status == 'Confirmed' %}bg-blue-50 text-blue-700 border-blue-200
+                        {% elif order.status == 'Cancelled' %}bg-rose-50 text-rose-700 border-rose-200
+                        {% else %}bg-slate-100 text-slate-700 border-slate-200{% endif %}">
+                        {{ order.status }}
+                    </span>
                 </h1>
             </div>
 
             <a href="{% url 'admin_orders' %}"
-                class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-5 py-2.5 rounded-xl text-xs uppercase tracking-wider transition">
+                class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-5 py-2.5 rounded-2xl text-xs uppercase tracking-wider transition text-center self-start sm:self-auto">
                 ← Back to List
             </a>
         </div>
 
         <!-- Customer & Cost Overview Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-slate-50/50 p-6 rounded-3xl border border-slate-100">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 bg-slate-50/70 p-6 sm:p-8 rounded-3xl border border-slate-100">
 
+            <!-- Customer Information -->
             <div class="space-y-3 text-xs">
                 <h2 class="font-extrabold text-slate-400 uppercase tracking-wider text-[10px]">Customer Information</h2>
-                <p class="font-bold text-slate-900 text-sm"><strong class="text-slate-500 font-medium">Name:</strong> {{ order.user.name }} (@{{ order.user.username }})</p>
-                <p class="font-bold text-slate-900 text-sm"><strong class="text-slate-500 font-medium">Status:</strong> {{ order.status }}</p>
-                <p class="font-bold text-slate-900 text-sm"><strong class="text-slate-500 font-medium">Date:</strong> {{ order.created_at|date:"d M Y, h:i A" }}</p>
-                <p class="font-bold text-slate-900 text-sm"><strong class="text-slate-500 font-medium">Contact:</strong> {{ order.phone }}</p>
-                <div class="pt-2">
-                    <strong class="text-slate-500 font-medium block mb-1">Delivery Address:</strong>
-                    <p class="text-slate-700 bg-white border border-slate-150 p-3 rounded-xl leading-relaxed">{{ order.address }}</p>
+                <div class="space-y-1.5 text-slate-800">
+                    <p class="font-bold text-sm text-slate-900">
+                        <span class="text-slate-400 font-medium">Name:</span> {{ order.user.name|default:order.user.username }}
+                        <span class="text-slate-500 text-xs font-semibold">(@{{ order.user.username }})</span>
+                    </p>
+                    <p><span class="text-slate-400 font-semibold">Date & Time:</span> <span class="font-bold text-slate-700">{{ order.created_at|date:"d M Y, h:i A" }}</span></p>
+                    <p><span class="text-slate-400 font-semibold">Contact Phone:</span> <span class="font-bold text-slate-700">{{ order.phone }}</span></p>
+                </div>
+
+                <div class="pt-3">
+                    <span class="text-slate-400 font-bold uppercase text-[10px] tracking-wider block mb-1">Delivery Address</span>
+                    <p class="text-slate-700 bg-white border border-slate-200 p-3.5 rounded-2xl text-xs font-medium leading-relaxed shadow-sm">
+                        {{ order.address }}
+                    </p>
                 </div>
             </div>
 
+            <!-- Order Financial Summary -->
             <div class="space-y-3 text-xs flex flex-col justify-between">
-                <div class="space-y-2">
+                <div class="space-y-2.5">
                     <h2 class="font-extrabold text-slate-400 uppercase tracking-wider text-[10px]">Order Summary</h2>
+
                     <div class="flex justify-between text-slate-600">
                         <span>Subtotal:</span>
                         <span class="font-bold text-slate-900">₹{{ order.original_total|default:order.total_price|floatformat:0 }}</span>
                     </div>
+
                     <div class="flex justify-between text-slate-600">
                         <span>GST (5%):</span>
                         <span class="font-bold text-slate-900">₹{{ order.gst|default:"0" }}</span>
                     </div>
+
                     <div class="flex justify-between text-slate-600">
                         <span>Delivery Charge:</span>
                         <span class="font-bold text-slate-900">₹{{ order.delivery_charge|default:"0"|floatformat:0 }}</span>
                     </div>
+
                     <div class="flex justify-between text-slate-600">
                         <span>Packing Charge:</span>
                         <span class="font-bold text-slate-900">₹{{ order.packing_charge|default:"0"|floatformat:0 }}</span>
                     </div>
+
                     {% if order.discount > 0 %}
-                    <div class="flex justify-between text-emerald-600 font-bold">
+                    <div class="flex justify-between text-emerald-600 font-bold bg-emerald-50/60 p-2 rounded-xl border border-emerald-100">
                         <span>Discount {% if order.coupon_code %}({{ order.coupon_code }}){% endif %}:</span>
                         <span>-₹{{ order.discount|floatformat:0 }}</span>
                     </div>
                     {% endif %}
                 </div>
-                <div class="border-t border-slate-100 pt-3 flex justify-between items-center">
-                    <span class="font-black text-slate-900 text-sm">Grand Total:</span>
-                    <span class="text-xl font-black text-red-600">₹{{ order.total_price|floatformat:0 }}</span>
+
+                <div class="border-t border-slate-200 pt-3 flex justify-between items-center">
+                    <span class="font-extrabold text-slate-900 text-sm">Grand Total:</span>
+                    <span class="text-2xl font-bold font-sans text-red-600">₹{{ order.total_price|floatformat:0 }}</span>
                 </div>
             </div>
 
@@ -76,26 +120,41 @@ Order Detail
 
         <!-- Conditional Pending Action Alert -->
         {% if order.status == 'Pending' %}
-        <div class="bg-amber-50 border border-amber-200/80 rounded-2xl p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div class="bg-amber-50 border border-amber-200/80 rounded-3xl p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-                <h3 class="text-sm font-bold text-amber-900 flex items-center gap-1.5">
-                    <span>⏱️</span> Pending Confirmation
+                <h3 class="text-sm font-bold text-amber-900 flex items-center gap-2 font-serif-heading">
+                    <svg class="w-5 h-5 text-amber-900 shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>Pending Confirmation</span>
                 </h3>
-                <p class="text-amber-700/80 text-xs mt-1 leading-relaxed max-w-md">This order is currently pending. Please verify user details and confirm to begin preparation.</p>
+                <p class="text-amber-700/90 text-xs mt-1 leading-relaxed max-w-md">
+                    This order is currently pending. Please verify user details and confirm to begin preparation.
+                </p>
             </div>
+
             <div class="flex gap-2.5 w-full sm:w-auto shrink-0">
                 <form method="POST" action="{% url 'update_order_status' order.id %}" class="w-full sm:w-auto">
                     {% csrf_token %}
                     <input type="hidden" name="status" value="Confirmed">
-                    <button type="submit" class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl text-xs transition shadow-md shadow-emerald-600/10 flex items-center justify-center gap-1.5 active:scale-95">
-                        <i data-lucide="check" class="w-4 h-4"></i> Confirm Order
+                    <button type="submit"
+                        class="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-2xl text-xs uppercase tracking-wider transition shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-1.5 active:scale-95">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                        </svg>
+                        <span>Confirm Order</span>
                     </button>
                 </form>
+
                 <form method="POST" action="{% url 'update_order_status' order.id %}" class="w-full sm:w-auto">
                     {% csrf_token %}
                     <input type="hidden" name="status" value="Cancelled">
-                    <button type="submit" class="w-full sm:w-auto bg-rose-50 hover:bg-rose-100 text-rose-650 text-rose-600 font-bold px-5 py-2.5 rounded-xl text-xs transition border border-rose-250 flex items-center justify-center gap-1.5 active:scale-95">
-                        <i data-lucide="x" class="w-4 h-4"></i> Cancel Order
+                    <button type="submit"
+                        class="w-full sm:w-auto bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white font-bold px-5 py-2.5 rounded-2xl text-xs uppercase tracking-wider transition border border-rose-200 flex items-center justify-center gap-1.5 active:scale-95">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        <span>Cancel</span>
                     </button>
                 </form>
             </div>
@@ -104,31 +163,41 @@ Order Detail
 
         <!-- Items Details Table -->
         <div class="space-y-4">
-            <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <h2 class="text-xl font-bold font-serif-heading text-slate-900 flex items-center gap-2">
                 Ordered Items
             </h2>
-            <div class="border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
+
+            <div class="border border-slate-100 rounded-3xl overflow-hidden shadow-sm">
                 <table class="w-full text-left text-xs">
-                    <thead class="bg-slate-50 text-slate-400 font-bold uppercase tracking-wider border-b border-slate-100">
+                    <thead class="bg-slate-50 text-slate-400 font-bold uppercase text-[11px] tracking-wider border-b border-slate-100">
                         <tr>
-                            <th class="py-3.5 px-4">Food Name</th>
-                            <th class="py-3.5 px-4 text-center">Quantity</th>
-                            <th class="py-3.5 px-4 text-center">Unit Price</th>
-                            <th class="py-3.5 px-4 text-right">Total Price</th>
+                            <th class="py-4 px-6">Food Name</th>
+                            <th class="py-4 px-6 text-center">Quantity</th>
+                            <th class="py-4 px-6 text-center">Unit Price</th>
+                            <th class="py-4 px-6 text-right">Total Price</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100 text-slate-800">
                         {% for item in order.items.all %}
                         <tr class="hover:bg-slate-50/50 transition">
-                            <td class="py-4 px-4 font-bold flex items-center gap-3">
+                            <td class="py-4 px-6 font-bold flex items-center gap-3">
                                 {% if item.food.image %}
-                                <img src="{{ item.food.image.url }}" class="w-10 h-10 rounded-xl object-cover border border-slate-100">
+                                <img src="{{ item.food.image.url }}"
+                                    class="w-10 h-10 rounded-xl object-cover border border-slate-100 shrink-0">
+                                {% else %}
+                                <div class="w-10 h-10 rounded-xl bg-red-50 text-red-500 font-bold flex items-center justify-center p-2.5 shrink-0">
+                                    <svg class="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM13.5 6a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                                    </svg>
+                                </div>
                                 {% endif %}
-                                <span>{{ item.food.name }}</span>
+                                <span class="text-slate-900">{{ item.food.name }}</span>
                             </td>
-                            <td class="py-4 px-4 text-center font-bold text-slate-700">{{ item.quantity }}</td>
-                            <td class="py-4 px-4 text-center font-semibold text-slate-500">₹{{ item.price|floatformat:0 }}</td>
-                            <td class="py-4 px-4 text-right font-extrabold text-emerald-600">₹{% widthratio item.price 1 item.quantity %}</td>
+                            <td class="py-4 px-6 text-center font-bold text-slate-700">{{ item.quantity }}</td>
+                            <td class="py-4 px-6 text-center font-semibold text-slate-500">₹{{ item.price|floatformat:0 }}</td>
+                            <td class="py-4 px-6 text-right font-black text-red-600 font-sans text-sm">
+                                ₹{% widthratio item.price 1 item.quantity %}
+                            </td>
                         </tr>
                         {% empty %}
                         <tr>
@@ -141,15 +210,17 @@ Order Detail
         </div>
 
         <!-- Update Status Selection Control -->
-        <div class="space-y-4 pt-4 border-t border-slate-100">
-            <h2 class="text-base font-bold text-slate-900">
-                Change Status
+        <div class="space-y-4 pt-6 border-t border-slate-100">
+            <h2 class="text-base font-bold font-serif-heading text-slate-900">
+                Change Order Status
             </h2>
 
-            <form method="POST" action="{% url 'update_order_status' order.id %}" class="flex flex-col sm:flex-row items-center gap-3">
+            <form method="POST" action="{% url 'update_order_status' order.id %}"
+                class="flex flex-col sm:flex-row items-center gap-3">
                 {% csrf_token %}
 
-                <select name="status" class="w-full sm:w-64 bg-slate-50 border border-slate-200 rounded-2xl p-3.5 outline-none focus:ring-2 focus:ring-red-500 focus:bg-white text-slate-800 text-xs font-bold transition">
+                <select name="status"
+                    class="w-full sm:w-64 bg-slate-50 border border-slate-200 rounded-2xl p-3.5 outline-none focus:ring-2 focus:ring-red-500 focus:bg-white text-slate-800 text-xs font-bold transition">
                     <option value="Pending" {% if order.status == "Pending" %}selected{% endif %}>Pending</option>
                     <option value="Confirmed" {% if order.status == "Confirmed" %}selected{% endif %}>Confirmed</option>
                     <option value="Preparing" {% if order.status == "Preparing" %}selected{% endif %}>Preparing</option>
@@ -159,7 +230,8 @@ Order Detail
                     {% endif %}
                 </select>
 
-                <button type="submit" class="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-6 rounded-2xl shadow-sm transition-all duration-200 text-xs uppercase tracking-wider text-center active:scale-95">
+                <button type="submit"
+                    class="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-6 rounded-2xl shadow-sm transition-all duration-200 text-xs uppercase tracking-wider text-center active:scale-95">
                     Update Status
                 </button>
             </form>

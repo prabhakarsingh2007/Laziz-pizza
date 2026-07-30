@@ -1,89 +1,177 @@
 {% extends 'dashboard/dashboard_base.html' %}
 
 {% block title %}
-Manage Orders
+Manage Orders - TastyBite Admin
 {% endblock %}
 
 {% block dashboard_content %}
-<div class="flex justify-between items-center mb-8">
-    <h1 class="text-3xl font-bold text-red-650 flex items-center gap-2">
-        📦 Manage Orders
-    </h1>
+
+<!-- Fonts & Custom Styles -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-serif-heading {
+        font-family: 'Playfair Display', serif;
+    }
+    .font-script {
+        font-family: 'Pacifico', cursive;
+    }
+</style>
+
+<div class="space-y-8">
+
+    <!-- Top Header Bar -->
+    <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="space-y-1">
+            <p class="text-red-500 font-script text-xl">Order Management</p>
+            <h1 class="text-3xl sm:text-4xl font-bold font-serif-heading text-slate-900 tracking-tight flex items-center gap-2">
+                <svg class="w-8 h-8 text-slate-800" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 13.5h3.86a2.25 2.25 0 012.008 1.24l.885 1.77a2.25 2.25 0 002.007 1.24h1.98a2.25 2.25 0 002.007-1.24l.885-1.77a2.25 2.25 0 012.007-1.24h3.86m-18 0h18a2.25 2.25 0 002.25-2.25V5.25A2.25 2.25 0 0019.5 3h-15A2.25 2.25 0 002.25 5.25v6a2.25 2.25 0 002.25 2.25z" />
+                </svg>
+                <span>Manage Orders</span>
+            </h1>
+            <p class="text-slate-500 text-xs sm:text-sm font-medium">
+                View incoming orders, verify customer delivery addresses, and update fulfillment statuses.
+            </p>
+        </div>
+
+        <div class="bg-red-50 border border-red-200/60 rounded-2xl px-5 py-3 text-center self-start sm:self-auto">
+            <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">Total Orders</span>
+            <span class="text-xl font-bold font-serif-heading text-red-600">{{ orders|length }}</span>
+        </div>
+    </div>
+
+    <!-- Orders Table Container -->
+    <div class="bg-white shadow-xl rounded-3xl border border-slate-100 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-slate-700">
+                <thead class="bg-slate-50 text-slate-400 font-bold uppercase text-[11px] tracking-wider border-b border-slate-100">
+                    <tr>
+                        <th class="py-4 px-6">Order ID</th>
+                        <th class="py-4 px-6">Customer</th>
+                        <th class="py-4 px-6">Contact / Phone</th>
+                        <th class="py-4 px-6">Delivery Address</th>
+                        <th class="py-4 px-6 text-center">Total Amount</th>
+                        <th class="py-4 px-6 text-center">Status</th>
+                        <th class="py-4 px-6 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    {% for order in orders %}
+                    <tr class="hover:bg-slate-50/60 transition duration-150">
+                        
+                        <!-- Order ID -->
+                        <td class="py-4 px-6 font-bold text-slate-900">
+                            #ORD{{ order.id }}
+                        </td>
+
+                        <!-- Customer Name -->
+                        <td class="py-4 px-6 font-bold text-slate-900">
+                            {{ order.user.name|default:order.user.username }}
+                            <span class="block text-xs font-medium text-slate-400">@{{ order.user.username }}</span>
+                        </td>
+
+                        <!-- Phone -->
+                        <td class="py-4 px-6 font-semibold text-slate-600 text-xs">
+                            {{ order.phone }}
+                        </td>
+
+                        <!-- Address -->
+                        <td class="py-4 px-6 max-w-xs truncate text-slate-600 text-xs font-medium" title="{{ order.address }}">
+                            {{ order.address }}
+                        </td>
+
+                        <!-- Total Price & Coupon -->
+                        <td class="py-4 px-6 text-center font-black text-red-600 font-sans text-base">
+                            ₹{{ order.total_price|floatformat:0 }}
+                            
+                            {% if order.coupon_code %}
+                            <div class="text-[9px] font-extrabold uppercase text-amber-700 bg-amber-50 border border-amber-200/80 rounded-full px-2.5 py-0.5 mt-1 inline-flex items-center justify-center gap-1 mx-auto" title="Coupon {{ order.coupon_code }} applied">
+                                <svg class="w-3 h-3 text-amber-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-12v.75m0 3v.75m0 3v.75m0 3V18M3 8.25a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 8.25V9.75A1.5 1.5 0 0019.5 11.25A1.5 1.5 0 0021 12.75v1.5a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15v-1.5A1.5 1.5 0 004.5 12A1.5 1.5 0 003 10.5V8.25z" />
+                                </svg>
+                                <span>{{ order.coupon_code }}</span>
+                            </div>
+                            {% endif %}
+                        </td>
+
+                        <!-- Status Badge -->
+                        <td class="py-4 px-6 text-center">
+                            <span class="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider inline-block border
+                                {% if order.status == 'Pending' %}bg-amber-50 text-amber-700 border-amber-200
+                                {% elif order.status == 'Delivered' %}bg-emerald-50 text-emerald-700 border-emerald-200
+                                {% elif order.status == 'Preparing' %}bg-blue-50 text-blue-700 border-blue-200
+                                {% else %}bg-rose-50 text-rose-700 border-rose-200{% endif %}">
+                                {{ order.status }}
+                            </span>
+                        </td>
+
+                        <!-- Action Buttons -->
+                        <td class="py-4 px-6 text-center">
+                            <div class="flex items-center justify-center gap-2">
+                                
+                                <a href="{% url 'order_detail' order.id %}" 
+                                   class="bg-slate-900 hover:bg-slate-800 text-white px-3.5 py-2 rounded-xl text-[11px] font-bold uppercase tracking-wider transition flex items-center gap-1 shadow-sm">
+                                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.644M12 5.625c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7zM12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" />
+                                    </svg>
+                                    <span>View</span>
+                                </a>
+
+                                {% if order.status == 'Pending' %}
+                                <form method="POST" action="{% url 'update_order_status' order.id %}" class="inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="status" value="Confirmed">
+                                    <button type="submit" 
+                                            class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-2 rounded-xl text-[11px] font-bold uppercase tracking-wider transition flex items-center gap-1 shadow-md shadow-emerald-600/20 active:scale-95">
+                                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                        </svg>
+                                        <span>Confirm</span>
+                                    </button>
+                                </form>
+
+                                <form method="POST" action="{% url 'update_order_status' order.id %}" class="inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="status" value="Cancelled">
+                                    <button type="submit" 
+                                            class="bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white px-3.5 py-2 rounded-xl text-[11px] font-bold uppercase tracking-wider transition flex items-center gap-1 border border-rose-200 active:scale-95">
+                                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                        <span>Cancel</span>
+                                    </button>
+                                </form>
+                                {% endif %}
+
+                            </div>
+                        </td>
+
+                    </tr>
+                    {% empty %}
+                    <!-- Empty Orders State -->
+                    <tr>
+                        <td colspan="7" class="py-16 text-center space-y-3">
+                            <div class="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto shadow-sm p-4">
+                                <svg class="w-8 h-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 13.5h3.86a2.25 2.25 0 012.008 1.24l.885 1.77a2.25 2.25 0 002.007 1.24h1.98a2.25 2.25 0 002.007-1.24l.885-1.77a2.25 2.25 0 012.007-1.24h3.86m-18 0h18a2.25 2.25 0 002.25-2.25V5.25A2.25 2.25 0 0019.5 3h-15A2.25 2.25 0 002.25 5.25v6a2.25 2.25 0 002.25 2.25z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold font-serif-heading text-slate-900">No Orders Placed Yet</h3>
+                            <p class="text-slate-400 text-xs">Customer orders will show up here once they check out.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
 
-<div class="bg-white shadow-xl rounded-3xl overflow-hidden border border-slate-100">
-    <div class="overflow-x-auto">
-        <table class="w-full text-slate-800 text-sm">
-            <thead class="bg-red-600 text-white text-xs font-bold uppercase tracking-wider">
-                <tr>
-                    <th class="py-4 px-6 text-left">Order ID</th>
-                    <th class="py-4 px-6 text-left">Customer</th>
-                    <th class="py-4 px-6 text-left">Contact / Phone</th>
-                    <th class="py-4 px-6 text-left">Delivery Address</th>
-                    <th class="py-4 px-6 text-center">Total Amount</th>
-                    <th class="py-4 px-6 text-center">Status</th>
-                    <th class="py-4 px-6 text-center">Actions</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-slate-100">
-                {% for order in orders %}
-                <tr class="hover:bg-slate-50 transition duration-150">
-                    <td class="py-4 px-6 font-bold text-slate-900">#ORD{{ order.id }}</td>
-                    <td class="py-4 px-6 font-semibold">{{ order.user.name }} (@{{ order.user.username }})</td>
-                    <td class="py-4 px-6 text-slate-500">{{ order.phone }}</td>
-                    <td class="py-4 px-6 max-w-xs truncate text-slate-600" title="{{ order.address }}">{{ order.address }}</td>
-                    <td class="py-4 px-6 text-center font-extrabold text-red-655 text-red-600">
-                        ₹{{ order.total_price|floatformat:0 }}
-                        {% if order.coupon_code %}
-                        <div class="text-[9px] font-black uppercase text-amber-600 bg-amber-50 border border-amber-100 rounded-full px-2 py-0.5 mt-1 flex items-center justify-center gap-1 w-max mx-auto" title="Coupon {{ order.coupon_code }} applied">
-                            <i data-lucide="ticket" class="w-3 h-3"></i> {{ order.coupon_code }}
-                        </div>
-                        {% endif %}
-                    </td>
-                    <td class="py-4 px-6 text-center">
-                        <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider inline-block
-                            {% if order.status == 'Pending' %}bg-amber-50 text-amber-600 border border-amber-200
-                            {% elif order.status == 'Delivered' %}bg-emerald-50 text-emerald-600 border border-emerald-200
-                            {% elif order.status == 'Preparing' %}bg-blue-50 text-blue-600 border border-blue-200
-                            {% else %}bg-rose-50 text-rose-600 border border-rose-200{% endif %}">
-                            {{ order.status }}
-                        </span>
-                    </td>
-                    <td class="py-4 px-6 text-center">
-                        <div class="flex items-center justify-center gap-2">
-                            <a href="{% url 'order_detail' order.id %}" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-sm">
-                                <i data-lucide="eye" class="w-3.5 h-3.5"></i> View
-                            </a>
-                            {% if order.status == 'Pending' %}
-                            <form method="POST" action="{% url 'update_order_status' order.id %}" class="inline">
-                                {% csrf_token %}
-                                <input type="hidden" name="status" value="Confirmed">
-                                <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-md shadow-emerald-600/10">
-                                    <i data-lucide="check" class="w-3.5 h-3.5"></i> Confirm
-                                </button>
-                            </form>
-                            {% endif %}
-                            {% if order.status == 'Pending' %}
-                            <form method="POST" action="{% url 'update_order_status' order.id %}" class="inline">
-                                {% csrf_token %}
-                                <input type="hidden" name="status" value="Cancelled">
-                                <button type="submit" class="bg-rose-50 hover:bg-rose-100 text-rose-600 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 border border-rose-250">
-                                    <i data-lucide="x" class="w-3.5 h-3.5"></i> Cancel
-                                </button>
-                            </form>
-                            {% endif %}
-                        </div>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="7" class="py-12 text-center text-slate-400 font-medium">
-                        No Orders Available
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
 {% endblock %}

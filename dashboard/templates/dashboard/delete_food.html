@@ -1,34 +1,78 @@
 {% extends 'dashboard/dashboard_base.html' %}
 
 {% block title %}
-Delete Food Item
+Delete Food Item - {{ food.name }} - TastyBite Admin
 {% endblock %}
 
 {% block dashboard_content %}
-<div class="max-w-md mx-auto bg-white rounded-2xl shadow-lg p-8 text-center border border-gray-100">
-    <div class="text-6xl text-red-500 mb-6">
-        ⚠️
-    </div>
-    <h1 class="text-3xl font-bold text-red-600 mb-4">
-        Delete Food Item
-    </h1>
-    
-    <p class="text-gray-600 mb-8 leading-relaxed">
-        Are you sure you want to delete <strong>{{ food.name }}</strong>? This action will permanently remove it from the menu.
-    </p>
 
-    <form method="POST">
-        {% csrf_token %}
-        <div class="flex justify-center gap-4">
-            <a href="{% url 'food_list' %}"
-               class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg font-semibold transition duration-200">
+<!-- Fonts & Custom Styles -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-serif-heading {
+        font-family: 'Playfair Display', serif;
+    }
+    .font-script {
+        font-family: 'Pacifico', cursive;
+    }
+</style>
+
+<div class="max-w-lg mx-auto py-8">
+    
+    <!-- Top Navigation Link -->
+    <a href="{% url 'food_list' %}" class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-red-600 transition mb-6">
+        <span>← Back to Food Inventory</span>
+    </a>
+
+    <!-- Confirmation Card -->
+    <div class="bg-white border border-slate-100 shadow-xl rounded-3xl p-8 sm:p-10 text-center space-y-6 relative overflow-hidden">
+        
+        <!-- Subtle Glow Accent Background -->
+        <div class="absolute -top-12 -right-12 w-32 h-32 bg-rose-600/10 rounded-full blur-2xl pointer-events-none"></div>
+
+        <!-- Warning Icon -->
+        <div class="w-20 h-20 bg-rose-50 border border-rose-200/80 text-rose-600 rounded-3xl flex items-center justify-center mx-auto shadow-sm p-5">
+            <svg class="w-10 h-10 text-rose-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.008v.008H12v-.008z" />
+            </svg>
+        </div>
+
+        <!-- Warning Title & Text -->
+        <div class="space-y-2">
+            <p class="text-rose-600 font-script text-xl">Confirm Action</p>
+            <h1 class="text-2xl sm:text-3xl font-bold font-serif-heading text-slate-900">
+                Delete Food Item?
+            </h1>
+            
+            <p class="text-slate-500 text-xs sm:text-sm leading-relaxed pt-2 max-w-sm mx-auto">
+                Are you sure you want to permanently delete <strong class="font-extrabold text-slate-900 px-2 py-0.5 bg-slate-100 rounded-lg">"{{ food.name }}"</strong>? 
+                <span class="block text-rose-600 font-semibold mt-1">This action will permanently remove it from the menu and cannot be undone.</span>
+            </p>
+        </div>
+
+        <!-- Action Form Buttons -->
+        <form method="POST" class="pt-4 border-t border-slate-100 flex flex-col sm:flex-row gap-3">
+            {% csrf_token %}
+            
+            <a href="{% url 'food_list' %}" 
+               class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3.5 px-6 rounded-2xl transition duration-200 text-xs uppercase tracking-wider text-center">
                 Cancel
             </a>
-            <button type="submit"
-                    class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold transition duration-200">
-                Delete
+
+            <button type="submit" 
+                    class="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg shadow-rose-600/20 transition-all duration-200 text-xs uppercase tracking-wider text-center active:scale-95">
+                Yes, Delete
             </button>
-        </div>
-    </form>
+        </form>
+
+    </div>
+
 </div>
+
 {% endblock %}

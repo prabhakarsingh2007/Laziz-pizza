@@ -1,69 +1,142 @@
 {% extends 'dashboard/dashboard_base.html' %}
 
 {% block title %}
-Manage Categories
+Manage Categories - TastyBite Admin
 {% endblock %}
 
 {% block dashboard_content %}
 
-<div class="flex justify-between items-center mb-8">
-    <h1 class="text-3xl font-bold text-red-600">
-        📂 Category Management
-    </h1>
-</div>
+<!-- Fonts & Custom Styles -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-    <!-- Categories List (Left) -->
-    <div class="lg:col-span-2 bg-white shadow-lg rounded-xl overflow-hidden border border-slate-100">
-        <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
-            <h2 class="text-lg font-bold text-slate-800">Active Categories</h2>
-            <span class="bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full">{{ categories|length }} Total</span>
-        </div>
-        <div class="overflow-x-auto">
-            <table class="w-full">
-                <thead class="bg-red-600 text-white">
-                    <tr>
-                        <th class="py-4 px-6 text-left">Category Name</th>
-                        <th class="py-4 px-6 text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 text-slate-800">
-                    {% for cat in categories %}
-                    <tr class="hover:bg-slate-55 transition">
-                        <td class="py-4 px-6 font-semibold">{{ cat.name }}</td>
-                        <td class="py-4 px-6 text-center">
-                            <a href="{% url 'delete_category' cat.id %}" class="bg-red-50 hover:bg-red-100 text-red-600 px-4 py-2 rounded-xl text-xs font-bold transition">
-                                🗑️ Delete
-                            </a>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="2" class="py-12 text-center text-gray-500 font-medium">
-                            No Categories Available
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+<style>
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-serif-heading {
+        font-family: 'Playfair Display', serif;
+    }
+    .font-script {
+        font-family: 'Pacifico', cursive;
+    }
+</style>
+
+<div class="space-y-8">
+
+    <!-- Top Header Bar -->
+    <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="space-y-1">
+            <p class="text-red-500 font-script text-xl">Menu Structure</p>
+            <h1 class="text-3xl sm:text-4xl font-bold font-serif-heading text-slate-900 tracking-tight">
+                Category Management
+            </h1>
+            <p class="text-slate-500 text-xs sm:text-sm font-medium">
+                Organize your food menu into intuitive categories like Pizza, Pasta, Drinks, & Desserts.
+            </p>
         </div>
     </div>
 
-    <!-- Add Category Form (Right) -->
-    <div class="bg-white border border-slate-100 shadow-lg rounded-xl p-6 h-fit">
-        <h2 class="text-xl font-bold text-slate-800 mb-6 pb-2 border-b">Add Category</h2>
-        <form method="POST" action="{% url 'category_list' %}" class="space-y-4">
-            {% csrf_token %}
-            <div>
-                <label class="block text-slate-700 font-bold mb-2 text-sm">Category Name</label>
-                <input type="text" name="name" placeholder="e.g. Pasta, Dessert" required
-                       class="w-full border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-red-500 text-sm">
+    <!-- 2 Column Layout Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Active Categories Table (8 Cols) -->
+        <div class="lg:col-span-8 bg-white shadow-xl rounded-3xl border border-slate-100 overflow-hidden">
+            
+            <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-lg font-bold font-serif-heading text-slate-900">Active Categories</h2>
+                    <p class="text-xs text-slate-400 mt-0.5">List of all active food categories</p>
+                </div>
+
+                <span class="bg-red-50 text-red-600 border border-red-200/60 text-xs font-extrabold px-3.5 py-1.5 rounded-full uppercase tracking-wider">
+                    {{ categories|length }} Total
+                </span>
             </div>
-            <button type="submit" class="w-full bg-gradient-to-r from-red-600 to-red-700 hover:brightness-110 text-white font-bold py-3 px-6 rounded-xl transition duration-150 shadow-md shadow-red-900/10">
-                Create Category
-            </button>
-        </form>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-slate-700">
+                    <thead class="bg-slate-50 text-slate-400 font-bold uppercase text-[11px] tracking-wider border-b border-slate-100">
+                        <tr>
+                            <th class="py-4 px-6">Category Name</th>
+                            <th class="py-4 px-6 text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        {% for cat in categories %}
+                        <tr class="hover:bg-slate-50/60 transition duration-150">
+                            <!-- Category Name -->
+                            <td class="py-4 px-6 font-bold text-slate-900 flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-red-50 text-red-600 font-bold flex items-center justify-center shrink-0 p-2">
+                                    <svg class="w-4 h-4 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-19.5 0A2.25 2.25 0 004.5 15h15a2.25 2.25 0 002.25-2.25" />
+                                    </svg>
+                                </div>
+                                <span>{{ cat.name }}</span>
+                            </td>
+
+                            <!-- Delete Action Button -->
+                            <td class="py-4 px-6 text-center">
+                                <a href="{% url 'delete_category' cat.id %}" 
+                                   class="inline-flex items-center gap-1.5 bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white px-4 py-2 rounded-xl text-xs font-bold transition duration-200 border border-rose-200/80 active:scale-95">
+                                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                    </svg>
+                                    <span>Delete</span>
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <!-- Empty Categories View -->
+                        <tr>
+                            <td colspan="2" class="py-16 text-center space-y-3">
+                                <div class="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto shadow-sm p-4">
+                                    <svg class="w-8 h-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-19.5 0A2.25 2.25 0 004.5 15h15a2.25 2.25 0 002.25-2.25" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-bold font-serif-heading text-slate-900">No Categories Found</h3>
+                                <p class="text-slate-400 text-xs">Create your first food category using the form on the right.</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+        <!-- Add Category Form (4 Cols) -->
+        <div class="lg:col-span-4 bg-white border border-slate-100 shadow-xl rounded-3xl p-6 sm:p-8 space-y-6">
+            
+            <div class="border-b border-slate-100 pb-4">
+                <h2 class="text-xl font-bold font-serif-heading text-slate-900">Add Category</h2>
+                <p class="text-xs text-slate-400 mt-0.5">Create a new menu section</p>
+            </div>
+
+            <form method="POST" action="{% url 'category_list' %}" class="space-y-5">
+                {% csrf_token %}
+
+                <div class="space-y-1.5">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Category Name</label>
+                    <input type="text" 
+                           name="name" 
+                           placeholder="e.g. Pasta, Burgers, Desserts" 
+                           required
+                           class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 outline-none focus:ring-2 focus:ring-red-500 focus:bg-white text-slate-800 text-xs font-medium transition placeholder-slate-400">
+                </div>
+
+                <button type="submit" 
+                        class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-6 rounded-2xl shadow-lg shadow-red-600/30 transition-all duration-200 text-xs uppercase tracking-wider text-center active:scale-95">
+                    Create Category
+                </button>
+            </form>
+
+        </div>
+
     </div>
+
 </div>
 
 {% endblock %}

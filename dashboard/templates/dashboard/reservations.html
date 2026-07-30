@@ -1,85 +1,174 @@
 {% extends 'dashboard/dashboard_base.html' %}
 
 {% block title %}
-Manage Bookings
+Manage Bookings - TastyBite Admin
 {% endblock %}
 
 {% block dashboard_content %}
-<div class="flex justify-between items-center mb-8">
-    <h1 class="text-3xl font-bold text-red-600">
-        Manage Bookings
-    </h1>
+
+<!-- Fonts & Custom Styles -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-serif-heading {
+        font-family: 'Playfair Display', serif;
+    }
+    .font-script {
+        font-family: 'Pacifico', cursive;
+    }
+</style>
+
+<div class="space-y-8">
+
+    <!-- Top Header Bar -->
+    <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="space-y-1">
+            <p class="text-red-500 font-script text-xl">Table Reservations</p>
+            <h1 class="text-3xl sm:text-4xl font-bold font-serif-heading text-slate-900 tracking-tight flex items-center gap-2">
+                <svg class="w-8 h-8 text-slate-800" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008z" />
+                </svg>
+                <span>Manage Bookings</span>
+            </h1>
+            <p class="text-slate-500 text-xs sm:text-sm font-medium">
+                Review table booking requests, guest counts, and update confirmation statuses.
+            </p>
+        </div>
+
+        <div class="bg-red-50 border border-red-200/60 rounded-2xl px-5 py-3 text-center self-start sm:self-auto">
+            <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">Total Bookings</span>
+            <span class="text-xl font-bold font-serif-heading text-red-600">{{ reservations|length }}</span>
+        </div>
+    </div>
+
+    <!-- Table Container Card -->
+    <div class="bg-white shadow-xl rounded-3xl border border-slate-100 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-slate-700">
+                <thead class="bg-slate-50 text-slate-400 font-bold uppercase text-[11px] tracking-wider border-b border-slate-100">
+                    <tr>
+                        <th class="py-4 px-6">Customer</th>
+                        <th class="py-4 px-6">Phone</th>
+                        <th class="py-4 px-6">Email</th>
+                        <th class="py-4 px-6 text-center">Guests</th>
+                        <th class="py-4 px-6 text-center">Date & Time</th>
+                        <th class="py-4 px-6">Special Request</th>
+                        <th class="py-4 px-6 text-center">Status</th>
+                        <th class="py-4 px-6 text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100">
+                    {% for reservation in reservations %}
+                    <tr class="hover:bg-slate-50/60 transition duration-150">
+                        
+                        <!-- Customer Name -->
+                        <td class="py-4 px-6 font-bold text-slate-900">
+                            {{ reservation.name }}
+                        </td>
+
+                        <!-- Phone -->
+                        <td class="py-4 px-6 font-semibold text-slate-600 text-xs">
+                            {{ reservation.phone }}
+                        </td>
+
+                        <!-- Email -->
+                        <td class="py-4 px-6 text-slate-500 text-xs font-medium">
+                            {{ reservation.email }}
+                        </td>
+
+                        <!-- Guests Badge -->
+                        <td class="py-4 px-6 text-center">
+                            <span class="bg-slate-100 text-slate-800 text-xs font-extrabold px-3 py-1 rounded-full border border-slate-200/80">
+                                {{ reservation.guests }} {% if reservation.guests == 1 %}Guest{% else %}Guests{% endif %}
+                            </span>
+                        </td>
+
+                        <!-- Date & Time -->
+                        <td class="py-4 px-6 text-center text-xs font-bold text-slate-700">
+                            {{ reservation.booking_date }}
+                            <span class="block text-[11px] font-semibold text-red-600 mt-0.5">at {{ reservation.booking_time }}</span>
+                        </td>
+
+                        <!-- Special Request -->
+                        <td class="py-4 px-6 max-w-xs truncate text-xs text-slate-500 font-medium" title="{{ reservation.special_request }}">
+                            {{ reservation.special_request|default:"-" }}
+                        </td>
+
+                        <!-- Status Badge -->
+                        <td class="py-4 px-6 text-center">
+                            <span class="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider inline-block border
+                                {% if reservation.status == 'Pending' %}bg-amber-50 text-amber-700 border-amber-200
+                                {% elif reservation.status == 'Confirmed' %}bg-emerald-50 text-emerald-700 border-emerald-200
+                                {% else %}bg-rose-50 text-rose-700 border-rose-200{% endif %}">
+                                {{ reservation.status }}
+                            </span>
+                        </td>
+
+                        <!-- Actions -->
+                        <td class="py-4 px-6 text-center">
+                            <div class="flex items-center justify-center gap-2">
+                                
+                                {% if reservation.status == 'Pending' %}
+                                <form method="POST" action="{% url 'update_reservation_status' reservation.id %}" class="inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="status" value="Confirmed">
+                                    <button type="submit" 
+                                            class="bg-emerald-600 hover:bg-emerald-700 text-white px-3.5 py-2 rounded-xl text-[11px] font-bold uppercase tracking-wider transition shadow-md shadow-emerald-600/20 active:scale-95 flex items-center gap-1">
+                                        <span>Confirm</span>
+                                    </button>
+                                </form>
+
+                                <form method="POST" action="{% url 'update_reservation_status' reservation.id %}" class="inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="status" value="Cancelled">
+                                    <button type="submit" 
+                                            class="bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white px-3.5 py-2 rounded-xl text-[11px] font-bold uppercase tracking-wider transition border border-rose-200 active:scale-95 flex items-center gap-1">
+                                        <span>Cancel</span>
+                                    </button>
+                                </form>
+
+                                {% elif reservation.status == 'Confirmed' %}
+                                <form method="POST" action="{% url 'update_reservation_status' reservation.id %}" class="inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="status" value="Cancelled">
+                                    <button type="submit" 
+                                            class="bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white px-3.5 py-2 rounded-xl text-[11px] font-bold uppercase tracking-wider transition border border-rose-200 active:scale-95 flex items-center gap-1">
+                                        <span>Cancel</span>
+                                    </button>
+                                </form>
+
+                                {% else %}
+                                <span class="text-xs text-slate-400 font-semibold italic">No actions</span>
+                                {% endif %}
+
+                            </div>
+                        </td>
+
+                    </tr>
+                    {% empty %}
+                    <!-- Empty Bookings State -->
+                    <tr>
+                        <td colspan="8" class="py-16 text-center space-y-3">
+                            <div class="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto shadow-sm p-4">
+                                <svg class="w-8 h-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold font-serif-heading text-slate-900">No Reservations Yet</h3>
+                            <p class="text-slate-400 text-xs">Table bookings submitted by users will appear here.</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </div>
 
-<div class="bg-white shadow-lg rounded-xl overflow-hidden">
-    <div class="overflow-x-auto">
-        <table class="w-full">
-            <thead class="bg-red-600 text-white">
-                <tr>
-                    <th class="py-4 px-4 text-left">Customer</th>
-                    <th class="text-left">Phone</th>
-                    <th class="text-left">Email</th>
-                    <th class="text-center">Guests</th>
-                    <th class="text-center">Date & Time</th>
-                    <th class="text-left">Special Request</th>
-                    <th class="text-center">Status</th>
-                    <th class="text-center">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for reservation in reservations %}
-                <tr class="border-b hover:bg-gray-50 text-gray-800">
-                    <td class="py-4 px-4 font-semibold">{{ reservation.name }}</td>
-                    <td>{{ reservation.phone }}</td>
-                    <td>{{ reservation.email }}</td>
-                    <td class="text-center">{{ reservation.guests }}</td>
-                    <td class="text-center">{{ reservation.booking_date }} at {{ reservation.booking_time }}</td>
-                    <td class="max-w-xs truncate" title="{{ reservation.special_request }}">{{ reservation.special_request|default:"-" }}</td>
-                    <td class="text-center">
-                        <span class="px-3 py-1 rounded-full text-xs font-semibold {% if reservation.status == 'Pending' %}bg-yellow-100 text-yellow-700{% elif reservation.status == 'Confirmed' %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
-                            {{ reservation.status }}
-                        </span>
-                    </td>
-                    <td class="text-center py-4">
-                        <div class="flex items-center justify-center gap-2">
-                            {% if reservation.status == 'Pending' %}
-                            <form method="POST" action="{% url 'update_reservation_status' reservation.id %}" class="inline">
-                                {% csrf_token %}
-                                <input type="hidden" name="status" value="Confirmed">
-                                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold transition">
-                                    ✓ Confirm
-                                </button>
-                            </form>
-                            <form method="POST" action="{% url 'update_reservation_status' reservation.id %}" class="inline">
-                                {% csrf_token %}
-                                <input type="hidden" name="status" value="Cancelled">
-                                <button type="submit" class="bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-lg text-xs font-bold transition">
-                                    ✗ Cancel
-                                </button>
-                            </form>
-                            {% elif reservation.status == 'Confirmed' %}
-                            <form method="POST" action="{% url 'update_reservation_status' reservation.id %}" class="inline">
-                                {% csrf_token %}
-                                <input type="hidden" name="status" value="Cancelled">
-                                <button type="submit" class="bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-lg text-xs font-bold transition">
-                                    ✗ Cancel
-                                </button>
-                            </form>
-                            {% else %}
-                            <span class="text-xs text-slate-400 font-medium">None</span>
-                            {% endif %}
-                        </div>
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="8" class="py-10 text-center text-gray-500">
-                        No Bookings Available
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
 {% endblock %}

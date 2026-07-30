@@ -1,111 +1,266 @@
 {% extends 'dashboard/dashboard_base.html' %}
 
 {% block title %}
-Manage Popular Cards
+Manage Popular Cards - TastyBite Admin
 {% endblock %}
 
 {% block dashboard_content %}
 
-<div class="flex justify-between items-center mb-8">
-    <h1 class="text-3xl font-bold text-red-600">
-        ✨ Popular Cards Management
-    </h1>
-</div>
+<!-- Fonts & Custom Styles -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+    href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-    <!-- Popular Items List (Left) -->
-    <div class="lg:col-span-2 bg-white shadow-lg rounded-xl overflow-hidden border border-slate-100">
-        <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
-            <h2 class="text-lg font-bold text-slate-800">Active Popular Items</h2>
-            <span class="bg-red-100 text-red-700 text-xs font-bold px-3 py-1 rounded-full">{{ popular_items|length }} Total</span>
+<style>
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .font-serif-heading {
+        font-family: 'Playfair Display', serif;
+    }
+
+    .font-script {
+        font-family: 'Pacifico', cursive;
+    }
+
+    /* Auto-styled Django Form Widgets */
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+        width: 100%;
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 1rem;
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #1e293b;
+        outline: none;
+        transition: all 0.2s ease;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    select:focus,
+    textarea:focus {
+        border-color: #ef4444;
+        background-color: #ffffff;
+        box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+    }
+
+    input[type="file"] {
+        width: 100%;
+        background-color: #f8fafc;
+        border: 1px dashed #cbd5e1;
+        border-radius: 1rem;
+        padding: 0.625rem 1rem;
+        font-size: 0.75rem;
+        color: #64748b;
+        cursor: pointer;
+    }
+
+    input[type="checkbox"] {
+        width: 1.25rem;
+        height: 1.25rem;
+        accent-color: #dc2626;
+        cursor: pointer;
+        border-radius: 0.375rem;
+    }
+</style>
+
+<div class="space-y-8">
+
+    <!-- Top Header Bar -->
+    <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-100 shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="space-y-1">
+            <p class="text-red-500 font-script text-xl">Featured Highlights</p>
+            <h1 class="text-3xl sm:text-4xl font-bold font-serif-heading text-slate-900 tracking-tight flex items-center gap-2">
+                <svg class="w-8 h-8 text-slate-800" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499c.195-.558 1.04-.558 1.235 0l2.673 7.632a.75.75 0 00.701.506h8.041c.593 0 .84.757.36.106l-6.505 4.726a.75.75 0 00-.272.838l2.673 7.632c.195.558-.45 1.026-.954.693l-6.505-4.726a.75.75 0 00-.838 0l-6.505 4.726c-.504.333-1.149-.135-.954-.693l2.673-7.632a.75.75 0 00-.272-.838L1.758 12.1c-.48-.35-.233-1.106.36-1.106h8.041a.75.75 0 00.701-.506l2.673-7.63z" />
+                </svg>
+                <span>Popular Cards Management</span>
+            </h1>
+            <p class="text-slate-500 text-xs sm:text-sm font-medium">
+                Manage featured dish cards and banners displayed on the main homepage.
+            </p>
         </div>
-        <div class="overflow-x-auto">
-            <table class="w-full">
-                <thead class="bg-red-600 text-white">
-                    <tr>
-                        <th class="py-4 px-6 text-left">Image</th>
-                        <th class="py-4 px-6 text-left">Item Name</th>
-                        <th class="py-4 px-6 text-left">Subtitle</th>
-                        <th class="py-4 px-6 text-center">Price</th>
-                        <th class="py-4 px-6 text-center">Order</th>
-                        <th class="py-4 px-6 text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 text-slate-800">
-                    {% for item in popular_items %}
-                    <tr class="hover:bg-slate-50 transition">
-                        <td class="py-4 px-6">
-                            {% if item.image %}
-                            <img src="{{ item.image.url }}" class="w-12 h-12 rounded-full object-cover border-2 border-red-500/20">
-                            {% else %}
-                            <img src="https://via.placeholder.com/150" class="w-12 h-12 rounded-full object-cover">
-                            {% endif %}
-                        </td>
-                        <td class="py-4 px-6 font-bold">{{ item.name }}</td>
-                        <td class="py-4 px-6 text-slate-500 text-sm">{{ item.subtitle }}</td>
-                        <td class="py-4 px-6 text-center font-semibold">₹{{ item.price|floatformat:0 }}</td>
-                        <td class="py-4 px-6 text-center font-semibold text-slate-500">{{ item.order }}</td>
-                        <td class="py-4 px-6 text-center">
-                            <div class="flex items-center justify-center gap-2">
-                                <a href="{% url 'edit_popular' item.id %}" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl text-xs font-bold transition">
-                                    ✏️ Edit
-                                </a>
-                                <a href="{% url 'delete_popular' item.id %}" class="bg-red-50 hover:bg-red-100 text-red-600 px-3.5 py-2 rounded-xl text-xs font-bold transition">
-                                    🗑️ Delete
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    {% empty %}
-                    <tr>
-                        <td colspan="6" class="py-12 text-center text-gray-500 font-medium">
-                            No Popular Items Added Yet
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+
+        <div class="bg-red-50 border border-red-200/60 rounded-2xl px-5 py-3 text-center self-start sm:self-auto">
+            <span class="text-[10px] font-extrabold text-slate-400 uppercase tracking-wider block">Active Cards</span>
+            <span class="text-xl font-bold font-serif-heading text-red-600">{{ popular_items|length }}</span>
         </div>
     </div>
 
-    <!-- Add Popular Item Form (Right) -->
-    <div class="bg-white border border-slate-100 shadow-lg rounded-xl p-6 h-fit">
-        <h2 class="text-xl font-bold text-slate-800 mb-6 pb-2 border-b">Add New Card</h2>
-        <form method="POST" enctype="multipart/form-data" action="{% url 'popular_list' %}" class="space-y-4">
-            {% csrf_token %}
-            <div>
-                <label class="block text-slate-700 font-bold mb-2 text-sm">Item Name</label>
-                {{ form.name }}
+    <!-- 2 Column Layout Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+        <!-- Popular Items List (8 Cols) -->
+        <div class="lg:col-span-8 bg-white shadow-xl rounded-3xl border border-slate-100 overflow-hidden">
+
+            <div class="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                <div>
+                    <h2 class="text-lg font-bold font-serif-heading text-slate-900">Active Popular Items</h2>
+                    <p class="text-xs text-slate-400 mt-0.5">Cards currently listed for showcase</p>
+                </div>
+
+                <span class="bg-red-50 text-red-600 border border-red-200/60 text-xs font-extrabold px-3.5 py-1.5 rounded-full uppercase tracking-wider">
+                    {{ popular_items|length }} Total
+                </span>
             </div>
-            <div>
-                <label class="block text-slate-700 font-bold mb-2 text-sm">Subtitle description</label>
-                {{ form.subtitle }}
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm text-slate-700">
+                    <thead class="bg-slate-50 text-slate-400 font-bold uppercase text-[11px] tracking-wider border-b border-slate-100">
+                        <tr>
+                            <th class="py-4 px-6 text-center">Image</th>
+                            <th class="py-4 px-6">Item Name</th>
+                            <th class="py-4 px-6">Subtitle</th>
+                            <th class="py-4 px-6 text-center">Price</th>
+                            <th class="py-4 px-6 text-center">Order</th>
+                            <th class="py-4 px-6 text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        {% for item in popular_items %}
+                        <tr class="hover:bg-slate-50/60 transition duration-150">
+
+                            <!-- Image -->
+                            <td class="py-4 px-6 text-center">
+                                <div class="w-12 h-12 rounded-2xl bg-slate-100 border border-slate-200 overflow-hidden mx-auto shrink-0 flex items-center justify-center">
+                                    {% if item.image %}
+                                    <img src="{{ item.image.url }}" class="w-full h-full object-cover">
+                                    {% else %}
+                                    <svg class="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM13.5 6a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                                    </svg>
+                                    {% endif %}
+                                </div>
+                            </td>
+
+                            <!-- Name -->
+                            <td class="py-4 px-6 font-bold text-slate-900">
+                                {{ item.name }}
+                            </td>
+
+                            <!-- Subtitle -->
+                            <td class="py-4 px-6 text-slate-500 text-xs font-medium max-w-xs truncate"
+                                title="{{ item.subtitle }}">
+                                {{ item.subtitle|default:"-" }}
+                            </td>
+
+                            <!-- Price -->
+                            <td class="py-4 px-6 text-center font-black text-red-600 font-sans text-base">
+                                ₹{{ item.price|floatformat:0 }}
+                            </td>
+
+                            <!-- Sort Order -->
+                            <td class="py-4 px-6 text-center">
+                                <span class="bg-slate-100 text-slate-700 text-xs font-bold px-2.5 py-1 rounded-lg">
+                                    {{ item.order }}
+                                </span>
+                            </td>
+
+                            <!-- Actions -->
+                            <td class="py-4 px-6 text-center">
+                                <div class="flex items-center justify-center gap-2">
+                                    <a href="{% url 'edit_popular' item.id %}"
+                                        class="bg-slate-900 hover:bg-slate-800 text-white px-3 py-1.5 rounded-xl text-[11px] font-bold uppercase tracking-wider transition shadow-sm flex items-center gap-1">
+                                        <svg class="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                                        </svg>
+                                        <span>Edit</span>
+                                    </a>
+                                    <a href="{% url 'delete_popular' item.id %}"
+                                        class="bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white px-3 py-1.5 rounded-xl text-[11px] font-bold uppercase tracking-wider transition border border-rose-200 flex items-center gap-1">
+                                        <svg class="w-3 h-3 text-rose-600 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                        </svg>
+                                        <span>Delete</span>
+                                    </a>
+                                </div>
+                            </td>
+
+                        </tr>
+                        {% empty %}
+                        <!-- Empty State -->
+                        <tr>
+                            <td colspan="6" class="py-16 text-center space-y-3">
+                                <div class="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto shadow-sm p-4">
+                                    <svg class="w-8 h-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499c.195-.558 1.04-.558 1.235 0l2.673 7.632a.75.75 0 00.701.506h8.041c.593 0 .84.757.36.106l-6.505 4.726a.75.75 0 00-.272.838l2.673 7.632c.195.558-.45 1.026-.954.693l-6.505-4.726a.75.75 0 00-.838 0l-6.505 4.726c-.504.333-1.149-.135-.954-.693l2.673-7.632a.75.75 0 00-.272-.838L1.758 12.1c-.48-.35-.233-1.106.36-1.106h8.041a.75.75 0 00.701-.506l2.673-7.63z" />
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-bold font-serif-heading text-slate-900">No Popular Items Added Yet</h3>
+                                <p class="text-slate-400 text-xs">Create your first featured homepage card using the form on the right.</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-            <div>
-                <label class="block text-slate-700 font-bold mb-2 text-sm">Price (₹)</label>
-                {{ form.price }}
+
+        </div>
+
+        <!-- Add Popular Item Form (4 Cols) -->
+        <div class="lg:col-span-4 bg-white border border-slate-100 shadow-xl rounded-3xl p-6 sm:p-8 space-y-6">
+
+            <div class="border-b border-slate-100 pb-4">
+                <h2 class="text-xl font-bold font-serif-heading text-slate-900">Add New Card</h2>
+                <p class="text-xs text-slate-400 mt-0.5">Feature a new item on the homepage</p>
             </div>
-            <div>
-                <label class="block text-slate-700 font-bold mb-2 text-sm">Category Link</label>
-                {{ form.category }}
-            </div>
-            <div>
-                <label class="block text-slate-700 font-bold mb-2 text-sm">Upload Image</label>
-                {{ form.image }}
-            </div>
-            <div>
-                <label class="block text-slate-700 font-bold mb-2 text-sm">Sort Order</label>
-                {{ form.order }}
-            </div>
-            <div class="flex items-center gap-2 pt-2">
-                {{ form.is_active }}
-                <label class="text-slate-700 font-bold text-sm">Is Active / Displayed</label>
-            </div>
-            <button type="submit" class="w-full bg-gradient-to-r from-red-600 to-amber-500 hover:brightness-110 text-white font-bold py-3 px-6 rounded-xl transition duration-150 shadow-md shadow-red-900/10">
-                Create Popular Card
-            </button>
-        </form>
+
+            <form method="POST" enctype="multipart/form-data" action="{% url 'popular_list' %}" class="space-y-4">
+                {% csrf_token %}
+
+                <div class="space-y-1">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Item Name</label>
+                    {{ form.name }}
+                </div>
+
+                <div class="space-y-1">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Subtitle Description</label>
+                    {{ form.subtitle }}
+                </div>
+
+                <div class="space-y-1">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Price (₹)</label>
+                    {{ form.price }}
+                </div>
+
+                <div class="space-y-1">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Category Link</label>
+                    {{ form.category }}
+                </div>
+
+                <div class="space-y-1">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Upload Image</label>
+                    {{ form.image }}
+                </div>
+
+                <div class="space-y-1">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Sort Order</label>
+                    {{ form.order }}
+                </div>
+
+                <div class="flex items-center gap-3 pt-2">
+                    {{ form.is_active }}
+                    <label class="text-slate-800 font-bold text-xs uppercase tracking-wider cursor-pointer">Is Active / Displayed</label>
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 px-6 rounded-2xl shadow-lg shadow-red-600/30 transition-all duration-200 text-xs uppercase tracking-wider text-center active:scale-95 mt-4">
+                    Create Popular Card
+                </button>
+            </form>
+
+        </div>
+
     </div>
+
 </div>
 
 {% endblock %}

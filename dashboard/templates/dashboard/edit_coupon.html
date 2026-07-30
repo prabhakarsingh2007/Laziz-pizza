@@ -1,111 +1,214 @@
 {% extends 'dashboard/dashboard_base.html' %}
 
 {% block title %}
-Edit Coupon
+Edit Coupon - {{ coupon.code }} - TastyBite Admin
 {% endblock %}
 
 {% block dashboard_content %}
-<div class="max-w-3xl mx-auto bg-white border border-slate-100 shadow-xl rounded-2xl p-8 my-6">
-    <div class="flex items-center justify-between mb-8 pb-4 border-b">
-        <h1 class="text-2xl font-bold text-red-650 flex items-center gap-2">
-            ✏️ Edit Coupon: <span class="text-slate-800">{{ coupon.code }}</span>
-        </h1>
-        <a href="{% url 'coupon_list' %}" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2 rounded-xl text-sm transition">
-            Cancel
+
+<!-- Fonts & Custom Styles -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+    href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .font-serif-heading {
+        font-family: 'Playfair Display', serif;
+    }
+
+    .font-script {
+        font-family: 'Pacifico', cursive;
+    }
+
+    /* Auto-styled Django form widgets */
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    input[type="datetime-local"],
+    select,
+    textarea {
+        width: 100%;
+        background-color: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 1rem;
+        padding: 0.875rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #1e293b;
+        outline: none;
+        transition: all 0.2s ease;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    input[type="date"]:focus,
+    input[type="datetime-local"]:focus,
+    select:focus,
+    textarea:focus {
+        border-color: #ef4444;
+        background-color: #ffffff;
+        box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
+    }
+
+    select[multiple] {
+        height: 120px;
+        border-radius: 1rem;
+    }
+
+    input[type="checkbox"] {
+        width: 1.25rem;
+        height: 1.25rem;
+        accent-color: #dc2626;
+        cursor: pointer;
+        border-radius: 0.375rem;
+    }
+</style>
+
+<div class="max-w-4xl mx-auto space-y-6">
+
+    <!-- Top Navigation Header -->
+    <div class="flex items-center justify-between">
+        <a href="{% url 'coupon_list' %}"
+            class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-red-600 transition">
+            <span>← Back to Coupon Management</span>
         </a>
     </div>
 
-    <form method="POST" class="space-y-6">
-        {% csrf_token %}
+    <!-- Main Card Container -->
+    <div class="bg-white rounded-3xl border border-slate-100 shadow-xl p-8 sm:p-10 space-y-8 relative overflow-hidden">
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-                <label class="block text-slate-700 font-bold mb-2 text-sm">Coupon Code</label>
-                {{ form.code }}
+        <!-- Header -->
+        <div class="border-b border-slate-100 pb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div class="space-y-1">
+                <p class="text-red-500 font-script text-xl">Promotional Discount</p>
+                <h1 class="text-2xl sm:text-3xl font-bold font-serif-heading text-slate-900 flex items-center gap-2">
+                    <svg class="w-6 h-6 text-slate-800" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                    </svg>
+                    <span>Edit Coupon:</span>
+                    <span class="text-red-600 font-mono font-extrabold uppercase bg-red-50 px-3 py-1 rounded-2xl border border-red-200/60">{{ coupon.code }}</span>
+                </h1>
             </div>
-            <div>
-                <label class="block text-slate-700 font-bold mb-2 text-sm">Coupon Name</label>
-                {{ form.name }}
-            </div>
+
+            <a href="{% url 'coupon_list' %}"
+                class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-5 py-2.5 rounded-2xl text-xs uppercase tracking-wider transition text-center self-start sm:self-auto">
+                Cancel
+            </a>
         </div>
 
-        <div>
-            <label class="block text-slate-700 font-bold mb-2 text-sm">Description</label>
-            {{ form.description }}
-        </div>
+        <!-- Form -->
+        <form method="POST" class="space-y-6">
+            {% csrf_token %}
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-                <label class="block text-slate-700 font-bold mb-2 text-sm">Discount Type</label>
-                {{ form.discount_type }}
-            </div>
-            <div>
-                <label class="block text-slate-700 font-bold mb-2 text-sm">Discount Value</label>
-                {{ form.discount_value }}
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-                <label class="block text-slate-700 font-bold mb-2 text-sm">Minimum Order Amount (₹)</label>
-                {{ form.minimum_order_amount }}
-            </div>
-            <div>
-                <label class="block text-slate-700 font-bold mb-2 text-sm">Maximum Discount Amount (₹, Optional)</label>
-                {{ form.maximum_discount_amount }}
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-                <label class="block text-slate-700 font-bold mb-2 text-sm">Start Date</label>
-                {{ form.start_date }}
-            </div>
-            <div>
-                <label class="block text-slate-700 font-bold mb-2 text-sm">Expiry Date</label>
-                {{ form.expiry_date }}
-            </div>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center pt-2">
-            <div>
-                <label class="block text-slate-700 font-bold mb-2 text-sm">Global Usage Limit (Optional)</label>
-                {{ form.usage_limit }}
-            </div>
-            <div class="flex items-center gap-2 mt-6">
-                {{ form.one_time_per_user }}
-                <label class="text-slate-700 font-bold text-sm">One-Time Per User</label>
-            </div>
-            <div class="flex items-center gap-2 mt-6">
-                {{ form.active }}
-                <label class="text-slate-700 font-bold text-sm">Is Active / Enabled</label>
-            </div>
-        </div>
-
-        <!-- Advanced Targeting Options -->
-        <div class="pt-6 border-t border-slate-100 space-y-6">
-            <h3 class="text-lg font-black text-slate-800">Advanced Rules & Restrictions</h3>
-            <p class="text-xs text-slate-500 -mt-2">Leave blank to apply this coupon globally to all food items and categories.</p>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-2 text-xs uppercase tracking-wider">Applicable Categories</label>
-                    {{ form.applicable_categories }}
+            <!-- Code & Name -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="space-y-1.5">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Coupon Code</label>
+                    {{ form.code }}
+                    {% if form.code.errors %}<div class="text-rose-600 text-xs mt-1 font-semibold">{{ form.code.errors }}</div>{% endif %}
                 </div>
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-2 text-xs uppercase tracking-wider">Applicable Products</label>
-                    {{ form.applicable_products }}
-                </div>
-                <div>
-                    <label class="block text-slate-700 font-semibold mb-2 text-xs uppercase tracking-wider">Excluded Products</label>
-                    {{ form.excluded_products }}
+
+                <div class="space-y-1.5">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Coupon Name</label>
+                    {{ form.name }}
+                    {% if form.name.errors %}<div class="text-rose-600 text-xs mt-1 font-semibold">{{ form.name.errors }}</div>{% endif %}
                 </div>
             </div>
-        </div>
 
-        <button type="submit" class="w-full bg-gradient-to-r from-red-600 to-amber-500 hover:brightness-110 text-white font-bold py-3 px-6 rounded-xl transition duration-150 shadow-md shadow-red-900/10">
-            Save Changes
-        </button>
-    </form>
+            <!-- Description -->
+            <div class="space-y-1.5">
+                <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Description</label>
+                {{ form.description }}
+                {% if form.description.errors %}<div class="text-rose-600 text-xs mt-1 font-semibold">{{ form.description.errors }}</div>{% endif %}
+            </div>
+
+            <!-- Type & Value -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="space-y-1.5">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Discount Type</label>
+                    {{ form.discount_type }}
+                    {% if form.discount_type.errors %}<div class="text-rose-600 text-xs mt-1 font-semibold">{{ form.discount_type.errors }}</div>{% endif %}
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Discount Value</label>
+                    {{ form.discount_value }}
+                    {% if form.discount_value.errors %}<div class="text-rose-600 text-xs mt-1 font-semibold">{{ form.discount_value.errors }}</div>{% endif %}
+                </div>
+            </div>
+
+            <!-- Min Order & Max Discount -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="space-y-1.5">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Minimum Order Amount (₹)</label>
+                    {{ form.minimum_order_amount }}
+                    {% if form.minimum_order_amount.errors %}<div class="text-rose-600 text-xs mt-1 font-semibold">{{ form.minimum_order_amount.errors }}</div>{% endif %}
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Maximum Discount Amount (₹, Optional)</label>
+                    {{ form.maximum_discount_amount }}
+                    {% if form.maximum_discount_amount.errors %}<div class="text-rose-600 text-xs mt-1 font-semibold">{{ form.maximum_discount_amount.errors }}</div>{% endif %}
+                </div>
+            </div>
+
+            <!-- Validity Dates -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="space-y-1.5">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Start Date</label>
+                    {{ form.start_date }}
+                    {% if form.start_date.errors %}<div class="text-rose-600 text-xs mt-1 font-semibold">{{ form.start_date.errors }}</div>{% endif %}
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Expiry Date</label>
+                    {{ form.expiry_date }}
+                    {% if form.expiry_date.errors %}<div class="text-rose-600 text-xs mt-1 font-semibold">{{ form.expiry_date.errors }}</div>{% endif %}
+                </div>
+            </div>
+
+            <!-- Usage Limits & Checkboxes -->
+            <div class="bg-slate-50/70 p-6 rounded-3xl border border-slate-100 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+                <div class="space-y-1.5">
+                    <label class="block text-slate-800 font-bold text-xs uppercase tracking-wider">Global Usage Limit</label>
+                    {{ form.usage_limit }}
+                    {% if form.usage_limit.errors %}<div class="text-rose-600 text-xs mt-1 font-semibold">{{ form.usage_limit.errors }}</div>{% endif %}
+                </div>
+
+                <div class="flex items-center gap-3 pt-2 md:pt-6">
+                    {{ form.one_time_per_user }}
+                    <label class="text-slate-800 font-bold text-xs uppercase tracking-wider cursor-pointer">One-Time Per User</label>
+                </div>
+
+                <div class="flex items-center gap-3 pt-2 md:pt-6">
+                    {{ form.active }}
+                    <label class="text-slate-800 font-bold text-xs uppercase tracking-wider cursor-pointer">Is Active / Enabled</label>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="pt-6 border-t border-slate-100 flex justify-end gap-3">
+                <a href="{% url 'coupon_list' %}"
+                    class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-3.5 px-6 rounded-2xl transition duration-200 text-xs uppercase tracking-wider text-center">
+                    Cancel
+                </a>
+
+                <button type="submit"
+                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 px-8 rounded-2xl shadow-lg shadow-red-600/30 transition-all duration-200 text-xs uppercase tracking-wider text-center active:scale-95">
+                    Save Changes
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
 </div>
+
 {% endblock %}

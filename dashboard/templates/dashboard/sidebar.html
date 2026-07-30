@@ -4,8 +4,11 @@
     <div>
         <!-- Brand Logo Header -->
         <div class="p-6 flex items-center gap-3 border-b border-red-700/50">
-            <div class="w-10 h-10 bg-white/10 rounded-2xl border border-white/20 flex items-center justify-center text-white text-xl font-black">
-                🍕
+            <div class="w-10 h-10 bg-white/10 rounded-2xl border border-white/20 flex items-center justify-center text-white p-2">
+                <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0112 21 8.25 8.25 0 016.038 7.048 8.287 8.287 0 009 9.6a8.983 8.983 0 013.361-6.867 8.21 8.21 0 003 2.48z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 18a3.75 3.75 0 00.495-7.467 5.99 5.99 0 00-1.925 3.546 5.974 5.974 0 01-2.133-1A3.75 3.75 0 0012 18z" />
+                </svg>
             </div>
             <div>
                 <h1 class="font-extrabold text-lg leading-tight tracking-wide text-white">Laziz Pizza</h1>
@@ -19,70 +22,91 @@
             <!-- Dashboard Overview -->
             <a href="{% url 'dashboard' %}" 
                class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition duration-150 {% if request.resolver_match.url_name == 'dashboard' %}bg-white text-[#d91212] shadow-sm{% else %}text-white hover:bg-red-700/60{% endif %}">
-                <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                </svg>
                 <span>Dashboard Overview</span>
             </a>
 
             <!-- Manage Menu -->
             <a href="{% url 'food_list' %}" 
                class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition duration-150 {% if request.resolver_match.url_name == 'food_list' or request.resolver_match.url_name == 'add_food' or request.resolver_match.url_name == 'edit_food' or request.resolver_match.url_name == 'delete_food' %}bg-white text-[#d91212] shadow-sm{% else %}text-white hover:bg-red-700/60{% endif %}">
-                <i data-lucide="pizza" class="w-5 h-5"></i>
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
+                </svg>
                 <span>Manage Menu</span>
             </a>
 
             <!-- Manage Categories -->
             <a href="{% url 'category_list' %}" 
                class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition duration-150 {% if request.resolver_match.url_name == 'category_list' or request.resolver_match.url_name == 'delete_category' %}bg-white text-[#d91212] shadow-sm{% else %}text-white hover:bg-red-700/60{% endif %}">
-                <i data-lucide="folder" class="w-5 h-5"></i>
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-19.5 0A2.25 2.25 0 004.5 15h15a2.25 2.25 0 002.25-2.25" />
+                </svg>
                 <span>Manage Categories</span>
             </a>
 
             <!-- Manage Popular Cards -->
             <a href="{% url 'popular_list' %}" 
                class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition duration-150 {% if request.resolver_match.url_name == 'popular_list' or request.resolver_match.url_name == 'delete_popular' %}bg-white text-[#d91212] shadow-sm{% else %}text-white hover:bg-red-700/60{% endif %}">
-                <i data-lucide="sparkles" class="w-5 h-5"></i>
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 21l-.813-5.096L3.096 15 8.187 14.187 9 9l.813 5.187L14.904 15l-5.091.904zM18.813 5.904L18 11l-.813-5.096L12.096 5l5.091-.904L18 0l.813 4.096L23.904 5l-5.091.904z" />
+                </svg>
                 <span>Manage Popular Cards</span>
             </a>
 
             <!-- Manage Orders -->
             <a href="{% url 'admin_orders' %}" 
                class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition duration-150 {% if request.resolver_match.url_name == 'admin_orders' %}bg-white text-[#d91212] shadow-sm{% else %}text-white hover:bg-red-700/60{% endif %}">
-                <i data-lucide="shopping-bag" class="w-5 h-5"></i>
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                </svg>
                 <span>Manage Orders</span>
             </a>
 
             <!-- Manage Bookings -->
             <a href="{% url 'admin_reservations' %}" 
                class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition duration-150 {% if request.resolver_match.url_name == 'admin_reservations' %}bg-white text-[#d91212] shadow-sm{% else %}text-white hover:bg-red-700/60{% endif %}">
-                <i data-lucide="calendar" class="w-5 h-5"></i>
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008z" />
+                </svg>
                 <span>Manage Bookings</span>
             </a>
 
             <!-- Manage Users -->
             <a href="{% url 'admin_users' %}" 
                class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition duration-150 {% if request.resolver_match.url_name == 'admin_users' %}bg-white text-[#d91212] shadow-sm{% else %}text-white hover:bg-red-700/60{% endif %}">
-                <i data-lucide="users" class="w-5 h-5"></i>
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.109A9.342 9.342 0 0112.24 21c-2.784 0-5.328-.93-7.368-2.509l-.497-.37c-.366-.272-.733-.556-1.077-.852a4.125 4.125 0 017.533-2.493M15 9.75a3 3 0 11-6 0 3 3 0 016 0zm6.5 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                </svg>
                 <span>Manage Users</span>
             </a>
 
             <!-- Sales Report -->
             <a href="{% url 'sales' %}" 
                class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition duration-150 {% if request.resolver_match.url_name == 'sales' %}bg-white text-[#d91212] shadow-sm{% else %}text-white hover:bg-red-700/60{% endif %}">
-                <i data-lucide="indian-rupee" class="w-5 h-5"></i>
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" />
+                </svg>
                 <span>Sales Report</span>
             </a>
 
             <!-- Manage Coupons -->
             <a href="{% url 'coupon_list' %}" 
                class="flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-sm transition duration-150 {% if request.resolver_match.url_name == 'coupon_list' or request.resolver_match.url_name == 'edit_coupon' or request.resolver_match.url_name == 'delete_coupon' %}bg-white text-[#d91212] shadow-sm{% else %}text-white hover:bg-red-700/60{% endif %}">
-                <i data-lucide="ticket" class="w-5 h-5"></i>
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-12v.75m0 3v.75m0 3v.75m0 3V18M3 8.25a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 8.25V9.75A1.5 1.5 0 0019.5 11.25A1.5 1.5 0 0021 12.75v1.5a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15v-1.5A1.5 1.5 0 004.5 12A1.5 1.5 0 003 10.5V8.25z" />
+                </svg>
                 <span>Manage Coupons</span>
             </a>
 
             <!-- View Website -->
             <a href="/" 
-               class="flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm text-white hover:bg-red-700/60 transition duration-150">
-                <i data-lucide="globe" class="w-5 h-5"></i>
+               class="flex items-center gap-3 px-4 py-3 rounded-semibold text-sm text-white hover:bg-red-700/60 transition duration-150">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-.778.099-1.533.284-2.253" />
+                </svg>
                 <span>View Website</span>
             </a>
 
@@ -110,7 +134,9 @@
         <!-- Logout Button -->
         <a href="{% url 'logout' %}" 
            class="w-full bg-[#d91212] hover:bg-red-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 transition duration-200 shadow-md">
-            <i data-lucide="log-out" class="w-4 h-4"></i>
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+            </svg>
             <span>Logout</span>
         </a>
     </div>

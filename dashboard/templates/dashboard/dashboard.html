@@ -15,7 +15,7 @@ Admin Dashboard - Laziz Pizza
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
             <h1 class="text-2xl lg:text-3xl font-extrabold text-slate-900 flex items-center gap-2">
-                Welcome back, Admin! 👋
+                Welcome back, Admin!
             </h1>
             <p class="text-slate-500 text-sm mt-1 font-medium">
                 Here's what's happening with your restaurant today.
@@ -23,7 +23,9 @@ Admin Dashboard - Laziz Pizza
         </div>
         <div class="flex items-center gap-3">
             <div class="bg-white border border-slate-200/80 shadow-sm px-4 py-2 rounded-xl flex items-center gap-2 text-xs font-bold text-slate-700">
-                <i data-lucide="calendar" class="w-4 h-4 text-red-500"></i>
+                <svg class="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008z" />
+                </svg>
                 <span>{% now "j F Y" %}</span>
             </div>
         </div>
@@ -43,8 +45,10 @@ Admin Dashboard - Laziz Pizza
                     <span>↑ 18.6%</span> <span class="text-slate-400 font-medium">from yesterday</span>
                 </p>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center text-xl font-bold shadow-sm">
-                🛍️
+            <div class="w-12 h-12 rounded-2xl bg-red-50 text-red-500 flex items-center justify-center shadow-sm p-3">
+                <svg class="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+                </svg>
             </div>
         </div>
 
@@ -59,8 +63,11 @@ Admin Dashboard - Laziz Pizza
                     <span>↑ 24.7%</span> <span class="text-slate-400 font-medium">from yesterday</span>
                 </p>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center text-xl font-bold shadow-sm">
-                💸
+            <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-500 flex items-center justify-center shadow-sm p-3">
+                <svg class="w-6 h-6 text-rose-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" />
+                </svg>
             </div>
         </div>
 
@@ -75,8 +82,10 @@ Admin Dashboard - Laziz Pizza
                     <span>↑ 16.3%</span> <span class="text-slate-400 font-medium">from yesterday</span>
                 </p>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-pink-50 text-pink-500 flex items-center justify-center text-xl font-bold shadow-sm">
-                👥
+            <div class="w-12 h-12 rounded-2xl bg-pink-50 text-pink-500 flex items-center justify-center shadow-sm p-3">
+                <svg class="w-6 h-6 text-pink-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.109A9.342 9.342 0 0112.24 21c-2.784 0-5.328-.93-7.368-2.509l-.497-.37c-.366-.272-.733-.556-1.077-.852a4.125 4.125 0 017.533-2.493M15 9.75a3 3 0 11-6 0 3 3 0 016 0zm6.5 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                </svg>
             </div>
         </div>
 
@@ -91,8 +100,10 @@ Admin Dashboard - Laziz Pizza
                     <span>↓ 5.1%</span> <span class="text-slate-400 font-medium">from yesterday</span>
                 </p>
             </div>
-            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center text-xl font-bold shadow-sm">
-                ⏱️
+            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-500 flex items-center justify-center shadow-sm p-3">
+                <svg class="w-6 h-6 text-amber-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
             </div>
         </div>
 
@@ -178,37 +189,13 @@ Admin Dashboard - Laziz Pizza
                     <!-- Item 3 -->
                     <div class="flex items-center justify-between">
                         <div class="flex items-center gap-3">
-                            <img src="https://images.unsplash.com/photo-1621996346565-e3d5d6281288?w=100&auto=format&fit=crop&q=80" alt="Pasta" class="w-10 h-10 rounded-xl object-cover">
+                            <img src="https://images.unsplash.com/photo-1574085733277-851d9d856a3a?w=100&auto=format&fit=crop&q=80" alt="Pasta" class="w-10 h-10 rounded-xl object-cover">
                             <div>
-                                <h4 class="text-xs font-bold text-slate-800">Pasta Alfredo</h4>
-                                <p class="text-[11px] text-slate-400">White Sauce</p>
+                                <h4 class="text-xs font-bold text-slate-800">Arrabiata Pasta</h4>
+                                <p class="text-[11px] text-slate-400">Spicy Garlic</p>
                             </div>
                         </div>
-                        <span class="text-xs font-extrabold text-red-600">35 Orders</span>
-                    </div>
-
-                    <!-- Item 4 -->
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?w=100&auto=format&fit=crop&q=80" alt="Farm House" class="w-10 h-10 rounded-xl object-cover">
-                            <div>
-                                <h4 class="text-xs font-bold text-slate-800">Farm House Pizza</h4>
-                                <p class="text-[11px] text-slate-400">Loaded Veggies</p>
-                            </div>
-                        </div>
-                        <span class="text-xs font-extrabold text-red-600">28 Orders</span>
-                    </div>
-
-                    <!-- Item 5 -->
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=100&auto=format&fit=crop&q=80" alt="Choco Lava" class="w-10 h-10 rounded-xl object-cover">
-                            <div>
-                                <h4 class="text-xs font-bold text-slate-800">Choco Lava Cake</h4>
-                                <p class="text-[11px] text-slate-400">Dessert</p>
-                            </div>
-                        </div>
-                        <span class="text-xs font-extrabold text-red-600">26 Orders</span>
+                        <span class="text-xs font-extrabold text-red-600">38 Orders</span>
                     </div>
                 </div>
             </div>
@@ -259,8 +246,10 @@ Admin Dashboard - Laziz Pizza
                             </td>
                             <td class="py-3 px-3 text-slate-400">{{ order.created_at|date:"d M Y, h:i A"|default:"25 May 2025, 1:45 PM" }}</td>
                             <td class="py-3 px-3 text-center">
-                                <a href="{% url 'admin_orders' %}" class="w-7 h-7 rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white flex items-center justify-center transition mx-auto">
-                                    👁️
+                                <a href="{% url 'admin_orders' %}" class="w-7 h-7 rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white flex items-center justify-center transition mx-auto p-1.5">
+                                    <svg class="w-4 h-4 text-red-600 hover:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.644M12 5.625c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7zM12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" />
+                                    </svg>
                                 </a>
                             </td>
                         </tr>
@@ -276,7 +265,11 @@ Admin Dashboard - Laziz Pizza
                             </td>
                             <td class="py-3 px-3 text-slate-400">25 May 2025, 1:45 PM</td>
                             <td class="py-3 px-3 text-center">
-                                <button class="w-7 h-7 rounded-lg bg-red-50 text-red-600 flex items-center justify-center mx-auto">👁️</button>
+                                <button class="w-7 h-7 rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white flex items-center justify-center transition mx-auto p-1.5">
+                                    <svg class="w-4 h-4 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.644M12 5.625c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7zM12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" />
+                                    </svg>
+                                </button>
                             </td>
                         </tr>
                         <tr class="hover:bg-slate-50/50 transition">
@@ -289,7 +282,11 @@ Admin Dashboard - Laziz Pizza
                             </td>
                             <td class="py-3 px-3 text-slate-400">25 May 2025, 1:30 PM</td>
                             <td class="py-3 px-3 text-center">
-                                <button class="w-7 h-7 rounded-lg bg-red-50 text-red-600 flex items-center justify-center mx-auto">👁️</button>
+                                <button class="w-7 h-7 rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white flex items-center justify-center transition mx-auto p-1.5">
+                                    <svg class="w-4 h-4 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.644M12 5.625c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7zM12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" />
+                                    </svg>
+                                </button>
                             </td>
                         </tr>
                         <tr class="hover:bg-slate-50/50 transition">
@@ -302,7 +299,11 @@ Admin Dashboard - Laziz Pizza
                             </td>
                             <td class="py-3 px-3 text-slate-400">25 May 2025, 1:20 PM</td>
                             <td class="py-3 px-3 text-center">
-                                <button class="w-7 h-7 rounded-lg bg-red-50 text-red-600 flex items-center justify-center mx-auto">👁️</button>
+                                <button class="w-7 h-7 rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white flex items-center justify-center transition mx-auto p-1.5">
+                                    <svg class="w-4 h-4 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.644M12 5.625c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7zM12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" />
+                                    </svg>
+                                </button>
                             </td>
                         </tr>
                         <tr class="hover:bg-slate-50/50 transition">
@@ -315,7 +316,11 @@ Admin Dashboard - Laziz Pizza
                             </td>
                             <td class="py-3 px-3 text-slate-400">25 May 2025, 1:10 PM</td>
                             <td class="py-3 px-3 text-center">
-                                <button class="w-7 h-7 rounded-lg bg-red-50 text-red-600 flex items-center justify-center mx-auto">👁️</button>
+                                <button class="w-7 h-7 rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white flex items-center justify-center transition mx-auto p-1.5">
+                                    <svg class="w-4 h-4 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.644M12 5.625c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7zM12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" />
+                                    </svg>
+                                </button>
                             </td>
                         </tr>
                         <tr class="hover:bg-slate-50/50 transition">
@@ -328,7 +333,11 @@ Admin Dashboard - Laziz Pizza
                             </td>
                             <td class="py-3 px-3 text-slate-400">25 May 2025, 12:50 PM</td>
                             <td class="py-3 px-3 text-center">
-                                <button class="w-7 h-7 rounded-lg bg-red-50 text-red-600 flex items-center justify-center mx-auto">👁️</button>
+                                <button class="w-7 h-7 rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white flex items-center justify-center transition mx-auto p-1.5">
+                                    <svg class="w-4 h-4 text-red-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.644M12 5.625c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7 1.274-4.057 5.064-7 9.542-7zM12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" />
+                                    </svg>
+                                </button>
                             </td>
                         </tr>
                         {% endfor %}
@@ -350,37 +359,62 @@ Admin Dashboard - Laziz Pizza
             <div class="grid grid-cols-3 gap-3">
                 <!-- Action 1 -->
                 <a href="{% url 'add_food' %}" class="bg-rose-50/70 hover:bg-rose-100/80 p-4 rounded-xl flex flex-col items-center justify-center text-center transition group">
-                    <span class="text-2xl mb-1 group-hover:scale-110 transition">🍕</span>
+                    <span class="w-6 h-6 text-red-600 mb-1 group-hover:scale-110 transition flex items-center justify-center">
+                        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </span>
                     <span class="text-[11px] font-bold text-red-600">Add Menu Item</span>
                 </a>
 
                 <!-- Action 2 -->
-                <a href="#" class="bg-amber-50/70 hover:bg-amber-100/80 p-4 rounded-xl flex flex-col items-center justify-center text-center transition group">
-                    <span class="text-2xl mb-1 group-hover:scale-110 transition">🍔</span>
+                <a href="{% url 'category_list' %}" class="bg-amber-50/70 hover:bg-amber-100/80 p-4 rounded-xl flex flex-col items-center justify-center text-center transition group">
+                    <span class="w-6 h-6 text-amber-600 mb-1 group-hover:scale-110 transition flex items-center justify-center">
+                        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-19.5 0A2.25 2.25 0 004.5 15h15a2.25 2.25 0 002.25-2.25" />
+                        </svg>
+                    </span>
                     <span class="text-[11px] font-bold text-amber-600">Add Category</span>
                 </a>
 
                 <!-- Action 3 -->
                 <a href="{% url 'admin_orders' %}" class="bg-emerald-50/70 hover:bg-emerald-100/80 p-4 rounded-xl flex flex-col items-center justify-center text-center transition group">
-                    <span class="text-2xl mb-1 group-hover:scale-110 transition">🛍️</span>
+                    <span class="w-6 h-6 text-emerald-600 mb-1 group-hover:scale-110 transition flex items-center justify-center">
+                        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </span>
                     <span class="text-[11px] font-bold text-emerald-600">New Order</span>
                 </a>
 
                 <!-- Action 4 -->
                 <a href="{% url 'admin_orders' %}" class="bg-blue-50/70 hover:bg-blue-100/80 p-4 rounded-xl flex flex-col items-center justify-center text-center transition group">
-                    <span class="text-2xl mb-1 group-hover:scale-110 transition">📋</span>
+                    <span class="w-6 h-6 text-blue-600 mb-1 group-hover:scale-110 transition flex items-center justify-center">
+                        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </span>
                     <span class="text-[11px] font-bold text-blue-600">View Orders</span>
                 </a>
 
                 <!-- Action 5 -->
-                <a href="#" class="bg-purple-50/70 hover:bg-purple-100/80 p-4 rounded-xl flex flex-col items-center justify-center text-center transition group">
-                    <span class="text-2xl mb-1 group-hover:scale-110 transition">🏷️</span>
+                <a href="{% url 'coupon_list' %}" class="bg-purple-50/70 hover:bg-purple-100/80 p-4 rounded-xl flex flex-col items-center justify-center text-center transition group">
+                    <span class="w-6 h-6 text-purple-600 mb-1 group-hover:scale-110 transition flex items-center justify-center">
+                        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-12v.75m0 3v.75m0 3v.75m0 3V18M3 8.25a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 8.25V9.75A1.5 1.5 0 0019.5 11.25A1.5 1.5 0 0021 12.75v1.5a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15v-1.5A1.5 1.5 0 004.5 12A1.5 1.5 0 003 10.5V8.25z" />
+                        </svg>
+                    </span>
                     <span class="text-[11px] font-bold text-purple-600">Manage Coupons</span>
                 </a>
 
                 <!-- Action 6 -->
-                <a href="#" class="bg-pink-50/70 hover:bg-pink-100/80 p-4 rounded-xl flex flex-col items-center justify-center text-center transition group">
-                    <span class="text-2xl mb-1 group-hover:scale-110 transition">📊</span>
+                <a href="{% url 'sales' %}" class="bg-pink-50/70 hover:bg-pink-100/80 p-4 rounded-xl flex flex-col items-center justify-center text-center transition group">
+                    <span class="w-6 h-6 text-pink-600 mb-1 group-hover:scale-110 transition flex items-center justify-center">
+                        <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" />
+                        </svg>
+                    </span>
                     <span class="text-[11px] font-bold text-pink-600">Reports</span>
                 </a>
             </div>
