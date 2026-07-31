@@ -254,7 +254,7 @@ def delete_popular(request, id):
 
 def order_count(request):
     return JsonResponse({
-        "count": Order.objects.count()
+        "count": Order.objects.filter(status='Pending').count()
     })
 
 

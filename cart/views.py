@@ -11,7 +11,7 @@ def cart(request):
         return redirect('login')
         
     user = get_object_or_404(User, id=user_id)
-    carts = Cart.objects.filter(user=user)
+    carts = Cart.objects.filter(user=user).select_related('food', 'food__category')
     total = sum(item.total_price() for item in carts)
 
     context = {
@@ -90,7 +90,7 @@ def checkout(request):
         return redirect('login')
         
     user = get_object_or_404(User, id=user_id)
-    carts = Cart.objects.filter(user=user)
+    carts = Cart.objects.filter(user=user).select_related('food', 'food__category')
     total = sum(item.total_price() for item in carts)
     
     from accounts.models import UserAddress
@@ -123,7 +123,7 @@ def order_success(request):
         return redirect('login')
         
     user = get_object_or_404(User, id=user_id)
-    carts = Cart.objects.filter(user=user)
+    carts = Cart.objects.filter(user=user).select_related('food', 'food__category')
     
     if request.method == "POST":
         address = request.POST.get("address")
@@ -228,7 +228,7 @@ def revalidate_session_coupon(request):
         request.session.pop("coupon_code", None)
         return
 
-    cart_items = Cart.objects.filter(user=user)
+    cart_items = Cart.objects.filter(user=user).select_related('food', 'food__category')
     cart_total = sum(item.total_price() for item in cart_items)
 
     is_valid, _, message = validate_and_calculate_discount(

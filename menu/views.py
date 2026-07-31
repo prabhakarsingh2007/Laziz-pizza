@@ -7,7 +7,7 @@ def menu(request):
     # 'type' ya 'food_type' dono parameters se data handle hoga
     food_type = request.GET.get('type') or request.GET.get('food_type', '')
     
-    food_items = FoodItem.objects.filter(available=True)
+    food_items = FoodItem.objects.filter(available=True).select_related('category')
     
     # 1. Search Query Filter
     if query:

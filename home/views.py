@@ -6,8 +6,8 @@ from menu.models import FoodItem
 
 
 def index(request):
-    popular_items = PopularItem.objects.filter(is_active=True).order_by('order')
-    food_items = FoodItem.objects.filter(available=True).order_by('-id')[:6]
+    popular_items = PopularItem.objects.filter(is_active=True).select_related('category').order_by('order')
+    food_items = FoodItem.objects.filter(available=True).select_related('category').order_by('-id')[:6]
     has_more_foods = FoodItem.objects.filter(available=True).count() > 6
     
     return render(request, "home/index.html", {
