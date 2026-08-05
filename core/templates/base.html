@@ -76,8 +76,10 @@
         </div>
     </div>
 
-    <!-- Navigation Header Bar -->
+    <!-- Navigation Header Bar (Hidden on Login & Register pages) -->
+    {% if request.resolver_match.url_name != 'login' and request.resolver_match.url_name != 'register' %}
     {% include 'partials/navbar.html' %}
+    {% endif %}
 
     <!-- Global Django Toast / Alert Messages Banner -->
     {% if messages %}
@@ -104,8 +106,10 @@
         {% endblock %}
     </main>
 
-    <!-- Global Footer -->
+    <!-- Global Footer (Hidden on Login & Register pages) -->
+    {% if request.resolver_match.url_name != 'login' and request.resolver_match.url_name != 'register' %}
     {% include 'partials/footer.html' %}
+    {% endif %}
 
     <!-- Custom Script File -->
     <script src="{% static 'js/script.js' %}"></script>
