@@ -62,6 +62,20 @@
 
 <body class="bg-[#faf7f2] min-h-screen flex flex-col font-sans text-slate-800 antialiased selection:bg-red-500 selection:text-white">
 
+    <!-- Global Preloader Overlay -->
+    <div id="global-preloader" class="fixed inset-0 z-[9999] bg-[#06080d] flex flex-col items-center justify-center transition-opacity duration-300">
+        <div class="relative flex flex-col items-center space-y-4">
+            <div class="relative w-16 h-16 flex items-center justify-center">
+                <div class="absolute inset-0 rounded-full border-4 border-slate-800 border-t-red-600 animate-spin"></div>
+                <span class="text-3xl animate-bounce">🍕</span>
+            </div>
+            <div class="text-center space-y-1">
+                <h3 class="text-white font-extrabold tracking-wider uppercase text-[10px] font-serif-heading">Laziz Pizza</h3>
+                <p id="preloader-message" class="text-slate-400 text-[9px] uppercase tracking-widest animate-pulse">Preparing Freshness...</p>
+            </div>
+        </div>
+    </div>
+
     <!-- Navigation Header Bar -->
     {% include 'partials/navbar.html' %}
 
@@ -96,12 +110,54 @@
     <!-- Custom Script File -->
     <script src="{% static 'js/script.js' %}"></script>
 
-    <!-- Lucide Icons Initialization -->
+    <!-- Lucide Icons & Global Preloader Script -->
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             if (typeof lucide !== 'undefined') {
                 lucide.createIcons();
             }
+        });
+
+        // Hide preloader on page load
+        window.addEventListener("load", function () {
+            const preloader = document.getElementById("global-preloader");
+            if (preloader) {
+                preloader.classList.add("opacity-0");
+                setTimeout(function () {
+                    preloader.style.display = "none";
+                }, 300);
+            }
+        });
+
+        // Show preloader on page transitions
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll("a").forEach(link => {
+                const href = link.getAttribute("href");
+                if (href && !href.startsWith("#") && !href.startsWith("javascript:") && !href.startsWith("tel:") && !href.startsWith("mailto:") && !link.hasAttribute("download") && link.target !== "_blank") {
+                    link.addEventListener("click", function() {
+                        const preloader = document.getElementById("global-preloader");
+                        if (preloader) {
+                            const message = document.getElementById("preloader-message");
+                            if (message) message.textContent = "Loading...";
+                            preloader.style.display = "flex";
+                            preloader.classList.remove("opacity-0");
+                        }
+                    });
+                }
+            });
+
+            // Show preloader on form submissions
+            document.querySelectorAll("form").forEach(form => {
+                form.addEventListener("submit", function() {
+                    const preloader = document.getElementById("global-preloader");
+                    if (preloader) {
+                        const message = document.getElementById("preloader-message");
+                        if (message) message.textContent = "Processing...";
+                        preloader.style.display = "flex";
+                        preloader.classList.remove("opacity-0");
+                    }
+                });
+            });
         });
     </script>
 
