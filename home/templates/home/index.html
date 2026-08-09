@@ -28,7 +28,9 @@ Laziz Pizza - Delicious Food Made For You
 
 <!-- 1. Hero Section -->
 <section class="relative bg-[#06080d] text-white py-16 lg:py-24 px-6 overflow-hidden border-b border-slate-900">
-    <div class="max-w-7xl mx-auto">
+    <!-- Glowing background blur -->
+    <div class="absolute top-1/2 right-10 -translate-y-1/2 w-[450px] h-[450px] bg-red-600/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="max-w-7xl mx-auto relative z-10">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
             <!-- Left Text Content -->
@@ -242,53 +244,53 @@ Laziz Pizza - Delicious Food Made For You
 
             {% empty %}
             <!-- Demo Static Cards when DB empty -->
-            <div class="bg-[#0f131c] rounded-3xl overflow-hidden border border-slate-800/80 p-5 space-y-4">
+            <div class="bg-[#0f131c] rounded-3xl overflow-hidden border border-slate-800/80 hover:border-red-500/40 transition duration-300 group shadow-xl p-5 space-y-4">
                 <div class="h-44 rounded-2xl overflow-hidden bg-slate-900">
-                    <img src="/media/food/margherita.jpg" alt="Margherita Pizza" class="w-full h-full object-cover">
+                    <img src="/media/food/margherita.jpg" alt="Margherita Pizza" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                 </div>
-                <div class="space-y-1">
+                <div class="space-y-2">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-bold text-white">Margherita Pizza</h3>
-                        <span class="text-red-500 font-bold">₹299</span>
+                        <h3 class="font-bold text-white group-hover:text-red-500 transition">Margherita Pizza</h3>
+                        <span class="text-red-500 font-extrabold font-serif-heading text-lg">₹299</span>
                     </div>
                     <p class="text-slate-400 text-xs">Classic delight with 100% real mozzarella cheese.</p>
                 </div>
             </div>
 
-            <div class="bg-[#0f131c] rounded-3xl overflow-hidden border border-slate-800/80 p-5 space-y-4">
+            <div class="bg-[#0f131c] rounded-3xl overflow-hidden border border-slate-800/80 hover:border-red-500/40 transition duration-300 group shadow-xl p-5 space-y-4">
                 <div class="h-44 rounded-2xl overflow-hidden bg-slate-900">
-                    <img src="/media/food/burger.jpg" alt="Veggie Burger" class="w-full h-full object-cover">
+                    <img src="/media/food/burger.jpg" alt="Veggie Burger" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                 </div>
-                <div class="space-y-1">
+                <div class="space-y-2">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-bold text-white">Veggie Burger</h3>
-                        <span class="text-red-500 font-bold">₹199</span>
+                        <h3 class="font-bold text-white group-hover:text-red-500 transition">Veggie Burger</h3>
+                        <span class="text-red-500 font-extrabold font-serif-heading text-lg">₹199</span>
                     </div>
                     <p class="text-slate-400 text-xs">Loaded patty topped with fresh lettuce & cheese.</p>
                 </div>
             </div>
 
-            <div class="bg-[#0f131c] rounded-3xl overflow-hidden border border-slate-800/80 p-5 space-y-4">
+            <div class="bg-[#0f131c] rounded-3xl overflow-hidden border border-slate-800/80 hover:border-red-500/40 transition duration-300 group shadow-xl p-5 space-y-4">
                 <div class="h-44 rounded-2xl overflow-hidden bg-slate-900">
-                    <img src="/media/food/pasta_alfredo.jpg" alt="Pasta Alfredo" class="w-full h-full object-cover">
+                    <img src="/media/food/pasta_alfredo.jpg" alt="Pasta Alfredo" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                 </div>
-                <div class="space-y-1">
+                <div class="space-y-2">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-bold text-white">Pasta Alfredo</h3>
-                        <span class="text-red-500 font-bold">₹249</span>
+                        <h3 class="font-bold text-white group-hover:text-red-500 transition">Pasta Alfredo</h3>
+                        <span class="text-red-500 font-extrabold font-serif-heading text-lg">₹249</span>
                     </div>
                     <p class="text-slate-400 text-xs">Rich creamy white sauce penne pasta.</p>
                 </div>
             </div>
 
-            <div class="bg-[#0f131c] rounded-3xl overflow-hidden border border-slate-800/80 p-5 space-y-4">
+            <div class="bg-[#0f131c] rounded-3xl overflow-hidden border border-slate-800/80 hover:border-red-500/40 transition duration-300 group shadow-xl p-5 space-y-4">
                 <div class="h-44 rounded-2xl overflow-hidden bg-slate-900">
-                    <img src="/media/food/brownie.jpg" alt="Choco Lava Cake" class="w-full h-full object-cover">
+                    <img src="/media/food/brownie.jpg" alt="Choco Lava Cake" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
                 </div>
-                <div class="space-y-1">
+                <div class="space-y-2">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-bold text-white">Choco Lava Cake</h3>
-                        <span class="text-red-500 font-bold">₹149</span>
+                        <h3 class="font-bold text-white group-hover:text-red-500 transition">Choco Lava Cake</h3>
+                        <span class="text-red-500 font-extrabold font-serif-heading text-lg">₹149</span>
                     </div>
                     <p class="text-slate-400 text-xs">Molten chocolate inside warm cocoa cake.</p>
                 </div>

@@ -21,30 +21,30 @@
 
         <!-- Desktop Navigation Links -->
         <nav class="hidden lg:flex gap-7 items-center text-xs font-bold uppercase tracking-wider">
-            <a href="/" class="text-slate-300 hover:text-red-500 transition duration-150">Home</a>
-            <a href="{% url 'menu' %}" class="text-slate-300 hover:text-red-500 transition duration-150">Menu</a>
-            <a href="{% url 'about' %}" class="text-slate-300 hover:text-red-500 transition duration-150">About</a>
-            <a href="{% url 'contact' %}" class="text-slate-300 hover:text-red-500 transition duration-150">Contact</a>
+            <a href="/" class="transition duration-150 {% if request.resolver_match.url_name == 'home' or request.path == '/' %}text-red-500 font-extrabold border-b-2 border-red-500 pb-1{% else %}text-slate-300 hover:text-red-500{% endif %}">Home</a>
+            <a href="{% url 'menu' %}" class="transition duration-150 {% if request.resolver_match.url_name == 'menu' %}text-red-500 font-extrabold border-b-2 border-red-500 pb-1{% else %}text-slate-300 hover:text-red-500{% endif %}">Menu</a>
+            <a href="{% url 'about' %}" class="transition duration-150 {% if request.resolver_match.url_name == 'about' %}text-red-500 font-extrabold border-b-2 border-red-500 pb-1{% else %}text-slate-300 hover:text-red-500{% endif %}">About</a>
+            <a href="{% url 'contact' %}" class="transition duration-150 {% if request.resolver_match.url_name == 'contact' %}text-red-500 font-extrabold border-b-2 border-red-500 pb-1{% else %}text-slate-300 hover:text-red-500{% endif %}">Contact</a>
             
             {% if request.session.user_id %}
-                <a href="{% url 'reservation' %}" class="text-slate-300 hover:text-red-500 transition duration-150">Reservation</a>
-                <a href="{% url 'my_orders' %}" class="text-slate-300 hover:text-red-500 transition duration-150">My Orders</a>
-                <a href="{% url 'dashboard' %}" class="text-slate-300 hover:text-red-500 transition duration-150">Dashboard</a>
+                <a href="{% url 'reservation' %}" class="transition duration-150 {% if request.resolver_match.url_name == 'reservation' %}text-red-500 font-extrabold border-b-2 border-red-500 pb-1{% else %}text-slate-300 hover:text-red-500{% endif %}">Reservation</a>
+                <a href="{% url 'my_orders' %}" class="transition duration-150 {% if request.resolver_match.url_name == 'my_orders' or request.resolver_match.url_name == 'order_detail' %}text-red-500 font-extrabold border-b-2 border-red-500 pb-1{% else %}text-slate-300 hover:text-red-500{% endif %}">My Orders</a>
+                <a href="{% url 'dashboard' %}" class="transition duration-150 {% if request.resolver_match.url_name == 'dashboard' %}text-red-500 font-extrabold border-b-2 border-red-500 pb-1{% else %}text-slate-300 hover:text-red-500{% endif %}">Dashboard</a>
 
                 <!-- Cart Button with Counter Badge -->
-                <a href="{% url 'cart' %}" class="text-white bg-slate-900 hover:bg-red-600 px-4 py-2 rounded-2xl border border-slate-800 transition duration-200 flex items-center gap-2 shadow-sm">
-                    <svg class="w-4 h-4 text-red-500 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <a href="{% url 'cart' %}" class="{% if request.resolver_match.url_name == 'cart' %}bg-red-600 border-red-600{% else %}bg-slate-900 hover:bg-red-600 border-slate-800 hover:border-red-600{% endif %} text-white px-4 py-2 rounded-2xl border transition duration-200 flex items-center gap-2 shadow-md shadow-red-600/10 active:scale-95">
+                    <svg class="w-4 h-4 text-red-500 {% if request.resolver_match.url_name == 'cart' %}text-white{% endif %}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
                     </svg>
                     <span>Cart</span>
-                    <span class="bg-red-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-sm">
+                    <span class="{% if request.resolver_match.url_name == 'cart' %}bg-slate-950 text-red-500{% else %}bg-red-600 text-white{% endif %} text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-sm">
                         {{ cart_count|default:"0" }}
                     </span>
                 </a>
 
                 <!-- User Profile & Logout -->
                 <div class="flex items-center gap-3 pl-3 border-l border-slate-800">
-                    <a href="{% url 'profile' %}" class="text-amber-400 font-extrabold flex items-center gap-1.5 normal-case hover:underline">
+                    <a href="{% url 'profile' %}" class="text-amber-400 font-extrabold flex items-center gap-1.5 normal-case hover:underline {% if request.resolver_match.url_name == 'profile' %}text-red-500 underline{% endif %}">
                         <span>Hi, {{ request.session.name|default:"User" }}</span>
                     </a>
                     
@@ -54,7 +54,7 @@
                 </div>
             {% else %}
                 <div class="flex items-center gap-3 pl-4 border-l border-slate-800">
-                    <a href="{% url 'login' %}" class="text-slate-300 hover:text-white transition duration-150 px-2">Login</a>
+                    <a href="{% url 'login' %}" class="transition duration-150 px-2 {% if request.resolver_match.url_name == 'login' %}text-red-500 font-extrabold{% else %}text-slate-300 hover:text-white{% endif %}">Login</a>
                     <a href="{% url 'register' %}" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-xl font-bold shadow-lg shadow-red-600/30 transition duration-150 active:scale-95">
                         Register
                     </a>
@@ -73,27 +73,27 @@
 
     <!-- Mobile Dropdown Navigation -->
     <div id="mobile-menu" class="hidden lg:hidden bg-slate-950 border-t border-slate-900 px-6 py-5 space-y-4 text-xs font-bold uppercase tracking-wider">
-        <a href="/" class="block text-slate-300 hover:text-red-500 py-1">Home</a>
-        <a href="{% url 'menu' %}" class="block text-slate-300 hover:text-red-500 py-1">Menu</a>
-        <a href="{% url 'about' %}" class="block text-slate-300 hover:text-red-500 py-1">About</a>
-        <a href="{% url 'contact' %}" class="block text-slate-300 hover:text-red-500 py-1">Contact</a>
+        <a href="/" class="block py-1 {% if request.resolver_match.url_name == 'home' or request.path == '/' %}text-red-500 font-extrabold{% else %}text-slate-300 hover:text-red-500{% endif %}">Home</a>
+        <a href="{% url 'menu' %}" class="block py-1 {% if request.resolver_match.url_name == 'menu' %}text-red-500 font-extrabold{% else %}text-slate-300 hover:text-red-500{% endif %}">Menu</a>
+        <a href="{% url 'about' %}" class="block py-1 {% if request.resolver_match.url_name == 'about' %}text-red-500 font-extrabold{% else %}text-slate-300 hover:text-red-500{% endif %}">About</a>
+        <a href="{% url 'contact' %}" class="block py-1 {% if request.resolver_match.url_name == 'contact' %}text-red-500 font-extrabold{% else %}text-slate-300 hover:text-red-500{% endif %}">Contact</a>
 
         {% if request.session.user_id %}
-            <a href="{% url 'reservation' %}" class="block text-slate-300 hover:text-red-500 py-1">Reservation</a>
-            <a href="{% url 'my_orders' %}" class="block text-slate-300 hover:text-red-500 py-1">My Orders</a>
-            <a href="{% url 'dashboard' %}" class="block text-slate-300 hover:text-red-500 py-1">Dashboard</a>
-            <a href="{% url 'profile' %}" class="block text-amber-400 py-1">Profile (Hi, {{ request.session.name }})</a>
-            <a href="{% url 'cart' %}" class="flex items-center justify-between text-white bg-slate-900 p-3 rounded-xl border border-slate-800">
+            <a href="{% url 'reservation' %}" class="block py-1 {% if request.resolver_match.url_name == 'reservation' %}text-red-500 font-extrabold{% else %}text-slate-300 hover:text-red-500{% endif %}">Reservation</a>
+            <a href="{% url 'my_orders' %}" class="block py-1 {% if request.resolver_match.url_name == 'my_orders' %}text-red-500 font-extrabold{% else %}text-slate-300 hover:text-red-500{% endif %}">My Orders</a>
+            <a href="{% url 'dashboard' %}" class="block py-1 {% if request.resolver_match.url_name == 'dashboard' %}text-red-500 font-extrabold{% else %}text-slate-300 hover:text-red-500{% endif %}">Dashboard</a>
+            <a href="{% url 'profile' %}" class="block py-1 {% if request.resolver_match.url_name == 'profile' %}text-red-500 font-extrabold{% else %}text-amber-400{% endif %}">Profile (Hi, {{ request.session.name }})</a>
+            <a href="{% url 'cart' %}" class="flex items-center justify-between {% if request.resolver_match.url_name == 'cart' %}bg-red-600 text-white border-red-600{% else %}bg-slate-900 text-white border-slate-800{% endif %} p-3 rounded-xl border">
                 <span>Shopping Cart</span>
-                <span class="bg-red-600 text-white text-xs px-2.5 py-0.5 rounded-full font-extrabold">{{ cart_count|default:"0" }}</span>
+                <span class="{% if request.resolver_match.url_name == 'cart' %}bg-slate-950 text-red-500{% else %}bg-red-600 text-white{% endif %} text-xs px-2.5 py-0.5 rounded-full font-extrabold">{{ cart_count|default:"0" }}</span>
             </a>
             <a href="{% url 'logout' %}" class="block text-center text-rose-500 bg-rose-500/10 p-3 rounded-xl border border-rose-500/20 mt-2">
                 Logout
             </a>
         {% else %}
             <div class="pt-2 grid grid-cols-2 gap-3">
-                <a href="{% url 'login' %}" class="text-center text-slate-300 bg-slate-900 p-3 rounded-xl border border-slate-800">Login</a>
-                <a href="{% url 'register' %}" class="text-center text-white bg-red-600 p-3 rounded-xl font-bold shadow-md">Register</a>
+                <a href="{% url 'login' %}" class="text-center p-3 rounded-xl border {% if request.resolver_match.url_name == 'login' %}bg-red-600 text-white border-red-600{% else %}text-slate-300 bg-slate-900 border-slate-800{% endif %}">Login</a>
+                <a href="{% url 'register' %}" class="text-center p-3 rounded-xl font-bold shadow-md {% if request.resolver_match.url_name == 'register' %}bg-red-700 text-white{% else %}bg-red-600 text-white{% endif %}">Register</a>
             </div>
         {% endif %}
     </div>

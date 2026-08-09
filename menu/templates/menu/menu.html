@@ -69,31 +69,31 @@ Our Menu - Laziz Pizza
 </section>
 
 <!-- Menu Content Section -->
-<section class="bg-[#faf7f2] py-12 lg:py-16 px-6 min-h-screen">
+<section class="bg-[#06080d] py-12 lg:py-16 px-6 min-h-screen">
     <div class="max-w-7xl mx-auto space-y-8">
 
         <!-- Filter Control Panel: Veg/Non-Veg & Categories -->
-        <div class="flex flex-col md:flex-row items-center justify-between gap-6 bg-white p-4 rounded-2xl border border-slate-100 shadow-sm">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-6 bg-[#0f131c] p-4 rounded-2xl border border-slate-800 shadow-xl">
             
             <!-- Veg / Non-Veg Toggle Options -->
             <div class="flex items-center gap-2 w-full md:w-auto justify-center">
                 <!-- All Dishes -->
                 <a href="{% url 'menu' %}{% if request.GET.category %}?category={{ request.GET.category }}{% endif %}" 
-                   class="px-4 py-2.5 rounded-xl font-bold text-xs transition border flex items-center gap-1.5 {% if not request.GET.type and not selected_food_type %}bg-slate-900 text-white border-slate-900 shadow-md{% else %}bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100{% endif %}">
+                   class="px-4 py-2.5 rounded-xl font-bold text-xs transition border flex items-center gap-1.5 {% if not request.GET.type and not selected_food_type %}bg-red-600 text-white border-red-600 shadow-md{% else %}bg-slate-900 text-slate-300 border-slate-800 hover:bg-slate-800{% endif %}">
                     <span>All</span>
                 </a>
 
                 <!-- Pure Veg Filter -->
                 <a href="{% url 'menu' %}?type=Veg{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" 
-                   class="px-4 py-2.5 rounded-xl font-bold text-xs transition border flex items-center gap-1.5 {% if request.GET.type == 'Veg' or selected_food_type == 'Veg' %}bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20{% else %}bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100{% endif %}">
-                    <span class="w-2 h-2 rounded-full {% if request.GET.type == 'Veg' or selected_food_type == 'Veg' %}bg-white{% else %}bg-emerald-600{% endif %}"></span>
+                   class="px-4 py-2.5 rounded-xl font-bold text-xs transition border flex items-center gap-1.5 {% if request.GET.type == 'Veg' or selected_food_type == 'Veg' %}bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-600/20{% else %}bg-emerald-950/20 text-emerald-400 border-emerald-900/40 hover:bg-emerald-900/30{% endif %}">
+                    <span class="w-2 h-2 rounded-full {% if request.GET.type == 'Veg' or selected_food_type == 'Veg' %}bg-white{% else %}bg-emerald-500{% endif %}"></span>
                     <span>Pure Veg</span>
                 </a>
 
                 <!-- Non-Veg Filter -->
                 <a href="{% url 'menu' %}?type=Non-Veg{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" 
-                   class="px-4 py-2.5 rounded-xl font-bold text-xs transition border flex items-center gap-1.5 {% if request.GET.type == 'Non-Veg' or selected_food_type == 'Non-Veg' %}bg-rose-600 text-white border-rose-600 shadow-md shadow-rose-600/20{% else %}bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100{% endif %}">
-                    <span class="w-2 h-2 rounded-full {% if request.GET.type == 'Non-Veg' or selected_food_type == 'Non-Veg' %}bg-white{% else %}bg-rose-600{% endif %}"></span>
+                   class="px-4 py-2.5 rounded-xl font-bold text-xs transition border flex items-center gap-1.5 {% if request.GET.type == 'Non-Veg' or selected_food_type == 'Non-Veg' %}bg-rose-600 text-white border-rose-600 shadow-md shadow-rose-600/20{% else %}bg-rose-950/20 text-rose-400 border-rose-900/40 hover:bg-rose-900/30{% endif %}">
+                    <span class="w-2 h-2 rounded-full {% if request.GET.type == 'Non-Veg' or selected_food_type == 'Non-Veg' %}bg-white{% else %}bg-rose-500{% endif %}"></span>
                     <span>Non-Veg</span>
                 </a>
             </div>
@@ -101,13 +101,13 @@ Our Menu - Laziz Pizza
             <!-- Categories Filter Badges -->
             <div class="flex items-center gap-2 overflow-x-auto w-full md:w-auto pb-2 md:pb-0 scrollbar-none">
                 <a href="{% url 'menu' %}{% if request.GET.type %}?type={{ request.GET.type }}{% endif %}" 
-                   class="px-4 py-2 rounded-xl font-bold text-xs whitespace-nowrap transition border {% if not selected_category %}bg-red-600 text-white border-red-600{% else %}bg-white text-slate-600 border-slate-200 hover:border-red-500{% endif %}">
+                   class="px-4 py-2 rounded-xl font-bold text-xs whitespace-nowrap transition border {% if not selected_category %}bg-red-600 text-white border-red-600{% else %}bg-slate-900 text-slate-300 border-slate-800 hover:border-red-500{% endif %}">
                     All Categories
                 </a>
 
                 {% for category in categories %}
                 <a href="{% url 'menu' %}?category={{ category.id }}{% if request.GET.type %}&type={{ request.GET.type }}{% elif selected_food_type %}&type={{ selected_food_type }}{% endif %}" 
-                   class="px-4 py-2 rounded-xl font-bold text-xs whitespace-nowrap transition border {% if selected_category == category.id|stringformat:'s' or selected_category == category.name %}bg-red-600 text-white border-red-600{% else %}bg-white text-slate-600 border-slate-200 hover:border-red-500{% endif %}">
+                   class="px-4 py-2 rounded-xl font-bold text-xs whitespace-nowrap transition border {% if selected_category == category.id|stringformat:'s' or selected_category == category.name %}bg-red-600 text-white border-red-600{% else %}bg-slate-900 text-slate-300 border-slate-800 hover:border-red-500{% endif %}">
                     {{ category.name }}
                 </a>
                 {% endfor %}
@@ -118,21 +118,21 @@ Our Menu - Laziz Pizza
         <!-- Skeleton Loading Cards (shown on load) -->
         <div id="menu-skeletons" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
             {% for i in "1234"|make_list %}
-            <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-100 p-5 space-y-4 animate-pulse">
-                <div class="h-48 sm:h-52 rounded-xl bg-slate-200"></div>
+            <div class="bg-[#0f131c] rounded-2xl overflow-hidden shadow-md border border-slate-800 p-5 space-y-4 animate-pulse">
+                <div class="h-48 sm:h-52 rounded-xl bg-slate-800"></div>
                 <div class="space-y-3">
                     <div class="flex justify-between items-center">
-                        <div class="h-4 bg-slate-200 rounded w-2/3"></div>
-                        <div class="h-5 bg-slate-200 rounded w-1/4"></div>
+                        <div class="h-4 bg-slate-800 rounded w-2/3"></div>
+                        <div class="h-5 bg-slate-800 rounded w-1/4"></div>
                     </div>
-                    <div class="h-3 bg-slate-200 rounded w-1/3"></div>
+                    <div class="h-3 bg-slate-800 rounded w-1/3"></div>
                     <div class="space-y-2">
-                        <div class="h-3 bg-slate-200 rounded w-full"></div>
-                        <div class="h-3 bg-slate-200 rounded w-5/6"></div>
+                        <div class="h-3 bg-slate-800 rounded w-full"></div>
+                        <div class="h-3 bg-slate-800 rounded w-5/6"></div>
                     </div>
-                    <div class="pt-3 border-t border-slate-100 flex justify-between items-center">
-                        <div class="h-3 bg-slate-200 rounded w-1/4"></div>
-                        <div class="h-8 bg-slate-200 rounded-xl w-1/3"></div>
+                    <div class="pt-3 border-t border-slate-800 flex justify-between items-center">
+                        <div class="h-3 bg-slate-800 rounded w-1/4"></div>
+                        <div class="h-8 bg-slate-800 rounded-xl w-1/3"></div>
                     </div>
                 </div>
             </div>
@@ -142,12 +142,12 @@ Our Menu - Laziz Pizza
         <!-- Food Grid Cards -->
         <div id="food-grid" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
             {% for item in food_items %}
-            <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 flex flex-col justify-between group">
+            <div class="bg-[#0f131c] rounded-2xl overflow-hidden shadow-md hover:shadow-xl hover:border-red-500/40 transition-all duration-300 border border-slate-800/80 flex flex-col justify-between group">
                 
                 <!-- Food Image Section -->
-                <div class="relative h-48 sm:h-52 overflow-hidden bg-slate-100">
+                <div class="relative h-48 sm:h-52 overflow-hidden bg-slate-900">
                     <!-- Veg / Non-Veg Indicator Badge -->
-                    <span class="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider text-slate-800 border border-slate-200 flex items-center gap-1.5 z-10 shadow-sm">
+                    <span class="absolute top-3 left-3 bg-slate-950/80 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wider text-white border border-slate-800 flex items-center gap-1.5 z-10 shadow-sm">
                         {% if item.food_type == 'Veg' %}
                         <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Veg
                         {% else %}
@@ -164,26 +164,26 @@ Our Menu - Laziz Pizza
 
                 <!-- Details Section -->
                 <div class="p-5 flex-1 flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-start justify-between gap-2 mb-1.5">
-                            <h3 class="font-bold text-slate-900 text-base lg:text-lg leading-snug group-hover:text-red-600 transition-colors">
+                    <div class="space-y-2">
+                        <div class="flex items-start justify-between gap-2">
+                            <h3 class="font-bold text-white text-base lg:text-lg leading-snug group-hover:text-red-500 transition-colors">
                                 <a href="{% url 'food_detail' item.id %}">{{ item.name }}</a>
                             </h3>
-                            <span class="text-red-600 font-extrabold text-lg lg:text-xl whitespace-nowrap">
+                            <span class="text-red-500 font-extrabold text-lg lg:text-xl whitespace-nowrap">
                                 ₹{{ item.price|floatformat:0 }}
                             </span>
                         </div>
 
                         <!-- Rating Badge -->
-                        <div class="flex items-center gap-1.5 mb-2">
+                        <div class="flex items-center gap-1.5">
                             <svg class="w-4 h-4 fill-amber-400 text-amber-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499c.195-.558 1.04-.558 1.235 0l2.673 7.632a.75.75 0 00.701.506h8.041c.593 0 .84.757.36.106l-6.505 4.726a.75.75 0 00-.272.838l2.673 7.632c.195.558-.45 1.026-.954.693l-6.505-4.726a.75.75 0 00-.838 0l-6.505 4.726c-.504.333-1.149-.135-.954-.693l2.673-7.632a.75.75 0 00-.272-.838L1.758 12.1c-.48-.35-.233-1.106.36-1.106h8.041a.75.75 0 00.701-.506l2.673-7.63z" />
                             </svg>
-                            <span class="text-xs font-bold text-slate-800">4.5</span>
-                            <span class="text-xs text-slate-400">(85)</span>
+                            <span class="text-xs font-bold text-slate-200">4.5</span>
+                            <span class="text-xs text-slate-500">(85)</span>
                         </div>
 
-                        <p class="text-slate-500 text-xs line-clamp-2 leading-relaxed">
+                        <p class="text-slate-400 text-xs line-clamp-2 leading-relaxed">
                             {% if item.description %}
                                 {{ item.description }}
                             {% else %}
@@ -193,13 +193,13 @@ Our Menu - Laziz Pizza
                     </div>
 
                     <!-- Cart Action Button -->
-                    <div class="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between">
-                        <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                    <div class="mt-5 pt-3 border-t border-slate-800/80 flex items-center justify-between">
+                        <span class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
                             {{ item.category.name|default:"Laziz Pizza" }}
                         </span>
                         
                         <a href="{% url 'add_to_cart' item.id %}" 
-                           class="bg-red-50 hover:bg-red-600 text-red-600 hover:text-white font-bold text-xs px-4 py-2 rounded-xl transition duration-200 flex items-center gap-1.5 shadow-sm active:scale-95">
+                           class="bg-red-600/10 hover:bg-red-600 text-red-500 hover:text-white font-bold text-xs px-4 py-2 rounded-xl border border-red-500/20 hover:border-transparent transition duration-200 flex items-center gap-1.5 shadow-sm active:scale-95">
                             <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
                             </svg>
@@ -212,13 +212,13 @@ Our Menu - Laziz Pizza
             {% empty %}
             <!-- Empty State -->
             <div class="col-span-full py-16 text-center space-y-4">
-                <div class="w-16 h-16 bg-red-50 text-red-500 rounded-full flex items-center justify-center mx-auto shadow-sm p-4">
+                <div class="w-16 h-16 bg-red-950/40 text-red-500 rounded-full flex items-center justify-center mx-auto shadow-sm p-4 border border-red-900/30">
                     <svg class="w-8 h-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" />
                     </svg>
                 </div>
-                <h3 class="text-xl font-bold text-slate-800">No Food Items Found</h3>
-                <p class="text-slate-500 text-sm max-w-sm mx-auto">
+                <h3 class="text-xl font-bold text-white">No Food Items Found</h3>
+                <p class="text-slate-400 text-sm max-w-sm mx-auto">
                     We couldn't find any items matching your selected criteria. Try changing your filters.
                 </p>
                 <a href="{% url 'menu' %}" class="inline-block bg-red-600 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-md hover:bg-red-700 transition">

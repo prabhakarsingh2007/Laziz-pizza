@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Secure Payment - Laziz Pizza
+{% endblock %}
+
+{% block content %}
+<div class="bg-[#06080d] min-h-screen py-12 lg:py-16 px-6 text-white flex items-center justify-center">
+    <div class="max-w-2xl w-full bg-[#0f131c] rounded-3xl border border-slate-800 shadow-2xl p-6 sm:p-8 space-y-8 relative overflow-hidden">
+        
+        <!-- Glowing Light Blob -->
+        <div class="absolute -top-12 -left-12 w-32 h-32 bg-red-600/10 rounded-full blur-2xl pointer-events-none"></div>
+
+        <!-- Header -->
+        <div class="text-center space-y-2">
+            <span class="bg-red-600/10 text-red-500 border border-red-500/20 font-extrabold text-[10px] uppercase tracking-widest px-3.5 py-1.5 rounded-full inline-block">
+                Secure Simulated Payment Gateway
+            </span>
+            <h1 class="text-2xl sm:text-3xl font-bold font-serif-heading">Laziz Secure Pay</h1>
+            <p class="text-slate-400 text-xs">Simulating payment processing for your delicious pizza order</p>
+        </div>
+
+        <!-- Grand Total Banner -->
+        <div class="bg-slate-950/60 border border-slate-800 p-5 rounded-2xl flex items-center justify-between">
+            <div>
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Total Payable Amount</span>
+                <span class="text-2xl font-black text-red-500">₹{{ grand_total|floatformat:0 }}</span>
+            </div>
+            <div class="text-right">
+                <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Customer Name</span>
+                <span class="text-sm font-bold text-slate-200">{{ user.name }}</span>
+            </div>
+        </div>
+
+        <!-- Payment Mode Selectors -->
+        <div class="space-y-4">
+            <label class="block text-slate-300 font-bold text-xs uppercase tracking-wider">Select Payment Option</label>
+            <div class="grid grid-cols-2 gap-3" id="payment-tabs">
+                <button type="button" id="tab-upi" onclick="switchTab('upi')" 
+                        class="bg-slate-900 hover:bg-slate-800 text-white font-bold p-4 rounded-2xl border border-red-600/80 shadow-md shadow-red-600/5 transition flex flex-col items-center gap-2">
+                    <span class="text-2xl">📱</span>
+                    <span class="text-xs uppercase tracking-wider">UPI / QR Code</span>
+                </button>
+                <button type="button" id="tab-card" onclick="switchTab('card')" 
+                        class="bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white font-bold p-4 rounded-2xl border border-slate-800 transition flex flex-col items-center gap-2">
+                    <span class="text-2xl">💳</span>
+                    <span class="text-xs uppercase tracking-wider">Credit / Debit Card</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Payment forms wrapper -->
+        <form method="POST" id="payment-form" onsubmit="handlePaymentSubmit(event)" class="space-y-6">
+            {% csrf_token %}
+
+            <!-- UPI QR Section -->
+            <div id="section-upi" class="space-y-6 text-center">
+                <div class="p-5 bg-white rounded-2xl inline-block shadow-md">
+                    <!-- Beautiful Custom Mock QR Code SVG -->
+                    <svg class="w-44 h-44 text-slate-950" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2">
+                        <!-- QR Outer box -->
+                        <rect x="5" y="5" width="20" height="20" fill="currentColor"/>
+                        <rect x="8" y="8" width="14" height="14" fill="white"/>
+                        <rect x="11" y="11" width="8" height="8" fill="currentColor"/>
+                        
+                        <rect x="75" y="5" width="20" height="20" fill="currentColor"/>
+                        <rect x="78" y="8" width="14" height="14" fill="white"/>
+                        <rect x="81" y="11" width="8" height="8" fill="currentColor"/>
+
+                        <rect x="5" y="75" width="20" height="20" fill="currentColor"/>
+                        <rect x="8" y="78" width="14" height="14" fill="white"/>
+                        <rect x="11" y="81" width="8" height="8" fill="currentColor"/>
+
+                        <!-- Random QR Pixels pattern -->
+                        <rect x="35" y="10" width="8" height="8" fill="currentColor"/>
+                        <rect x="50" y="5" width="6" height="6" fill="currentColor"/>
+                        <rect x="60" y="15" width="10" height="8" fill="currentColor"/>
+                        <rect x="30" y="30" width="12" height="12" fill="currentColor"/>
+                        <rect x="55" y="35" width="8" height="14" fill="currentColor"/>
+                        <rect x="10" y="45" width="15" height="10" fill="currentColor"/>
+                        <rect x="40" y="50" width="25" height="8" fill="currentColor"/>
+                        <rect x="70" y="45" width="20" height="15" fill="currentColor"/>
+                        <rect x="35" y="70" width="14" height="20" fill="currentColor"/>
+                        <rect x="60" y="75" width="10" height="15" fill="currentColor"/>
+                        <rect x="80" y="75" width="15" height="8" fill="currentColor"/>
+                        
+                        <!-- Pizza slice inside QR! -->
+                        <polygon points="50,45 42,58 58,58" fill="#e11d48"/>
+                        <circle cx="50" cy="54" r="1.5" fill="#facc15"/>
+                        <circle cx="47" cy="52" r="1" fill="#facc15"/>
+                    </svg>
+                </div>
+                <p class="text-xs text-slate-400 font-medium">Scan QR Code using any UPI App (GPay, PhonePe, Paytm)</p>
+                <div class="flex items-center justify-center gap-2 text-xs bg-slate-900 border border-slate-800 p-3 rounded-xl max-w-sm mx-auto">
+                    <span class="text-emerald-500 font-bold">●</span>
+                    <span class="text-slate-300 font-medium">Waiting for transaction authorization...</span>
+                </div>
+            </div>
+
+            <!-- Card Details Form Section -->
+            <div id="section-card" class="space-y-4 hidden text-left">
+                <!-- Card Number -->
+                <div class="space-y-1.5">
+                    <label class="block text-slate-300 font-bold text-xs uppercase tracking-wider">Cardholder Name</label>
+                    <input type="text" placeholder="Enter Full Name" 
+                           class="w-full bg-slate-900 border border-slate-800 rounded-2xl p-3.5 outline-none focus:ring-2 focus:ring-red-500 text-white text-xs font-medium placeholder-slate-500">
+                </div>
+
+                <div class="space-y-1.5">
+                    <label class="block text-slate-300 font-bold text-xs uppercase tracking-wider">Card Number</label>
+                    <input type="text" placeholder="xxxx xxxx xxxx xxxx" maxlength="19" 
+                           class="w-full bg-slate-900 border border-slate-800 rounded-2xl p-3.5 outline-none focus:ring-2 focus:ring-red-500 text-white text-xs font-medium placeholder-slate-500">
+                </div>
+
+                <!-- Expiry & CVV Grid -->
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label class="block text-slate-300 font-bold text-xs uppercase tracking-wider">Expiry Date</label>
+                        <input type="text" placeholder="MM/YY" maxlength="5"
+                               class="w-full bg-slate-900 border border-slate-800 rounded-2xl p-3.5 outline-none focus:ring-2 focus:ring-red-500 text-white text-xs font-medium placeholder-slate-500">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label class="block text-slate-300 font-bold text-xs uppercase tracking-wider">CVV Code</label>
+                        <input type="password" placeholder="***" maxlength="3"
+                               class="w-full bg-slate-900 border border-slate-800 rounded-2xl p-3.5 outline-none focus:ring-2 focus:ring-red-500 text-white text-xs font-medium placeholder-slate-500">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loader / Processing Overlay -->
+            <div id="payment-loader" class="hidden flex-col items-center justify-center space-y-4 py-8">
+                <div class="relative w-12 h-12 flex items-center justify-center">
+                    <div class="absolute inset-0 rounded-full border-4 border-slate-800 border-t-red-600 animate-spin"></div>
+                </div>
+                <div class="text-center space-y-1">
+                    <h3 class="text-white text-sm font-bold tracking-wider uppercase">Processing Secure Payment</h3>
+                    <p class="text-slate-400 text-[10px] uppercase tracking-widest animate-pulse">Contacting bank servers...</p>
+                </div>
+            </div>
+
+            <!-- Action Submit Button -->
+            <button type="submit" id="pay-btn"
+                    class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-6 rounded-2xl shadow-lg shadow-red-600/30 transition-all duration-200 text-xs uppercase tracking-wider text-center active:scale-95">
+                Simulate Secure Pay: ₹{{ grand_total|floatformat:0 }}
+            </button>
+        </form>
+
+    </div>
+</div>
+
+<script>
+    function switchTab(mode) {
+        const upiTab = document.getElementById("tab-upi");
+        const cardTab = document.getElementById("tab-card");
+        const upiSec = document.getElementById("section-upi");
+        const cardSec = document.getElementById("section-card");
+
+        if (mode === 'upi') {
+            upiTab.className = "bg-slate-900 text-white font-bold p-4 rounded-2xl border border-red-600/80 shadow-md shadow-red-600/5 transition flex flex-col items-center gap-2";
+            cardTab.className = "bg-slate-900 text-slate-400 hover:text-white font-bold p-4 rounded-2xl border border-slate-800 transition flex flex-col items-center gap-2";
+            upiSec.classList.remove("hidden");
+            cardSec.classList.add("hidden");
+        } else {
+            cardTab.className = "bg-slate-900 text-white font-bold p-4 rounded-2xl border border-red-600/80 shadow-md shadow-red-600/5 transition flex flex-col items-center gap-2";
+            upiTab.className = "bg-slate-900 text-slate-400 hover:text-white font-bold p-4 rounded-2xl border border-slate-800 transition flex flex-col items-center gap-2";
+            cardSec.classList.remove("hidden");
+            upiSec.classList.add("hidden");
+        }
+    }
+
+    function handlePaymentSubmit(event) {
+        event.preventDefault();
+
+        const btn = document.getElementById("pay-btn");
+        const upiSec = document.getElementById("section-upi");
+        const cardSec = document.getElementById("section-card");
+        const tabs = document.getElementById("payment-tabs");
+        const loader = document.getElementById("payment-loader");
+        const form = document.getElementById("payment-form");
+
+        // Hide inputs and buttons
+        btn.classList.add("hidden");
+        upiSec.classList.add("hidden");
+        cardSec.classList.add("hidden");
+        tabs.parentElement.classList.add("hidden");
+
+        // Show spinner loader
+        loader.classList.remove("hidden");
+        loader.classList.add("flex");
+
+        // Delay 1.5 seconds to simulate secure gateway connection
+        setTimeout(function() {
+            form.submit();
+        }, 1600);
+    }
+</script>
+{% endblock %}

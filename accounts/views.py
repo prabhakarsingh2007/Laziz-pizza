@@ -9,7 +9,14 @@ def register(request):
         form = UserForm(request.POST)
         if form.is_valid():
             form.save()
+            from django.contrib import messages
+            messages.success(request, "Account created successfully! Please login.")
             return redirect('login')
+        else:
+            from django.contrib import messages
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"{field.replace('_', ' ').capitalize()}: {error}")
     else:
         form = UserForm()
     return render(request, 'accounts/register.html', {'form': form})

@@ -128,83 +128,205 @@ def order_success(request):
     if request.method == "POST":
         address = request.POST.get("address")
         phone = request.POST.get("phone")
+        payment_method = request.POST.get("payment_method", "COD")
         total = sum(item.total_price() for item in carts)
-        
-        if total > 0:
-            coupon_code = request.session.get("coupon_code")
-            discount_amount = 0
-            applied_coupon = None
 
+        if total <= 0:
+            return redirect("cart")
+
+        # If online payment method chosen, save to session and redirect
+        if payment_method == "ONLINE":
+            request.session['checkout_address'] = address
+            request.session['checkout_phone'] = phone
+            return redirect('payment_mock')
+        
+        coupon_code = request.session.get("coupon_code")
+        discount_amount = 0
+        applied_coupon = None
+
+        try:
+            if coupon_code:
+                from coupons.services import validate_and_calculate_discount
+                from coupons.models import Coupon
+                is_valid, calc_discount, message = validate_and_calculate_discount(
+                    coupon_code=coupon_code,
+                    user=user,
+                    cart_items=carts,
+                    cart_total=total
+                )
+                if is_valid:
+                    discount_amount = calc_discount
+                    applied_coupon = Coupon.objects.get(code=coupon_code.upper().strip())
+                    
+                    from django.db import transaction
+                    with transaction.atomic():
+                        db_coupon = Coupon.objects.select_for_update().get(id=applied_coupon.id)
+                        db_coupon.used_count += 1
+                        db_coupon.save()
+        except ImportError:
+            pass
+
+        subtotal = float(total)
+        gst = round(subtotal * 0.05, 2)
+        delivery_charge = 40.00
+        packing_charge = 10.00
+        grand_total = round(subtotal + gst + delivery_charge + packing_charge - float(discount_amount), 2)
+
+        # Save the Order
+        order = Order.objects.create(
+            user=user,
+            total_price=grand_total,
+            original_total=total,
+            discount=discount_amount,
+            gst=gst,
+            delivery_charge=delivery_charge,
+            packing_charge=packing_charge,
+            coupon=applied_coupon,
+            coupon_code=coupon_code.upper().strip() if coupon_code else None,
+            address=address,
+            phone=phone
+        )
+        # Save address to UserAddress if not already saved
+        from accounts.models import UserAddress
+        if address:
+            UserAddress.objects.get_or_create(user=user, address_text=address.strip())
+
+        # Record CouponUsage
+        if applied_coupon:
+            from coupons.models import CouponUsage
+            CouponUsage.objects.create(
+                user=user,
+                coupon=applied_coupon,
+                order=order,
+                discount_amount=discount_amount
+            )
+            request.session.pop("coupon_code", None)
+        # Save each cart item as OrderItem
+        from orders.models import OrderItem
+        for item in carts:
+            OrderItem.objects.create(
+                order=order,
+                food=item.food,
+                quantity=item.quantity,
+                price=item.food.price
+            )
+        # Clear user's cart
+        carts.delete()
+        return render(request, "cart/order_success.html")
+        
+    return redirect("cart")
+
+
+# Mock Payment Portal for Online Payments
+def payment_mock(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login')
+        
+    user = get_object_or_404(User, id=user_id)
+    carts = Cart.objects.filter(user=user).select_related('food', 'food__category')
+    total = sum(item.total_price() for item in carts)
+    
+    if total <= 0:
+        return redirect('cart')
+        
+    coupon_code = request.session.get("coupon_code")
+    discount_amount = 0
+    applied_coupon = None
+    
+    try:
+        if coupon_code:
+            from coupons.services import validate_and_calculate_discount
+            from coupons.models import Coupon
+            is_valid, calc_discount, _ = validate_and_calculate_discount(
+                coupon_code=coupon_code,
+                user=user,
+                cart_items=carts,
+                cart_total=total
+            )
+            if is_valid:
+                discount_amount = calc_discount
+                applied_coupon = Coupon.objects.get(code=coupon_code.upper().strip())
+    except Exception:
+        pass
+
+    subtotal = float(total)
+    gst = round(subtotal * 0.05, 2)
+    delivery_charge = 40.00
+    packing_charge = 10.00
+    grand_total = round(subtotal + gst + delivery_charge + packing_charge - float(discount_amount), 2)
+    
+    if request.method == "POST":
+        address = request.session.get("checkout_address", "")
+        phone = request.session.get("checkout_phone", "")
+        
+        # Increment used_count for coupon
+        if applied_coupon:
             try:
-                if coupon_code:
-                    from coupons.services import validate_and_calculate_discount
-                    from coupons.models import Coupon
-                    is_valid, calc_discount, message = validate_and_calculate_discount(
-                        coupon_code=coupon_code,
-                        user=user,
-                        cart_items=carts,
-                        cart_total=total
-                    )
-                    if is_valid:
-                        discount_amount = calc_discount
-                        applied_coupon = Coupon.objects.get(code=coupon_code.upper().strip())
-                        
-                        from django.db import transaction
-                        with transaction.atomic():
-                            db_coupon = Coupon.objects.select_for_update().get(id=applied_coupon.id)
-                            db_coupon.used_count += 1
-                            db_coupon.save()
-            except ImportError:
+                from coupons.models import Coupon
+                from django.db import transaction
+                with transaction.atomic():
+                    db_coupon = Coupon.objects.select_for_update().get(id=applied_coupon.id)
+                    db_coupon.used_count += 1
+                    db_coupon.save()
+            except Exception:
                 pass
 
-            subtotal = float(total)
-            gst = round(subtotal * 0.05, 2)
-            delivery_charge = 40.00
-            packing_charge = 10.00
-            grand_total = round(subtotal + gst + delivery_charge + packing_charge - float(discount_amount), 2)
+        # Save the Order
+        order = Order.objects.create(
+            user=user,
+            total_price=grand_total,
+            original_total=total,
+            discount=discount_amount,
+            gst=gst,
+            delivery_charge=delivery_charge,
+            packing_charge=packing_charge,
+            coupon=applied_coupon,
+            coupon_code=coupon_code.upper().strip() if coupon_code else None,
+            address=address,
+            phone=phone,
+            status='Confirmed'  # Pre-confirmed on online payments
+        )
+        
+        # Save address to UserAddress if not already saved
+        from accounts.models import UserAddress
+        if address:
+            UserAddress.objects.get_or_create(user=user, address_text=address.strip())
 
-            # Save the Order
-            order = Order.objects.create(
+        # Record CouponUsage
+        if applied_coupon:
+            from coupons.models import CouponUsage
+            CouponUsage.objects.create(
                 user=user,
-                total_price=grand_total,
-                original_total=total,
-                discount=discount_amount,
-                gst=gst,
-                delivery_charge=delivery_charge,
-                packing_charge=packing_charge,
                 coupon=applied_coupon,
-                coupon_code=coupon_code.upper().strip() if coupon_code else None,
-                address=address,
-                phone=phone
+                order=order,
+                discount_amount=discount_amount
             )
-            # Save address to UserAddress if not already saved
-            from accounts.models import UserAddress
-            if address:
-                UserAddress.objects.get_or_create(user=user, address_text=address.strip())
-
-            # Record CouponUsage
-            if applied_coupon:
-                CouponUsage.objects.create(
-                    user=user,
-                    coupon=applied_coupon,
-                    order=order,
-                    discount_amount=discount_amount
-                )
-                request.session.pop("coupon_code", None)
-            # Save each cart item as OrderItem
-            from orders.models import OrderItem
-            for item in carts:
-                OrderItem.objects.create(
-                    order=order,
-                    food=item.food,
-                    quantity=item.quantity,
-                    price=item.food.price
-                )
-            # Clear user's cart
-            carts.delete()
-            return render(request, "cart/order_success.html")
+            request.session.pop("coupon_code", None)
             
-    return redirect("cart")
+        # Save OrderItems
+        from orders.models import OrderItem
+        for item in carts:
+            OrderItem.objects.create(
+                order=order,
+                food=item.food,
+                quantity=item.quantity,
+                price=item.food.price
+            )
+        # Clear cart
+        carts.delete()
+        
+        # Clear session checkout variables
+        request.session.pop("checkout_address", None)
+        request.session.pop("checkout_phone", None)
+        
+        return render(request, "cart/order_success.html")
+        
+    context = {
+        'grand_total': grand_total,
+        'user': user
+    }
+    return render(request, "cart/payment_mock.html", context)
 
 
 def revalidate_session_coupon(request):
